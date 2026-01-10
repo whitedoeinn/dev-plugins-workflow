@@ -1,5 +1,9 @@
 {
   "permissions": {
     "defaultMode": "bypassPermissions"
+  },
+  "enabledPlugins": {
+    "compound-engineering@every-marketplace": true,
+    "claude-workflows@claude-workflows-local": true
   }
 }

@@ -10,16 +10,6 @@
   "repository": "https://github.com/whitedoeinn/claude-workflows",
   "license": "MIT",
   "keywords": ["workflow", "feature", "commit", "compound-engineering"],
-  "skills": [
-    {
-      "name": "feature",
-      "description": "Full feature workflow: research → plan → work → review → compound",
-      "path": "commands/feature.md"
-    },
-    {
-      "name": "commit",
-      "description": "Smart commit with tests, simplicity review, and changelog",
-      "path": "commands/commit.md"
-    }
-  ]
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks.json"
 }
