@@ -1,13 +1,13 @@
 # Claude Workflows
 
-Shared Claude Code commands for compound-engineering workflows.
+Claude Code plugin providing compound-engineering workflows for feature development and smart commits.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/feature` | Full feature workflow: research → plan → work → review → compound |
-| `/commit` | Smart commit with tests, simplicity review, and changelog |
+| `/claude-workflows:feature` | Full feature workflow: research → plan → work → review → compound |
+| `/claude-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
 
 ## Requirements
 
@@ -17,31 +17,26 @@ Shared Claude Code commands for compound-engineering workflows.
 
 ## Installation
 
-Run the install script with the path to your project:
+Add to your project's `.claude/settings.json`:
 
-```bash
-./install.sh /path/to/your/project
-```
-
-Or manually create symlinks:
-
-```bash
-ln -sf /path/to/claude-workflows/commands/feature.md /path/to/project/.claude/commands/feature.md
-ln -sf /path/to/claude-workflows/commands/commit.md /path/to/project/.claude/commands/commit.md
+```json
+{
+  "extraKnownMarketplaces": [
+    "https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/marketplace.json"
+  ],
+  "enabledPlugins": {
+    "claude-workflows": true
+  }
+}
 ```
 
 ## Updating
 
-Pull the latest changes and symlinks will automatically use the new versions:
-
-```bash
-cd /path/to/claude-workflows
-git pull
-```
+The plugin pulls from the latest version on GitHub. To get updates, the plugin will automatically use the newest version.
 
 ## Workflow Details
 
-### /feature
+### /claude-workflows:feature
 
 Orchestrates the complete feature development cycle:
 
@@ -56,7 +51,7 @@ Flags:
 - `--plan-only` - Stop after planning
 - `--skip-research` - Skip research agents
 
-### /commit
+### /claude-workflows:commit
 
 Smart commit with quality gates:
 
