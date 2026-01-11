@@ -10,7 +10,7 @@ All notable changes documented here.
 - Bumped to major version 2.0.0 to reflect breaking change
 
 ### Fixed
-- Added missing `skills` entry to plugin.json to register skills directory
+- Fixed skills not being discovered - directory wasn't registered in plugin.json
 
 ### Improved
 - Changelog entries now emphasize impact over description - prevents generic "added X" entries
