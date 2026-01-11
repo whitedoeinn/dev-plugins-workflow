@@ -71,8 +71,9 @@ All notable changes documented here.
 
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**
+- **Renamed repository from `wdi-workflows` to `dev-plugins-workflows`**
 - All commands now use `/wdi-workflows:` prefix
-- Updated all GitHub URLs and documentation
+- Updated all GitHub URLs to point to `whitedoeinn/dev-plugins-workflows`
 - `/wdi-workflows:commit` now validates branch naming
 - `/wdi-workflows:feature` now includes pre-flight repository context check
 - SessionStart hook now warns about deprecated `wdi-` repo prefixes
