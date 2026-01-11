@@ -116,6 +116,23 @@ repo/
 
 ---
 
+## GitHub Issues
+
+**Labels (required - pick one):**
+- `bug` - Something broken
+- `feature` - New functionality
+- `enhancement` - Improve existing
+- `documentation` - Docs only
+- `experiment` - Exploratory work
+
+**Title format:** Sentence case, brief, descriptive
+- Good: `Add dark mode toggle to settings`
+- Bad: `[BUG] [URGENT] Fix the thing`
+
+**Linking:** Branch includes issue number → `fix/123-mobile-nav`
+
+---
+
 ## Decision Quick Checks
 
 **New project?**

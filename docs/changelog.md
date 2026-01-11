@@ -14,6 +14,11 @@ All notable changes documented here.
   - BRANCH-NAMING.md - Git branch conventions
   - COMMIT-STANDARDS.md - Commit message format
   - CLAUDE-CODE-STANDARDS.md - Plugin/command naming (`wdi-*` prefix)
+  - ISSUE-STANDARDS.md - GitHub issue conventions, labels, templates
+- **GitHub Issue Templates** in `.github/ISSUE_TEMPLATE/`:
+  - bug_report.md - Bug report template
+  - feature_request.md - Feature request template
+  - enhancement.md - Enhancement template
 - **New Commands**:
   - `/wdi-workflows:new-repo` - Create repository following standards
   - `/wdi-workflows:new-package` - Add package to mono-repo
