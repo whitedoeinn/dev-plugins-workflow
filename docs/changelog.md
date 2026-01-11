@@ -29,6 +29,11 @@ All notable changes documented here.
   - Proposes names following standards, allows modification with validation
   - Captures exception reasons for non-standard names
   - Auto-creates GitHub Issues for potential standard changes
+- `/wdi-workflows:new-package` now uses interview-driven workflow with `AskUserQuestion`
+  - Adaptive questions based on package type (API wrapper, tool, guest-facing, shared lib, content)
+  - Proposes names following patterns (api-*, guest-*, lib-*)
+  - Validates modifications, captures exceptions in `.github/package-naming-exceptions.md`
+  - Auto-creates GitHub Issues for potential standard changes
 
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**

@@ -4,20 +4,19 @@ description: Create a new package within a mono-repo following standards
 
 # /wdi-workflows:new-package - Create Package
 
-Add a new package to an existing mono-repo following WDI structure standards.
+Add a new package to an existing mono-repo using an interview-driven workflow that enforces WDI naming standards.
 
 ## Flags
 
 | Flag | Description |
 |------|-------------|
-| `--yes` | Skip confirmations |
-| `--type [python\|node\|content]` | Package type (auto-detected if not specified) |
+| `--yes` | Skip confirmations after interview |
 
 ---
 
 ## Workflow
 
-### Step 1: Verify Context
+### Phase 1: Verify Context
 
 Check we're in a mono-repo:
 
@@ -28,102 +27,297 @@ ls packages/ 2>/dev/null
 **If not in a mono-repo:**
 
 ```
-⚠️  Not in a mono-repo (no packages/ directory found).
+Not in a mono-repo (no packages/ directory found).
 
-Options:
-1. Navigate to mono-repo root and retry
-2. Create a mono-repo: /wdi-workflows:new-repo --type mono
-3. If this should be standalone, use regular project setup
-
-(a)bort:
+Use /wdi-workflows:new-repo to create a mono-repo first.
 ```
 
-### Step 2: Gather Information
+ABORT if not in a mono-repo.
+
+---
+
+### Phase 2: Interview
+
+Use `AskUserQuestion` to gather context. Questions adapt based on answers.
+
+#### Question 1: Package Purpose
 
 ```
-Package name: _______
-Description: _______
+What type of package is this?
 ```
 
-### Step 3: Validate Name
+| Option | Description |
+|--------|-------------|
+| **API Wrapper** | Wraps external service (GA4, Mailchimp, Stripe) |
+| **Tool/Utility** | Internal tool (dashboard, cli, reports) |
+| **Guest-Facing** | Customer-facing functionality |
+| **Shared Library** | Code shared across packages |
+| **Content/Docs** | Documentation, research, or static content |
 
-Read `knowledge/decision-trees/package-location.md` for naming rules.
+#### Question 2: Target/Domain (Based on Type)
+
+**If API Wrapper:**
+```
+Which external service does this wrap?
+```
+| Option | Description |
+|--------|-------------|
+| `ga4` | Google Analytics 4 |
+| `mailchimp` | Mailchimp email service |
+| `stripe` | Stripe payments |
+| `cloudflare` | Cloudflare services |
+| Other | Custom service (user enters) |
+
+**If Tool/Utility:**
+```
+What is the tool's primary function?
+```
+| Option | Description |
+|--------|-------------|
+| `dashboard` | Visual reporting interface |
+| `cli` | Command-line interface |
+| `reports` | Report generation |
+| `etl` | Data extraction/transformation |
+| Other | Custom function (user enters) |
+
+**If Guest-Facing:**
+```
+What guest function does this serve?
+```
+| Option | Description |
+|--------|-------------|
+| `portal` | Guest self-service portal |
+| `surveys` | Guest feedback collection |
+| `booking` | Reservation functionality |
+| `messaging` | Guest communication |
+| Other | Custom function (user enters) |
+
+**If Shared Library:**
+```
+What does this library provide?
+```
+| Option | Description |
+|--------|-------------|
+| `auth` | Authentication/authorization |
+| `db` | Database access layer |
+| `types` | Shared TypeScript/Python types |
+| `config` | Configuration management |
+| Other | Custom purpose (user enters) |
+
+**If Content/Docs:**
+```
+What content type is this?
+```
+| Option | Description |
+|--------|-------------|
+| `research` | Research findings and analysis |
+| `docs` | Documentation |
+| `templates` | Reusable templates |
+| `specs` | Specifications and requirements |
+| Other | Custom content type (user enters) |
+
+#### Question 3: Package Technology
+
+```
+What technology stack?
+```
+
+| Option | Description |
+|--------|-------------|
+| **Python** | pyproject.toml, src/, tests/ |
+| **Node/TypeScript** | package.json, src/, __tests__/ |
+| **Content Only** | README.md only (no code) |
+
+#### Question 4: Description
+
+```
+One-line description for the package:
+```
+(Free text)
+
+---
+
+### Phase 3: Name Proposal
+
+Based on interview answers, propose a name following standards:
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| API Wrapper | `api-{service}` | `api-ga4`, `api-mailchimp` |
+| Tool/Utility | `{function}` | `dashboard`, `cli`, `reports` |
+| Guest-Facing | `guest-{function}` | `guest-portal`, `guest-surveys` |
+| Shared Library | `lib-{purpose}` | `lib-auth`, `lib-types` |
+| Content/Docs | `{content-type}` | `research`, `docs`, `specs` |
+
+**Present proposal:**
+
+```
+Based on your answers, the recommended package name is:
+
+    api-ga4
+
+This follows the naming standard:
+  ✓ API wrappers use: api-{service}
+  ✓ Lowercase with hyphens
+  ✓ Descriptive of function
+
+Accept this name?
+```
+
+| Option | Description |
+|--------|-------------|
+| **Accept** | Use the recommended name |
+| **Modify** | Enter a different name |
+
+---
+
+### Phase 4: Name Validation (If Modified)
+
+If user enters a custom name, validate against standards:
+
+**Read:** `knowledge/decision-trees/package-location.md`
 
 **Validation checks:**
-- Lowercase with hyphens only
-- No generic names (`utils`, `common`, `shared`)
-- Descriptive of function
+1. Lowercase only
+2. Hyphens only (no underscores)
+3. No generic names (`utils`, `common`, `shared`, `helpers`)
+4. Matches expected pattern for type
+5. Doesn't conflict with existing packages
 
-**Common patterns:**
-- `api-{service}` for API wrappers
-- `{function}` for tools (dashboard, cli, reports)
-- `guest-{function}` for guest-facing
-
-**If validation fails:**
+**If compliant:**
 
 ```
-⚠️  Package name "{name}" may not follow conventions.
+✓ Your name "{name}" follows the naming standard.
 
-Suggested patterns:
-  - api-{service} (e.g., api-ga4, api-mailchimp)
-  - {function} (e.g., dashboard, cli, reports)
-  - guest-{function} (e.g., guest-surveys, guest-portal)
-
-(c)ontinue anyway, (e)dit name, (a)bort:
+Proceed with this name?
 ```
 
-### Step 4: Detect Package Type
+**If non-compliant:**
 
-If `--type` not specified, detect from existing packages or repo:
+```
+⚠️  Name "{name}" doesn't match the naming standard.
+
+Issues found:
+  ✗ API wrappers should use: api-{service}
+  ✗ Your name: {name}
+
+You can still use this name, but please provide a reason.
+This helps us improve our standards.
+```
+
+Use `AskUserQuestion`:
+
+```
+Why does this name work better for your use case?
+```
+
+| Option | Description |
+|--------|-------------|
+| **Existing convention** | Following an external or legacy convention |
+| **Clarity** | Standard name would be confusing in this context |
+| **Integration** | Name must match external system requirements |
+| **Standard should change** | The naming standard itself needs updating |
+| Other | Custom explanation |
+
+---
+
+### Phase 5: Exception Handling
+
+If user provided an exception reason, capture it:
+
+#### Store Exception
+
+Create `.github/package-naming-exceptions.md` in the mono-repo (if it doesn't exist):
+
+```markdown
+# Package Naming Exceptions
+
+Packages in this repository that deviate from standard conventions.
+
+## Exceptions
+
+| Package | Standard Name | Actual Name | Reason | Date |
+|---------|---------------|-------------|--------|------|
+| {user-chosen-name} | {expected-pattern} | {user-chosen-name} | {user-provided-reason} | {today} |
+```
+
+If file exists, append new row to the table.
+
+#### Detect Standard Change Opportunity
+
+Analyze if exception suggests a standard update:
+
+**Triggers for standard review:**
+- User selected "Standard should change"
+- Same exception pattern seen before (check other packages)
+- Exception reason mentions common use case
+- User explicitly requests standard review
+
+**If triggered, create GitHub Issue:**
 
 ```bash
-# Check for Python indicators
-ls packages/*/pyproject.toml 2>/dev/null && echo "python"
+gh issue create \
+  --repo whitedoeinn/dev-plugins-workflow \
+  --title "Consider package naming standard update: {pattern}" \
+  --body "$(cat <<'EOF'
+## Package Naming Exception Detected
 
-# Check for Node indicators
-ls packages/*/package.json 2>/dev/null && echo "node"
+A new package was created with a name that deviates from our naming standard.
 
-# Check repo root
-ls pyproject.toml package.json 2>/dev/null
+### Details
+
+| Field | Value |
+|-------|-------|
+| Mono-repo | `{repo-name}` |
+| Package | `{package-name}` |
+| Expected Pattern | `{expected-pattern}` |
+| User's Reason | {reason} |
+
+### Context
+
+{Interview answers and context}
+
+### Suggested Action
+
+Review whether the package naming standard should be updated to accommodate this use case.
+
+**Options:**
+1. Keep standard as-is (this is a valid exception)
+2. Update standard to allow this pattern
+3. Add guidance for this edge case to package-location.md
+
+### References
+
+- [Package Location Decision Tree](knowledge/decision-trees/package-location.md)
+- [FILE-NAMING.md](docs/standards/FILE-NAMING.md)
+
+---
+*Auto-generated by `/wdi-workflows:new-package`*
+EOF
+)"
 ```
 
-If mixed or unclear, prompt:
+**Inform user:**
 
 ```
-Package type:
-(p)ython - pyproject.toml, src/, tests/
-(n)ode - package.json, src/, __tests__/
-(c)ontent - README.md only (docs, research)
+📋 Created issue to review naming standard:
+   https://github.com/whitedoeinn/dev-plugins-workflow/issues/{number}
+
+Your feedback helps improve our standards!
 ```
 
-### Step 5: Confirm
+---
 
-```
-Creating package: packages/{name}/
-
-Type: {type}
-Description: {description}
-
-Structure:
-├── README.md
-├── src/
-├── tests/
-└── {pyproject.toml|package.json}
-
-Proceed? (y)es, (e)dit, (a)bort:
-```
-
-### Step 6: Create Package
+### Phase 6: Create Package Structure
 
 **For Python packages:**
 
 ```bash
-mkdir -p packages/{name}/src packages/{name}/tests
-touch packages/{name}/README.md
-touch packages/{name}/pyproject.toml
-touch packages/{name}/src/__init__.py
+mkdir -p packages/{name}/src/{name_underscore}
+mkdir -p packages/{name}/tests
+touch packages/{name}/src/{name_underscore}/__init__.py
 touch packages/{name}/tests/__init__.py
-touch packages/{name}/tests/test_{name}.py
+touch packages/{name}/tests/test_{name_underscore}.py
 ```
 
 Create `pyproject.toml`:
@@ -137,14 +331,16 @@ requires-python = ">=3.11"
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 ```
 
-**For Node packages:**
+**For Node/TypeScript packages:**
 
 ```bash
-mkdir -p packages/{name}/src packages/{name}/__tests__
-touch packages/{name}/README.md
-touch packages/{name}/package.json
+mkdir -p packages/{name}/src
+mkdir -p packages/{name}/__tests__
 touch packages/{name}/src/index.ts
 touch packages/{name}/__tests__/{name}.test.ts
 ```
@@ -155,10 +351,11 @@ Create `package.json`:
   "name": "@wdi/{name}",
   "version": "0.1.0",
   "description": "{description}",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   }
 }
 ```
@@ -167,10 +364,11 @@ Create `package.json`:
 
 ```bash
 mkdir -p packages/{name}
-touch packages/{name}/README.md
 ```
 
-### Step 7: Create README
+---
+
+### Phase 7: Create README
 
 ```markdown
 # {name}
@@ -184,8 +382,13 @@ touch packages/{name}/README.md
 ## Usage
 
 ```python
-# or JavaScript, depending on type
-from {name} import ...
+# Python
+from {name_underscore} import ...
+```
+
+```typescript
+// TypeScript
+import { ... } from '@wdi/{name}';
 ```
 
 ## Development
@@ -210,15 +413,19 @@ cd packages/{name}
 (Document public API here)
 ```
 
-### Step 8: Update Root README
+---
 
-Add package to the root README.md packages table:
+### Phase 8: Update Mono-repo Documentation
+
+#### Update Root README
+
+Add package to the packages table in root `README.md`:
 
 ```markdown
 | {name} | {description} |
 ```
 
-### Step 9: Update Changelog
+#### Update Changelog
 
 Add entry to `docs/changelog.md`:
 
@@ -229,7 +436,9 @@ Add entry to `docs/changelog.md`:
 - New package: `{name}` - {description}
 ```
 
-### Step 10: Output
+---
+
+### Phase 9: Output
 
 ```
 ✓ Package created: packages/{name}/
@@ -238,9 +447,10 @@ Structure:
 packages/{name}/
 ├── README.md
 ├── src/
-│   └── __init__.py
+│   └── {name_underscore}/
+│       └── __init__.py
 ├── tests/
-│   └── test_{name}.py
+│   └── test_{name_underscore}.py
 └── pyproject.toml
 
 Next steps:
@@ -250,52 +460,112 @@ Next steps:
 4. Update README with usage examples
 
 Commit when ready:
-git add packages/{name} README.md docs/changelog.md
-git commit -m "feat: Add {name} package"
+/wdi-workflows:commit
 ```
 
 ---
 
 ## Examples
 
-### Create Python API wrapper
+### Standard API wrapper creation
 
 ```
 /wdi-workflows:new-package
 
-> Package name: api-ga4
-> Description: Google Analytics 4 API wrapper
+? What type of package is this?
+  → API Wrapper
+
+? Which external service does this wrap?
+  → ga4
+
+? What technology stack?
+  → Python
+
+? One-line description:
+  → "Google Analytics 4 reporting API wrapper"
+
+Recommended name: api-ga4
+  ✓ Follows naming standard
+
+? Accept this name?
+  → Accept
 
 ✓ Created: packages/api-ga4/
 ```
 
-### Create Node package
+### Custom name with exception
 
 ```
-/wdi-workflows:new-package --type node
+/wdi-workflows:new-package
 
-> Package name: dashboard
-> Description: Marketing dashboard frontend
+? What type of package is this?
+  → Tool/Utility
 
-✓ Created: packages/dashboard/
+? What is the tool's primary function?
+  → dashboard
+
+? What technology stack?
+  → Node/TypeScript
+
+? One-line description:
+  → "Real-time marketing metrics dashboard"
+
+Recommended name: dashboard
+  ✓ Follows naming standard
+
+? Accept this name?
+  → Modify
+
+? Enter your preferred name:
+  → "marketing-dash"
+
+⚠️  Name doesn't match standard:
+  ✗ Expected: dashboard (or similar function name)
+
+? Why does this name work better?
+  → Clarity
+
+? Please explain:
+  → "We have multiple dashboards; 'dashboard' alone
+     is ambiguous. 'marketing-dash' is clearer."
+
+✓ Created: packages/marketing-dash/
+  📝 Exception documented in .github/package-naming-exceptions.md
 ```
 
-### Quick creation
+### Quick creation with --yes
 
 ```
-/wdi-workflows:new-package --yes --type python
+/wdi-workflows:new-package --yes
 
-> Package name: reports
-> Description: Report generation utilities
+? What type of package is this?
+  → Shared Library
 
-✓ Created: packages/reports/
+? What does this library provide?
+  → auth
+
+? What technology stack?
+  → Python
+
+? One-line description:
+  → "JWT authentication utilities"
+
+Recommended name: lib-auth
+  ✓ Follows naming standard
+
+? Accept this name?
+  → [Auto-accepted with --yes]
+
+✓ Created: packages/lib-auth/
 ```
 
 ---
 
 ## Notes
 
-- Must be run from mono-repo root
-- Auto-detects package type from existing packages
+- Must be run from mono-repo root (requires `packages/` directory)
+- Auto-detects existing package technology patterns
 - Updates root README and changelog automatically
+- Exception reasons are stored in `.github/package-naming-exceptions.md`
+- Standard review issues are created on `dev-plugins-workflow` repo
 - See `knowledge/decision-trees/package-location.md` for naming guidance
