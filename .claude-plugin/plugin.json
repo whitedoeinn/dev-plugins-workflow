@@ -1,7 +1,7 @@
 {
   "name": "wdi-workflows",
   "description": "Compound engineering workflows for feature development and smart commits",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
