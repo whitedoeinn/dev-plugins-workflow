@@ -13,7 +13,7 @@ This command helps set up the claude-workflows plugin and its dependencies.
    - If missing, provide installation instructions
 
 2. **Verify Installation**
-   - Check that `/feature` and `/commit` commands are available
+   - Check that `/claude-workflows:feature` and `/claude-workflows:commit` commands are available
    - List available commands from this plugin
 
 3. **Initialize Project**

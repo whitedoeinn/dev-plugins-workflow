@@ -2,6 +2,8 @@
 
 Claude Code plugin providing compound-engineering workflows for feature development and smart commits.
 
+**Version:** 1.0.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md)
+
 ## Quick Start
 
 Run in any project:
@@ -22,9 +24,9 @@ cd claude-workflows
 
 | Command | Description |
 |---------|-------------|
-| `/feature` | Full feature workflow: research → plan → work → review → compound |
-| `/commit` | Smart commit with tests, simplicity review, and changelog |
-| `/setup` | Set up and verify plugin dependencies |
+| `/claude-workflows:feature` | Full feature workflow: research → plan → work → review → compound |
+| `/claude-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
+| `/claude-workflows:setup` | Set up and verify plugin dependencies |
 
 ## Requirements
 
@@ -75,7 +77,7 @@ claude plugin update claude-workflows --scope project
 
 ## Workflow Details
 
-### /feature
+### /claude-workflows:feature
 
 Orchestrates the complete feature development cycle:
 
@@ -90,7 +92,7 @@ Flags:
 - `--plan-only` - Stop after planning
 - `--skip-research` - Skip research agents
 
-### /commit
+### /claude-workflows:commit
 
 Smart commit with quality gates:
 
@@ -111,6 +113,26 @@ Flags:
 
 Works on macOS, Linux, and Windows (WSL). The install script automatically detects your platform.
 
+## How It Works
+
+This plugin uses Claude Code's markdown-based command system. Commands are defined as markdown files in `commands/` - the markdown IS the implementation. When you run `/claude-workflows:commit`, Claude Code reads `commands/commit.md` and follows the workflow steps.
+
+The plugin builds on top of `compound-engineering` which provides:
+- **Research agents** for codebase analysis
+- **Review agents** for code quality checks
+- **Workflow skills** for planning and documentation
+
+See [docs/architecture.md](docs/architecture.md) for detailed diagrams.
+
+## Troubleshooting
+
+Common issues and solutions are documented in [docs/troubleshooting.md](docs/troubleshooting.md).
+
+Quick fixes:
+- **"Unknown skill: commit"** → Plugin not installed. Run `install.sh`
+- **Commands not found** → Restart Claude Code after installation
+- **Simplicity review fails** → Use `--skip-review` or fix the issues
+
 ## Team Onboarding
 
 Add this to each project's README:
@@ -125,8 +147,8 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/in
 \`\`\`
 
 Available commands:
-- `/feature` - Full feature workflow
-- `/commit` - Smart commit with review
+- `/claude-workflows:feature` - Full feature workflow
+- `/claude-workflows:commit` - Smart commit with review
 
 To update: `./install.sh update`
 ```

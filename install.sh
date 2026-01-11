@@ -86,8 +86,8 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ## Available Commands
 
-- `/feature` - Full feature workflow (research → plan → work → review → compound)
-- `/commit` - Smart commit with tests, simplicity review, and changelog
+- `/claude-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
+- `/claude-workflows:commit` - Smart commit with tests, simplicity review, and changelog
 
 ## Setup
 
@@ -104,7 +104,7 @@ echo ""
 echo -e "${GREEN}Setup complete!${NC}"
 echo ""
 echo "Available commands:"
-echo "  /feature - Full feature workflow"
-echo "  /commit  - Smart commit with review"
+echo "  /claude-workflows:feature - Full feature workflow"
+echo "  /claude-workflows:commit  - Smart commit with review"
 echo ""
 echo "To update plugins later: ./install.sh update"

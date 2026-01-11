@@ -2,7 +2,7 @@
 description: Smart commit with tests, context detection, and changelog (project)
 ---
 
-# /commit - Smart Commit Workflow
+# /claude-workflows:commit - Smart Commit Workflow
 
 ## Flags
 
@@ -153,7 +153,7 @@ Generates a fun summary with:
 ### Quick commit
 
 ```
-/commit --yes
+/claude-workflows:commit --yes
 ```
 
 ```
@@ -168,7 +168,7 @@ Generates a fun summary with:
 ### With celebration
 
 ```
-/commit --yes --summary
+/claude-workflows:commit --yes --summary
 ```
 
 ```
