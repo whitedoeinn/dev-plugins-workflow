@@ -86,8 +86,16 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ## Available Commands
 
+### Workflow Commands
 - `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
 - `/wdi-workflows:commit` - Smart commit with tests, simplicity review, and changelog
+- `/wdi-workflows:setup` - Set up and verify plugin dependencies
+
+### Standards Commands
+- `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
+- `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
+- `/wdi-workflows:check-standards` - Validate current repository against development standards
+- `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
 
 ## Setup
 
@@ -104,7 +112,13 @@ echo ""
 echo -e "${GREEN}Setup complete!${NC}"
 echo ""
 echo "Available commands:"
-echo "  /wdi-workflows:feature - Full feature workflow"
-echo "  /wdi-workflows:commit  - Smart commit with review"
+echo "  Workflow:"
+echo "    /wdi-workflows:feature         - Full feature workflow"
+echo "    /wdi-workflows:commit          - Smart commit with review"
+echo "  Standards:"
+echo "    /wdi-workflows:new-repo        - Create new repository"
+echo "    /wdi-workflows:new-package     - Add package to mono-repo"
+echo "    /wdi-workflows:check-standards - Validate against standards"
+echo "    /wdi-workflows:update-standard - Update standard dependencies"
 echo ""
 echo "To update plugins later: ./install.sh update"

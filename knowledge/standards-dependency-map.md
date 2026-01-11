@@ -89,13 +89,16 @@ Quick reference for which files depend on each standard. Used by:
 **Enforced by:**
 - commands/check-standards.md (plugin validation)
 - commands/setup.md (dependency and naming check)
+- install.sh (CLAUDE.md template with command listings)
 
 **Referenced by:**
 - CLAUDE.md (command listing and conventions)
 - README.md (key conventions section)
 - knowledge/standards-summary.md (commands quick reference)
 
-**Impact score:** 5 files
+**Impact score:** 6 files
+
+**Note:** When adding new commands, update install.sh CLAUDE.md template and output.
 
 ---
 
@@ -132,8 +135,8 @@ Quick reference for which files depend on each standard. Used by:
 | Standard | Impact Score | Complexity |
 |----------|--------------|------------|
 | PROJECT-STRUCTURE.md | 6 | High |
+| CLAUDE-CODE-STANDARDS.md | 6 | High |
 | REPO-STANDARDS.md | 5 | Moderate |
-| CLAUDE-CODE-STANDARDS.md | 5 | Moderate |
 | ISSUE-STANDARDS.md | 5 | Moderate |
 | BRANCH-NAMING.md | 3 | Simple |
 | COMMIT-STANDARDS.md | 3 | Simple |
