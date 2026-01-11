@@ -12,6 +12,7 @@ All notable changes documented here.
 ### Fixed
 - Skills now auto-invoke properly - directory wasn't registered in plugin.json
 - Changelog entries now guide toward impact over description - prevents generic "added X" entries
+- Missing plugin warnings now stand out - added emoji and indentation so they're not buried in output
 
 ### Standards Update Protocol
 - **Safer standards changes** - `/wdi-workflows:update-standard` analyzes ripple effects before you modify a standard, preventing broken references across docs and commands

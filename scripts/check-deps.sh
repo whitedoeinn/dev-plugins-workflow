@@ -16,9 +16,9 @@ done
 
 if [ ${#MISSING[@]} -gt 0 ]; then
   echo ""
-  echo "Missing required plugins: ${MISSING[*]}"
-  echo "Run: ./install.sh (from wdi-workflows directory)"
-  echo "Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash"
+  echo "⚠️  Missing required plugins: ${MISSING[*]}"
+  echo "   Run: ./install.sh (from wdi-workflows directory)"
+  echo "   Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash"
   echo ""
 fi
 
