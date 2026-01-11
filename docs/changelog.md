@@ -15,6 +15,7 @@ All notable changes documented here.
   - COMMIT-STANDARDS.md - Commit message format
   - CLAUDE-CODE-STANDARDS.md - Plugin/command naming (`wdi-*` prefix)
   - ISSUE-STANDARDS.md - GitHub issue conventions, labels, templates
+  - DEPENDENCY-STANDARDS.md - Dependency types, status values, tracking
 - **GitHub Issue Templates** in `.github/ISSUE_TEMPLATE/`:
   - bug_report.md - Bug report template
   - feature_request.md - Feature request template

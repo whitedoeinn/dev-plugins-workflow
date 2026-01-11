@@ -133,6 +133,29 @@ repo/
 
 ---
 
+## Dependencies
+
+**Technical Types:**
+- `External` - Third-party API/service
+- `Internal` - Another feature/milestone
+- `Package` - Library dependency
+- `Infrastructure` - Environment/platform
+- `Data` - Migration/data availability
+
+**Non-Technical Types:**
+- `Maintenance` - Scheduled downtime
+- `Personnel` - Team availability
+- `Approval` - Sign-off required
+- `Vendor` - External company
+- `Event` - Deadline/demo
+- `Resource` - Hardware/budget
+
+**Status:** Available, Pending, In Progress, Blocked, At Risk, N/A
+
+**Relationships:** Blocked by, Blocks, Depends on, Related to
+
+---
+
 ## Decision Quick Checks
 
 **New project?**

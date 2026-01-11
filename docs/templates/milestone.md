@@ -49,15 +49,22 @@
 
 ## Dependencies
 
+See [DEPENDENCY-STANDARDS.md](../../standards/DEPENDENCY-STANDARDS.md) for type and status definitions.
+
 ### Technical Dependencies
 
 Dependencies derived from feature requirements:
 
-| Dependency | Type | Status | Blocking Features |
-|------------|------|--------|-------------------|
-| {API/Service} | External | Available | {feature-1, feature-2} |
-| {Library} | Package | Available | {feature-3} |
-| {Feature from another milestone} | Internal | Pending | {feature-4} |
+| Dependency | Type | Status | Blocking Features | Owner |
+|------------|------|--------|-------------------|-------|
+| {API/Service} | External | Available | {feature-1, feature-2} | - |
+| {Library} | Package | Available | {feature-3} | - |
+| {Feature from another milestone} | Internal | Pending | {feature-4} | @{owner} |
+| {Database/Server} | Infrastructure | In Progress | {feature-5} | @{owner} |
+| {Migration/Import} | Data | Pending | {feature-6} | @{owner} |
+
+**Technical Types:** External, Internal, Package, Infrastructure, Data
+**Status Values:** Available, Pending, In Progress, Blocked, At Risk, N/A
 
 ### Milestone Dependencies
 
@@ -72,20 +79,16 @@ Other milestones that must complete before this one:
 
 External factors that affect this milestone:
 
-| Dependency | Type | Date/Window | Impact | Mitigation |
-|------------|------|-------------|--------|------------|
-| {Description} | Maintenance | {Date range} | {What's blocked} | {Workaround} |
-| {Description} | Personnel | {Date range} | {What's affected} | {Coverage plan} |
-| {Description} | External | {Date/Event} | {What's waiting} | {Alternative} |
+| Dependency | Type | Date/Window | Impact | Mitigation | Owner |
+|------------|------|-------------|--------|------------|-------|
+| {Description} | Maintenance | {Date range} | {What's blocked} | {Workaround} | @{owner} |
+| {Description} | Personnel | {Date range} | {What's affected} | {Coverage plan} | @{owner} |
+| {Description} | Approval | {Deadline} | {What's waiting} | {Status} | @{owner} |
+| {Description} | Vendor | {Date/Event} | {What's affected} | {Alternative} | @{owner} |
+| {Description} | Event | {Date} | {Hard deadline} | {Priority adjustment} | @{owner} |
+| {Description} | Resource | {Date needed} | {What's blocked} | {Procurement status} | @{owner} |
 
-**Examples of non-technical dependencies:**
-- System maintenance windows
-- Team member vacation/unavailability
-- Third-party API migrations
-- Vendor contract renewals
-- External approvals or reviews
-- Seasonal business constraints
-- Hardware/infrastructure provisioning
+**Non-Technical Types:** Maintenance, Personnel, Approval, Vendor, Event, Resource
 
 ---
 
