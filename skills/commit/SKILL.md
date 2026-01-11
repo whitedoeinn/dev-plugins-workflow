@@ -141,7 +141,9 @@ Add entry under today's date:
 Rules:
 - If today's section exists, append to it
 - If not, create new section at top
-- Keep entries concise
+- Focus on impact/why, not just what changed
+- Good: "Fixed skills not auto-invoking - directory wasn't registered"
+- Bad: "Added skills entry to plugin.json"
 
 ## Step 10: Push
 
