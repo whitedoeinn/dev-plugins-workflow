@@ -9,6 +9,9 @@ All notable changes documented here.
 ### Version 2.0.0
 - Bumped to major version 2.0.0 to reflect breaking change
 
+### Fixed
+- Added missing `skills` entry to plugin.json to register skills directory
+
 ### Breaking Change - Commit Workflow Converted to Skill
 - **REMOVED:** `/wdi-workflows:commit` command no longer exists
 - **ADDED:** `commit` skill that auto-invokes when you say "commit these changes"
