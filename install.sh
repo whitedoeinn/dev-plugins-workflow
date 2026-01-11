@@ -33,6 +33,7 @@ if [ "$1" = "--show-commands" ]; then
 - `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
 - `/wdi-workflows:check-standards` - Validate current repository against development standards
 - `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
+- `/wdi-workflows:new-command` - Create a new command and update all dependent files
 
 Copy the above to your CLAUDE.md file to update the available commands section.
 EOF
@@ -117,6 +118,7 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 - `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
 - `/wdi-workflows:check-standards` - Validate current repository against development standards
 - `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
+- `/wdi-workflows:new-command` - Create a new command and update all dependent files
 
 ## Setup
 
@@ -142,5 +144,6 @@ echo "    /wdi-workflows:new-repo        - Create new repository"
 echo "    /wdi-workflows:new-package     - Add package to mono-repo"
 echo "    /wdi-workflows:check-standards - Validate against standards"
 echo "    /wdi-workflows:update-standard - Update standard dependencies"
+echo "    /wdi-workflows:new-command     - Create new command"
 echo ""
 echo "To update plugins later: ./install.sh update"

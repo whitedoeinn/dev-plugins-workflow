@@ -100,6 +100,7 @@ These files reference all standards by design and don't need updating for indivi
 **Enforced by:**
 - commands/check-standards.md (plugin validation)
 - commands/setup.md (dependency and naming check)
+- commands/new-command.md (command naming convention enforcement)
 - install.sh (CLAUDE.md template with command listings)
 
 **Referenced by:**
@@ -107,7 +108,7 @@ These files reference all standards by design and don't need updating for indivi
 - README.md (key conventions section)
 - knowledge/standards-summary.md (commands quick reference)
 
-**Impact score:** 6 files
+**Impact score:** 7 files
 
 **Note:** When adding new commands, update install.sh CLAUDE.md template and output.
 
@@ -145,8 +146,8 @@ These files reference all standards by design and don't need updating for indivi
 
 | Standard | Impact Score | Complexity |
 |----------|--------------|------------|
+| CLAUDE-CODE-STANDARDS.md | 7 | High |
 | PROJECT-STRUCTURE.md | 6 | High |
-| CLAUDE-CODE-STANDARDS.md | 6 | High |
 | REPO-STANDARDS.md | 6 | High |
 | ISSUE-STANDARDS.md | 5 | Moderate |
 | BRANCH-NAMING.md | 3 | Simple |

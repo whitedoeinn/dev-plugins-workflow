@@ -18,14 +18,19 @@ wdi-workflows/
 │   ├── setup.md            # /wdi-workflows:setup verification
 │   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
 │   ├── new-package.md      # /wdi-workflows:new-package scaffolding
-│   └── check-standards.md  # /wdi-workflows:check-standards validation
+│   ├── check-standards.md  # /wdi-workflows:check-standards validation
+│   ├── update-standard.md  # /wdi-workflows:update-standard impact analysis
+│   └── new-command.md      # /wdi-workflows:new-command workflow
 ├── .claude-plugin/         # Plugin configuration
 │   ├── plugin.json         # Plugin metadata
 │   └── marketplace.json    # Local marketplace config
 ├── hooks/                  # Claude Code hooks
 │   └── hooks.json          # SessionStart hook config
 ├── scripts/                # Helper scripts
-│   └── check-deps.sh       # Dependency and standards checker
+│   ├── check-deps.sh       # Dependency and standards checker
+│   ├── pre-tool-standards-check.sh  # PreToolUse hook for standards detection
+│   ├── validate-dependency-map.sh   # Validates dependency map accuracy
+│   └── get-standard-deps.sh         # Helper for parsing dependency map
 ├── docs/                   # Documentation
 │   ├── standards/          # Development standards
 │   │   ├── REPO-STANDARDS.md
@@ -62,6 +67,8 @@ wdi-workflows/
 | `/wdi-workflows:new-repo` | Create repository following WDI naming standards |
 | `/wdi-workflows:new-package` | Add package to mono-repo following standards |
 | `/wdi-workflows:check-standards` | Validate current repo against standards |
+| `/wdi-workflows:update-standard` | Impact analysis and guided updates for standard changes |
+| `/wdi-workflows:new-command` | Create a new command and update all dependent files |
 
 ## Dependencies
 

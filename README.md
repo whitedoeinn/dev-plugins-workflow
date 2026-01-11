@@ -38,6 +38,7 @@ cd wdi-workflows
 | `/wdi-workflows:new-package` | Add a new package to a mono-repo following standards |
 | `/wdi-workflows:check-standards` | Validate current repository against WDI development standards |
 | `/wdi-workflows:update-standard` | Impact analysis and guided updates when changing development standards |
+| `/wdi-workflows:new-command` | Create a new command and update all dependent files |
 
 ## Requirements
 
