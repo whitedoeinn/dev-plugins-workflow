@@ -24,7 +24,14 @@ Mono-repos cluster related packages. Use this structure:
 ├── docs/                       # Repo-level documentation
 │   ├── architecture.md         # System design
 │   ├── changelog.md            # Change history
-│   └── standards/              # Standards docs (if applicable)
+│   ├── templates/              # Document templates
+│   ├── standards/              # Standards docs (if applicable)
+│   └── product/                # Product documentation
+│       ├── design/             # PRDs and design docs
+│       └── planning/           # Features, milestones, status
+│           ├── features/       # Individual feature specs
+│           ├── milestones/     # Milestone definitions
+│           └── status.md       # Current progress overview
 └── scripts/                    # Build, deploy, dev tooling
     ├── build.sh
     └── dev.sh
@@ -53,7 +60,11 @@ Standalone repos contain a single focused project. Use this structure:
 ├── tests/                      # Test suite
 ├── docs/                       # Documentation
 │   ├── architecture.md         # If complex enough
-│   └── changelog.md            # Version history
+│   ├── changelog.md            # Version history
+│   ├── templates/              # Document templates (optional)
+│   └── product/                # Product docs (optional)
+│       ├── design/             # PRDs
+│       └── planning/           # Features, milestones
 ├── scripts/                    # Tooling
 └── pyproject.toml              # Or package.json
 ```
@@ -118,3 +129,58 @@ Plugins follow a specific pattern for Claude Code integration:
 | Experimental/spike | Mono-repo package with `experiment-` prefix |
 
 See [REPO-STANDARDS.md](REPO-STANDARDS.md) for repository naming decisions.
+
+---
+
+## Product Documentation Structure
+
+For projects with formal product planning, use this structure:
+
+```
+docs/product/
+├── design/                     # Design documents
+│   ├── prd-{name}.md           # Product Requirements Documents
+│   └── {design-doc}.md         # Other design docs
+└── planning/                   # Planning artifacts
+    ├── features/               # Feature specifications
+    │   ├── {feature-slug}.md   # Individual feature files
+    │   └── ...
+    ├── milestones/             # Milestone definitions
+    │   ├── MILE-001-{name}.md  # Milestone files
+    │   └── ...
+    └── status.md               # Current project status
+```
+
+### When to Use
+
+| Document | When |
+|----------|------|
+| PRD | New product, major feature, needs stakeholder alignment |
+| Feature | Any tracked work (created by `/wdi-workflows:feature`) |
+| Milestone | Grouping features for a release or phase |
+| Status | Ongoing project tracking |
+
+### Templates
+
+Templates for these documents are in `docs/templates/`:
+
+| Template | Purpose |
+|----------|---------|
+| `feature.md` | Feature specification template |
+| `prd.md` | Product Requirements Document template |
+| `milestone.md` | Milestone with dependencies template |
+
+---
+
+## Template Directory
+
+Store reusable document templates in `docs/templates/`:
+
+```
+docs/templates/
+├── feature.md                  # Feature spec template
+├── prd.md                      # PRD template
+└── milestone.md                # Milestone template
+```
+
+These templates are used by workflows and can be copied manually for new documents.

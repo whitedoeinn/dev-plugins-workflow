@@ -19,6 +19,12 @@ All notable changes documented here.
   - bug_report.md - Bug report template
   - feature_request.md - Feature request template
   - enhancement.md - Enhancement template
+- **Document Templates** in `docs/templates/`:
+  - feature.md - Feature specification template
+  - prd.md - Product Requirements Document template
+  - milestone.md - Milestone with dependencies template
+- **PR Template** in `.github/PULL_REQUEST_TEMPLATE.md`
+- **Product Documentation Structure** (`docs/product/`) for PRDs, features, milestones
 - **New Commands**:
   - `/wdi-workflows:new-repo` - Create repository following standards
   - `/wdi-workflows:new-package` - Add package to mono-repo
@@ -45,6 +51,7 @@ All notable changes documented here.
   - Selects target package in mono-repos (or triggers new-package creation)
   - Offers research preference (full, light, skip)
   - Adapts research and review agents based on answers
+  - Saves feature specs to `docs/product/planning/features/` using template
 
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**

@@ -273,9 +273,18 @@ EOF
 )"
 ```
 
-### Save Local Plan
+### Save Feature Spec
 
-Write plan to `plans/{feature-slug}.md` for reference.
+Create feature specification using template:
+
+1. Read template from `docs/templates/feature.md`
+2. Fill in placeholders from interview and research
+3. Save to `docs/product/planning/features/{feature-slug}.md`
+
+Create directories if needed:
+```bash
+mkdir -p docs/product/planning/features
+```
 
 ### Pause (unless --yes)
 
@@ -284,7 +293,7 @@ Plan Phase Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Created: Issue #{issue-number}
-Plan: plans/{feature-slug}.md
+Feature: docs/product/planning/features/{feature-slug}.md
 
 Review the plan and continue to work? (y)es, (e)dit plan, (a)bort:
 ```
@@ -537,7 +546,7 @@ Pre-flight: ✓ All checks passed
 
 → Plan Phase
   Created: Issue #23 "New Feature: Real-time analytics dashboard"
-  Plan: plans/realtime-analytics.md
+  Plan: docs/product/planning/features/realtime-analytics.md
 
   Continue to work? [y]
 
@@ -638,7 +647,7 @@ Pre-flight: ✓ All checks passed
 
 → Plan Phase
   Created: Issue #25 "Enhancement: Dark mode support"
-  Plan: plans/dark-mode.md
+  Plan: docs/product/planning/features/dark-mode.md
 
   Complexity revised: Moderate (15 files, pattern exists)
 
@@ -686,3 +695,6 @@ if not promoted to permanent feature.
 - All phases can be aborted without side effects (except created branches/issues)
 - Requires compound-engineering plugin for research and review agents
 - Requires `gh` CLI authenticated for issue creation
+- Feature specs use template from `docs/templates/feature.md`
+- Feature specs saved to `docs/product/planning/features/`
+- See PROJECT-STRUCTURE.md for full product documentation layout
