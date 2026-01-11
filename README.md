@@ -1,8 +1,8 @@
-# Claude Workflows
+# WDI Workflows
 
-Claude Code plugin providing compound-engineering workflows for feature development and smart commits.
+Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 1.0.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md)
+**Version:** 1.1.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -22,11 +22,21 @@ cd wdi-workflows
 
 ## Commands
 
+### Workflow Commands
+
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:feature` | Full feature workflow: research → plan → work → review → compound |
-| `/wdi-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
+| `/wdi-workflows:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
+| `/wdi-workflows:commit` | Smart commit with tests, branch validation, simplicity review, and changelog |
 | `/wdi-workflows:setup` | Set up and verify plugin dependencies |
+
+### Standards Commands
+
+| Command | Description |
+|---------|-------------|
+| `/wdi-workflows:new-repo` | Create a new repository following WDI naming and structure standards |
+| `/wdi-workflows:new-package` | Add a new package to a mono-repo following standards |
+| `/wdi-workflows:check-standards` | Validate current repository against WDI development standards |
 
 ## Requirements
 
@@ -133,6 +143,29 @@ Quick fixes:
 - **Commands not found** → Restart Claude Code after installation
 - **Simplicity review fails** → Use `--skip-review` or fix the issues
 
+## Development Standards
+
+This plugin enforces WDI development standards. Key conventions:
+
+| Standard | Document |
+|----------|----------|
+| Repository naming | [REPO-STANDARDS.md](docs/standards/REPO-STANDARDS.md) |
+| Project structure | [PROJECT-STRUCTURE.md](docs/standards/PROJECT-STRUCTURE.md) |
+| File naming | [FILE-NAMING.md](docs/standards/FILE-NAMING.md) |
+| Branch naming | [BRANCH-NAMING.md](docs/standards/BRANCH-NAMING.md) |
+| Commit messages | [COMMIT-STANDARDS.md](docs/standards/COMMIT-STANDARDS.md) |
+| Claude Code plugins | [CLAUDE-CODE-STANDARDS.md](docs/standards/CLAUDE-CODE-STANDARDS.md) |
+
+Quick reference: [knowledge/standards-summary.md](knowledge/standards-summary.md)
+
+### Key Conventions
+
+- **Repos:** No `wdi-` prefix (org name provides context)
+- **Commands:** Use `wdi-` prefix (`/wdi-workflow:*`) to avoid conflicts
+- **Mono-repos:** Cluster by domain (`marketing-ops`, `business-ops`)
+- **Plugins:** Standalone repos (`dev-plugins-*`)
+- **Branches:** `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/`
+
 ## Team Onboarding
 
 Add this to each project's README:
@@ -149,6 +182,7 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/insta
 Available commands:
 - `/wdi-workflows:feature` - Full feature workflow
 - `/wdi-workflows:commit` - Smart commit with review
+- `/wdi-workflows:check-standards` - Validate against WDI standards
 
 To update: `./install.sh update`
 ```

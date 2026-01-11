@@ -1,36 +1,67 @@
-# Claude Workflows Plugin
+# WDI Workflows Plugin
 
 ## Project Overview
 
-This is the source repository for the `wdi-workflows` Claude Code plugin. It provides compound-engineering workflows for feature development and smart commits.
+This is the source repository for the `wdi-workflows` Claude Code plugin. It provides:
+- Compound-engineering workflows for feature development
+- Smart commit workflows with quality gates
+- Development standards and project scaffolding
+- Repository and package creation commands
 
 ## Structure
 
 ```
 wdi-workflows/
-├── commands/           # Markdown-based command definitions
-│   ├── commit.md       # /wdi-workflows:commit workflow
-│   ├── feature.md      # /wdi-workflows:feature workflow
-│   └── setup.md        # /wdi-workflows:setup verification
-├── .claude-plugin/     # Plugin configuration
-│   ├── plugin.json     # Plugin metadata
-│   └── marketplace.json # Local marketplace config
-├── hooks/              # Claude Code hooks
-│   └── hooks.json      # SessionStart hook config
-├── scripts/            # Helper scripts
-│   └── check-deps.sh   # Dependency checker
-├── docs/               # Documentation
-│   └── changelog.md    # Project changelog
-└── install.sh          # Bootstrap installation script
+├── commands/               # Markdown-based command definitions
+│   ├── commit.md           # /wdi-workflows:commit workflow
+│   ├── feature.md          # /wdi-workflows:feature workflow
+│   ├── setup.md            # /wdi-workflows:setup verification
+│   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
+│   ├── new-package.md      # /wdi-workflows:new-package scaffolding
+│   └── check-standards.md  # /wdi-workflows:check-standards validation
+├── .claude-plugin/         # Plugin configuration
+│   ├── plugin.json         # Plugin metadata
+│   └── marketplace.json    # Local marketplace config
+├── hooks/                  # Claude Code hooks
+│   └── hooks.json          # SessionStart hook config
+├── scripts/                # Helper scripts
+│   └── check-deps.sh       # Dependency and standards checker
+├── docs/                   # Documentation
+│   ├── standards/          # Development standards
+│   │   ├── REPO-STANDARDS.md
+│   │   ├── PROJECT-STRUCTURE.md
+│   │   ├── FILE-NAMING.md
+│   │   ├── BRANCH-NAMING.md
+│   │   ├── COMMIT-STANDARDS.md
+│   │   └── CLAUDE-CODE-STANDARDS.md
+│   ├── architecture.md
+│   ├── troubleshooting.md
+│   └── changelog.md
+├── knowledge/              # Reference docs for commands
+│   ├── standards-summary.md
+│   └── decision-trees/
+│       ├── repo-type.md
+│       └── package-location.md
+└── install.sh              # Bootstrap installation script
 ```
 
 ## Commands
 
+### Workflow Commands
+
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
-| `/wdi-workflows:feature` | Full feature workflow (research → plan → work → review → compound) |
+| `/wdi-workflows:commit` | Smart commit with branch validation, tests, simplicity review, and changelog |
+| `/wdi-workflows:feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
 | `/wdi-workflows:setup` | Verify dependencies and installation status |
+
+### Standards Commands
+
+| Command | Description |
+|---------|-------------|
+| `/wdi-workflows:new-repo` | Create repository following WDI naming standards |
+| `/wdi-workflows:new-package` | Add package to mono-repo following standards |
+| `/wdi-workflows:check-standards` | Validate current repo against standards |
 
 ## Dependencies
 
@@ -39,10 +70,25 @@ This plugin requires the `compound-engineering` plugin for:
 - Review agents (code-simplicity-reviewer, security-sentinel, etc.)
 - Workflow skills (plan, work, review, compound)
 
+## Key Standards
+
+When working in WDI projects, follow these conventions:
+
+| Topic | Convention |
+|-------|------------|
+| Repo names | No `wdi-` prefix (org provides context) |
+| Command prefix | `/wdi-*` (prevents conflicts with 3rd-party) |
+| Mono-repos | `{cluster}-ops` (marketing-ops, business-ops) |
+| Plugins | `dev-plugins-{domain}` standalone repos |
+| Branches | `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/` |
+| Commits | `feat:`, `fix:`, `docs:`, `refactor:`, `chore:` |
+
+Full details in `docs/standards/` and quick reference in `knowledge/standards-summary.md`.
+
 ## How It Works
 
-Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:commit`, Claude Code:
-1. Finds `commands/commit.md` via `plugin.json` → `"commands": "./commands/"`
+Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:commit`:
+1. Claude Code finds `commands/commit.md` via `plugin.json`
 2. Loads the markdown as instructions
 3. Executes the workflow steps described in the markdown
 
@@ -61,16 +107,10 @@ The markdown files contain both documentation AND executable instructions for Cl
 | `.claude-plugin/plugin.json` | Plugin metadata, version, command registration |
 | `install.sh` | Bootstrap script for installing in other projects |
 | `commands/*.md` | Command definitions (these ARE the implementation) |
+| `docs/standards/*.md` | Development standards documents |
+| `knowledge/*.md` | Quick reference for commands |
 | `hooks/hooks.json` | SessionStart hook to check dependencies |
-| `scripts/check-deps.sh` | Verifies compound-engineering is installed |
-
-## Testing Changes
-
-After editing a command:
-1. Run the command in this repo to verify it works
-2. Check that the markdown is valid and instructions are clear
-3. Push to GitHub when ready for distribution
 
 ## Version
 
-Current version: 1.0.0 (see `.claude-plugin/plugin.json`)
+Current version: 1.1.0 (see `.claude-plugin/plugin.json`)

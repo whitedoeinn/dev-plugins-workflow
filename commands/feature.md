@@ -17,10 +17,65 @@ description: Full feature workflow with research, planning, implementation, and 
 ## Workflow Overview
 
 ```
-Research → Plan → Work → Review → Compound
+Pre-flight → Research → Plan → Work → Review → Compound
 ```
 
 Each phase pauses for approval unless `--yes` is passed.
+
+---
+
+## Pre-flight: Repository Context Check
+
+Before starting the feature workflow, validate the repository context.
+
+### Check 1: Verify Repository Type
+
+Detect repository type and confirm this is the right location:
+
+```bash
+# Detect type
+if [ -d "packages" ]; then
+  TYPE="mono-repo"
+elif [ -d ".claude-plugin" ]; then
+  TYPE="plugin"
+else
+  TYPE="standalone"
+fi
+```
+
+For mono-repos, ask:
+```
+This is a mono-repo. Which package does this feature belong in?
+1. packages/dashboard
+2. packages/api-ga4
+3. New package (will create)
+4. Repo-level (shared/, scripts/, etc.)
+
+Select [1-4]:
+```
+
+### Check 2: Confirm Correct Repository
+
+Read `knowledge/decision-trees/repo-type.md` to validate:
+
+```
+Repository: {repo-name}
+Type: {type}
+Feature: {feature-description}
+
+Is this the correct repository for this feature? (y)es, (n)o:
+```
+
+If no, suggest alternatives based on feature keywords.
+
+### Check 3: Quick Standards Check
+
+Run lightweight standards validation:
+- Branch not `main` (will create feature branch)
+- README.md exists
+- docs/changelog.md exists (or will be created)
+
+Skip with `--yes`.
 
 ---
 

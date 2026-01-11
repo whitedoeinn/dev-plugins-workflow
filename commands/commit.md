@@ -33,6 +33,23 @@ git status --short
 - Unstaged changes: Ask "(a)dd all, (s)elect files, (c)ontinue with staged, (q)uit"
 - Optional: "Review diffs? [y/n]" → show file picker
 
+### Step 1.5: Validate Branch Name
+
+Check branch follows naming standards (see `docs/standards/BRANCH-NAMING.md`):
+
+```bash
+BRANCH=$(git branch --show-current)
+```
+
+**Valid prefixes:** `feature/`, `fix/`, `hotfix/`, `docs/`, `refactor/`, `chore/`, `experiment/`
+
+**Validation:**
+- If on `main`: Skip validation
+- If branch has underscores: Warn "Branch uses underscores. Standard is hyphens."
+- If branch has unknown prefix: Warn "Unknown branch prefix. See BRANCH-NAMING.md"
+
+With `--yes`: Warnings don't block, just display.
+
 ### Step 2: Run Tests
 
 Skip if --skip-tests. Detect and run:

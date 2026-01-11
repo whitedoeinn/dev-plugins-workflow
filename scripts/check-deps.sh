@@ -21,3 +21,9 @@ if [ ${#MISSING[@]} -gt 0 ]; then
   echo "Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash"
   echo ""
 fi
+
+# Check for deprecated wdi- repo prefix (light warning)
+REPO_NAME=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
+if [[ "$REPO_NAME" == wdi-* ]]; then
+  echo "Note: Repo '$REPO_NAME' uses deprecated wdi- prefix. See docs/standards/REPO-STANDARDS.md"
+fi

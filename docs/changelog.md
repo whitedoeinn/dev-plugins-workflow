@@ -6,19 +6,40 @@ All notable changes documented here.
 
 ## 2026-01-11
 
+### Added - Standards Framework (v1.1.0)
+- **Development Standards** in `docs/standards/`:
+  - REPO-STANDARDS.md - Repository naming conventions
+  - PROJECT-STRUCTURE.md - Directory layout standards
+  - FILE-NAMING.md - File and directory naming
+  - BRANCH-NAMING.md - Git branch conventions
+  - COMMIT-STANDARDS.md - Commit message format
+  - CLAUDE-CODE-STANDARDS.md - Plugin/command naming (`wdi-*` prefix)
+- **New Commands**:
+  - `/wdi-workflows:new-repo` - Create repository following standards
+  - `/wdi-workflows:new-package` - Add package to mono-repo
+  - `/wdi-workflows:check-standards` - Validate against standards
+- **Knowledge Directory** with quick references:
+  - standards-summary.md - One-page quick reference
+  - decision-trees/repo-type.md - Mono vs standalone flowchart
+  - decision-trees/package-location.md - Package placement guide
+
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**
 - All commands now use `/wdi-workflows:` prefix
 - Updated all GitHub URLs and documentation
+- `/wdi-workflows:commit` now validates branch naming
+- `/wdi-workflows:feature` now includes pre-flight repository context check
+- SessionStart hook now warns about deprecated `wdi-` repo prefixes
 
-### Added
+### Added (Documentation)
 - CLAUDE.md with project overview and development guide
 - Architecture documentation (docs/architecture.md)
 - Troubleshooting guide (docs/troubleshooting.md)
 - Contributing guide (CONTRIBUTING.md)
 
 ### Updated
-- README.md with How It Works, Troubleshooting, and documentation links
+- README.md with standards section and new commands
+- CLAUDE.md with updated structure and key standards
 
 ---
 
