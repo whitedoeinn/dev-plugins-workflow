@@ -11,13 +11,13 @@
         ]
       }
     ],
-    "PreCommit": [
+    "PreToolUse": [
       {
-        "matcher": "",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-commit-standards.sh"
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-tool-standards-check.sh"
           }
         ]
       }

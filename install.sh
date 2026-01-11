@@ -18,6 +18,27 @@ if [ "$1" = "update" ]; then
   exit 0
 fi
 
+# Handle show-commands flag
+if [ "$1" = "--show-commands" ]; then
+  cat << 'EOF'
+## Available Commands
+
+### Workflow Commands
+- `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi-workflows:commit` - Smart commit with tests, simplicity review, and changelog
+- `/wdi-workflows:setup` - Set up and verify plugin dependencies
+
+### Standards Commands
+- `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
+- `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
+- `/wdi-workflows:check-standards` - Validate current repository against development standards
+- `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
+
+Copy the above to your CLAUDE.md file to update the available commands section.
+EOF
+  exit 0
+fi
+
 echo -e "${YELLOW}Setting up wdi-workflows and dependencies...${NC}"
 echo ""
 
@@ -105,6 +126,7 @@ EOF
   echo -e "${GREEN}Created CLAUDE.md${NC}"
 else
   echo -e "${GREEN}CLAUDE.md already exists${NC}"
+  echo -e "${YELLOW}Note: New commands may have been added. Run with --show-commands to see latest.${NC}"
 fi
 echo ""
 

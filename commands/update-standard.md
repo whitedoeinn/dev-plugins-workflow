@@ -102,11 +102,32 @@ If no standard specified and not `--list`:
 
 ### Step 2: Read Dependency Map
 
+**MUST USE** the helper script for reliable parsing:
+
 ```bash
-# Read knowledge/standards-dependency-map.md
-# Parse the section for the specified standard
-# Extract: Enforced by, Referenced by, Impact score
+# List all standards with impact scores
+./scripts/get-standard-deps.sh --list
+
+# Get dependencies for a specific standard
+./scripts/get-standard-deps.sh BRANCH-NAMING
 ```
+
+The script outputs structured data:
+```
+STANDARD: BRANCH-NAMING
+
+ENFORCED_BY:
+  commands/commit.md (branch validation step)
+  commands/check-standards.md (branch name check)
+
+REFERENCED_BY:
+  knowledge/standards-summary.md (branch naming quick reference)
+
+IMPACT_SCORE: 3
+COMPLEXITY: Simple
+```
+
+**Do not manually parse** the dependency map - always use the helper script.
 
 ### Step 3: Mode-Specific Behavior
 

@@ -2,7 +2,8 @@
 
 Quick reference for which files depend on each standard. Used by:
 - `/wdi-workflows:update-standard` command
-- `scripts/pre-commit-standards.sh` hook
+- `scripts/pre-tool-standards-check.sh` hook
+- `scripts/validate-dependency-map.sh` validation
 
 ---
 
@@ -12,6 +13,15 @@ Quick reference for which files depend on each standard. Used by:
 - **Referenced by**: Documentation that mentions this standard (may need text updates)
 - **Impact score**: Total number of files affected by changes to this standard
 
+### Meta Files (Reference ALL Standards)
+
+These files reference all standards by design and don't need updating for individual standard changes:
+- `commands/update-standard.md` - The update command itself
+- `docs/standards/STANDARDS-UPDATE-PROTOCOL.md` - Protocol documentation
+- `knowledge/standards-dependency-map.md` - This file
+- `README.md` - Standards index table (update only when adding/removing standards)
+- `CLAUDE.md` - Standards index table (update only when adding/removing standards)
+
 ---
 
 ## REPO-STANDARDS.md
@@ -19,13 +29,14 @@ Quick reference for which files depend on each standard. Used by:
 **Enforced by:**
 - commands/check-standards.md (repository name validation)
 - commands/new-repo.md (naming proposal logic)
+- scripts/check-deps.sh (deprecation warning for wdi- prefix)
 
 **Referenced by:**
-- README.md (standards section)
 - knowledge/standards-summary.md (repo naming quick reference)
 - docs/standards/PROJECT-STRUCTURE.md (links to naming)
+- docs/standards/FILE-NAMING.md (links to naming)
 
-**Impact score:** 5 files
+**Impact score:** 6 files
 
 ---
 
@@ -136,7 +147,7 @@ Quick reference for which files depend on each standard. Used by:
 |----------|--------------|------------|
 | PROJECT-STRUCTURE.md | 6 | High |
 | CLAUDE-CODE-STANDARDS.md | 6 | High |
-| REPO-STANDARDS.md | 5 | Moderate |
+| REPO-STANDARDS.md | 6 | High |
 | ISSUE-STANDARDS.md | 5 | Moderate |
 | BRANCH-NAMING.md | 3 | Simple |
 | COMMIT-STANDARDS.md | 3 | Simple |
