@@ -32,7 +32,7 @@ If dependencies are missing, run:
 /plugin install compound-engineering
 
 # Add wdi-workflows marketplace
-/plugin marketplace add https://github.com/whitedoeinn/wdi-workflows
+/plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows
 
 # Install wdi-workflows
 /plugin install wdi-workflows
@@ -41,7 +41,7 @@ If dependencies are missing, run:
 Or use the bootstrap script:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
 ```
 
 ## Updating Plugins

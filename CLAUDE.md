@@ -11,7 +11,7 @@ This is the source repository for the `wdi-workflows` Claude Code plugin. It pro
 ## Structure
 
 ```
-wdi-workflows/
+dev-plugins-workflows/
 ├── commands/               # Markdown-based command definitions
 │   ├── commit.md           # /wdi-workflows:commit workflow
 │   ├── feature.md          # /wdi-workflows:feature workflow

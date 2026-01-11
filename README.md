@@ -16,7 +16,7 @@ Or clone and run locally:
 
 ```bash
 git clone https://github.com/whitedoeinn/dev-plugins-workflows
-cd wdi-workflows
+cd dev-plugins-workflows
 ./install.sh
 ```
 

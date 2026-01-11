@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Question or Discussion
-    url: https://github.com/whitedoeinn/wdi-workflows/discussions
+    url: https://github.com/whitedoeinn/dev-plugins-workflows/discussions
     about: For questions or discussions, use GitHub Discussions instead of issues.

@@ -6,8 +6,8 @@
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
   },
-  "homepage": "https://github.com/whitedoeinn/wdi-workflows",
-  "repository": "https://github.com/whitedoeinn/wdi-workflows",
+  "homepage": "https://github.com/whitedoeinn/dev-plugins-workflows",
+  "repository": "https://github.com/whitedoeinn/dev-plugins-workflows",
   "license": "MIT",
   "keywords": ["workflow", "feature", "commit", "compound-engineering"],
   "commands": "./commands/",
