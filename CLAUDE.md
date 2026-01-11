@@ -2,16 +2,16 @@
 
 ## Project Overview
 
-This is the source repository for the `claude-workflows` Claude Code plugin. It provides compound-engineering workflows for feature development and smart commits.
+This is the source repository for the `wdi-workflows` Claude Code plugin. It provides compound-engineering workflows for feature development and smart commits.
 
 ## Structure
 
 ```
-claude-workflows/
+wdi-workflows/
 ├── commands/           # Markdown-based command definitions
-│   ├── commit.md       # /claude-workflows:commit workflow
-│   ├── feature.md      # /claude-workflows:feature workflow
-│   └── setup.md        # /claude-workflows:setup verification
+│   ├── commit.md       # /wdi-workflows:commit workflow
+│   ├── feature.md      # /wdi-workflows:feature workflow
+│   └── setup.md        # /wdi-workflows:setup verification
 ├── .claude-plugin/     # Plugin configuration
 │   ├── plugin.json     # Plugin metadata
 │   └── marketplace.json # Local marketplace config
@@ -28,9 +28,9 @@ claude-workflows/
 
 | Command | Description |
 |---------|-------------|
-| `/claude-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
-| `/claude-workflows:feature` | Full feature workflow (research → plan → work → review → compound) |
-| `/claude-workflows:setup` | Verify dependencies and installation status |
+| `/wdi-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
+| `/wdi-workflows:feature` | Full feature workflow (research → plan → work → review → compound) |
+| `/wdi-workflows:setup` | Verify dependencies and installation status |
 
 ## Dependencies
 
@@ -41,7 +41,7 @@ This plugin requires the `compound-engineering` plugin for:
 
 ## How It Works
 
-Claude Code plugins use markdown files as command definitions. When you run `/claude-workflows:commit`, Claude Code:
+Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:commit`, Claude Code:
 1. Finds `commands/commit.md` via `plugin.json` → `"commands": "./commands/"`
 2. Loads the markdown as instructions
 3. Executes the workflow steps described in the markdown

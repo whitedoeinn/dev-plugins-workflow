@@ -6,6 +6,11 @@ All notable changes documented here.
 
 ## 2026-01-11
 
+### Changed
+- **Renamed plugin from `claude-workflows` to `wdi-workflows`**
+- All commands now use `/wdi-workflows:` prefix
+- Updated all GitHub URLs and documentation
+
 ### Added
 - CLAUDE.md with project overview and development guide
 - Architecture documentation (docs/architecture.md)
@@ -32,9 +37,9 @@ All notable changes documented here.
 ## 2026-01-09
 
 ### Added
-- Initial `/claude-workflows:feature` workflow with 5-phase compound engineering
-- Initial `/claude-workflows:commit` workflow with tests, review, and changelog
-- `/claude-workflows:setup` command for dependency verification
+- Initial `/wdi-workflows:feature` workflow with 5-phase compound engineering
+- Initial `/wdi-workflows:commit` workflow with tests, review, and changelog
+- `/wdi-workflows:setup` command for dependency verification
 - Plugin structure with proper Claude Code plugin format
 - Skills array in plugin.json for compound-engineering integration
 

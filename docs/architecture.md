@@ -11,7 +11,7 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 │                     Claude Code CLI                         │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────┐    ┌─────────────────────────────┐ │
-│  │  claude-workflows   │───▶│   compound-engineering      │ │
+│  │  wdi-workflows   │───▶│   compound-engineering      │ │
 │  │                     │    │                             │ │
 │  │  :commit            │    │  Research Agents            │ │
 │  │  :feature           │    │  Review Agents              │ │
@@ -24,16 +24,16 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 
 | Type | Definition | Invocation | Example |
 |------|------------|------------|---------|
-| **Command** | Markdown file in `commands/` | `/claude-workflows:commit` | User-facing workflows |
+| **Command** | Markdown file in `commands/` | `/wdi-workflows:commit` | User-facing workflows |
 | **Skill** | Defined by plugins | `Task` tool with `subagent_type` | Internal building blocks |
 
 Commands are user-facing entry points. Skills are internal capabilities that commands can invoke.
 
-## Workflow: /claude-workflows:feature
+## Workflow: /wdi-workflows:feature
 
 ```
 ┌────────────────────────────┐
-│ /claude-workflows:feature  │
+│ /wdi-workflows:feature  │
 └─────────────┬──────────────┘
        │
        ▼
@@ -67,11 +67,11 @@ Commands are user-facing entry points. Skills are internal capabilities that com
 └──────────────┘
 ```
 
-## Workflow: /claude-workflows:commit
+## Workflow: /wdi-workflows:commit
 
 ```
 ┌────────────────────────────┐
-│  /claude-workflows:commit  │
+│  /wdi-workflows:commit  │
 └─────────────┬──────────────┘
        │
        ▼
@@ -120,9 +120,9 @@ Commands are user-facing entry points. Skills are internal capabilities that com
 └── marketplace.json    # Local marketplace config
 
 commands/
-├── commit.md           # /claude-workflows:commit definition
-├── feature.md          # /claude-workflows:feature definition
-└── setup.md            # /claude-workflows:setup definition
+├── commit.md           # /wdi-workflows:commit definition
+├── feature.md          # /wdi-workflows:feature definition
+└── setup.md            # /wdi-workflows:setup definition
 
 hooks/
 └── hooks.json          # SessionStart triggers check-deps.sh

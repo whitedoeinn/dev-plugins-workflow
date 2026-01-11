@@ -1,12 +1,12 @@
 {
-  "name": "claude-workflows-local",
+  "name": "wdi-workflows-local",
   "owner": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
   },
   "plugins": [
     {
-      "name": "claude-workflows",
+      "name": "wdi-workflows",
       "description": "Compound engineering workflows for feature development and smart commits",
       "version": "1.0.0",
       "source": "./"

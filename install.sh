@@ -13,12 +13,12 @@ SCOPE="${1:-project}"
 if [ "$1" = "update" ]; then
   echo -e "${YELLOW}Updating plugins...${NC}"
   claude plugin update compound-engineering --scope project
-  claude plugin update claude-workflows --scope project
+  claude plugin update wdi-workflows --scope project
   echo -e "${GREEN}Update complete!${NC}"
   exit 0
 fi
 
-echo -e "${YELLOW}Setting up claude-workflows and dependencies...${NC}"
+echo -e "${YELLOW}Setting up wdi-workflows and dependencies...${NC}"
 echo ""
 
 # Detect platform
@@ -60,21 +60,21 @@ else
 fi
 echo ""
 
-# Step 3: Add claude-workflows marketplace
-echo -e "${YELLOW}Step 3: Adding claude-workflows marketplace...${NC}"
-if claude plugin marketplace add https://github.com/whitedoeinn/claude-workflows 2>/dev/null; then
+# Step 3: Add wdi-workflows marketplace
+echo -e "${YELLOW}Step 3: Adding wdi-workflows marketplace...${NC}"
+if claude plugin marketplace add https://github.com/whitedoeinn/wdi-workflows 2>/dev/null; then
   echo -e "${GREEN}Marketplace added${NC}"
 else
   echo -e "${YELLOW}Marketplace already exists (continuing)${NC}"
 fi
 echo ""
 
-# Step 4: Install claude-workflows
-echo -e "${YELLOW}Step 4: Installing claude-workflows...${NC}"
-if claude plugin install claude-workflows --scope "$SCOPE"; then
-  echo -e "${GREEN}claude-workflows installed${NC}"
+# Step 4: Install wdi-workflows
+echo -e "${YELLOW}Step 4: Installing wdi-workflows...${NC}"
+if claude plugin install wdi-workflows --scope "$SCOPE"; then
+  echo -e "${GREEN}wdi-workflows installed${NC}"
 else
-  echo -e "${YELLOW}claude-workflows may already be installed${NC}"
+  echo -e "${YELLOW}wdi-workflows may already be installed${NC}"
 fi
 echo ""
 
@@ -86,12 +86,12 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ## Available Commands
 
-- `/claude-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
-- `/claude-workflows:commit` - Smart commit with tests, simplicity review, and changelog
+- `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi-workflows:commit` - Smart commit with tests, simplicity review, and changelog
 
 ## Setup
 
-These commands require the `claude-workflows` and `compound-engineering` plugins.
+These commands require the `wdi-workflows` and `compound-engineering` plugins.
 To reinstall or update, run: `./install.sh` or `./install.sh update`
 EOF
   echo -e "${GREEN}Created CLAUDE.md${NC}"
@@ -104,7 +104,7 @@ echo ""
 echo -e "${GREEN}Setup complete!${NC}"
 echo ""
 echo "Available commands:"
-echo "  /claude-workflows:feature - Full feature workflow"
-echo "  /claude-workflows:commit  - Smart commit with review"
+echo "  /wdi-workflows:feature - Full feature workflow"
+echo "  /wdi-workflows:commit  - Smart commit with review"
 echo ""
 echo "To update plugins later: ./install.sh update"

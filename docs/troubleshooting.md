@@ -9,7 +9,7 @@
 **Solution:**
 ```bash
 cd your-project
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
 ```
 
 Then start a new Claude Code session.
@@ -47,10 +47,10 @@ claude plugin install compound-engineering --scope project
 **Solution:** Check installation and reinstall for project:
 ```bash
 # View current installations
-cat ~/.claude/plugins/installed_plugins.json | grep -A5 "claude-workflows"
+cat ~/.claude/plugins/installed_plugins.json | grep -A5 "wdi-workflows"
 
 # Reinstall for project scope
-claude plugin install claude-workflows --scope project
+claude plugin install wdi-workflows --scope project
 ```
 
 ---
@@ -72,7 +72,7 @@ bash install.sh
 
 ---
 
-### /claude-workflows:commit fails at simplicity review
+### /wdi-workflows:commit fails at simplicity review
 
 **Cause:** The `compound-engineering` plugin's review agent found issues.
 
@@ -80,12 +80,12 @@ bash install.sh
 - Review the issues shown
 - Fix them or use `--skip-review` to bypass:
   ```
-  /claude-workflows:commit --skip-review
+  /wdi-workflows:commit --skip-review
   ```
 
 ---
 
-### /claude-workflows:commit fails at tests
+### /wdi-workflows:commit fails at tests
 
 **Cause:** Tests are failing in your project.
 
@@ -93,12 +93,12 @@ bash install.sh
 - Fix the failing tests, or
 - Use `--skip-tests` to bypass:
   ```
-  /claude-workflows:commit --skip-tests
+  /wdi-workflows:commit --skip-tests
   ```
 
 ---
 
-### /claude-workflows:feature can't create GitHub Issue
+### /wdi-workflows:feature can't create GitHub Issue
 
 **Cause:** The `gh` CLI is not authenticated.
 
@@ -119,11 +119,11 @@ Follow the prompts to authenticate with GitHub.
 1. Exit Claude Code
 2. Clear the plugin cache:
    ```bash
-   rm -rf ~/.claude/plugins/cache/claude-workflows*
+   rm -rf ~/.claude/plugins/cache/wdi-workflows*
    ```
 3. Reinstall:
    ```bash
-   claude plugin install claude-workflows --scope project
+   claude plugin install wdi-workflows --scope project
    ```
 4. Restart Claude Code
 
@@ -146,7 +146,7 @@ cat /path/to/project/.claude/settings.json
 ### View plugin installation paths
 
 ```bash
-cat ~/.claude/plugins/installed_plugins.json | jq '.plugins["claude-workflows@claude-workflows-local"]'
+cat ~/.claude/plugins/installed_plugins.json | jq '.plugins["wdi-workflows@wdi-workflows-local"]'
 ```
 
 ### View known marketplaces
@@ -160,7 +160,7 @@ cat ~/.claude/plugins/known_marketplaces.json
 ## Getting Help
 
 If you're still having issues:
-1. Check the [GitHub Issues](https://github.com/whitedoeinn/claude-workflows/issues)
+1. Check the [GitHub Issues](https://github.com/whitedoeinn/wdi-workflows/issues)
 2. Open a new issue with:
    - Your OS and Claude Code version
    - The exact error message

@@ -96,7 +96,7 @@ Expected output...
 Changes to command files take effect immediately in this repo. To test:
 
 1. Make your edits to `commands/*.md`
-2. Run the command: `/claude-workflows:commit`, `/claude-workflows:feature`, etc.
+2. Run the command: `/wdi-workflows:commit`, `/wdi-workflows:feature`, etc.
 3. Verify the workflow works as expected
 
 ## Pushing Changes
@@ -115,7 +115,7 @@ Changes to command files take effect immediately in this repo. To test:
    ## YYYY-MM-DD
 
    - Added: New /my-command workflow
-   - Changed: Updated /claude-workflows:commit to handle edge case
+   - Changed: Updated /wdi-workflows:commit to handle edge case
    ```
 
 3. **Commit and push**
@@ -156,4 +156,4 @@ See [docs/architecture.md](docs/architecture.md) for how the plugin system works
 
 ## Questions?
 
-Open an issue on [GitHub](https://github.com/whitedoeinn/claude-workflows/issues).
+Open an issue on [GitHub](https://github.com/whitedoeinn/wdi-workflows/issues).

@@ -9,14 +9,14 @@ Claude Code plugin providing compound-engineering workflows for feature developm
 Run in any project:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
 ```
 
 Or clone and run locally:
 
 ```bash
-git clone https://github.com/whitedoeinn/claude-workflows
-cd claude-workflows
+git clone https://github.com/whitedoeinn/wdi-workflows
+cd wdi-workflows
 ./install.sh
 ```
 
@@ -24,9 +24,9 @@ cd claude-workflows
 
 | Command | Description |
 |---------|-------------|
-| `/claude-workflows:feature` | Full feature workflow: research → plan → work → review → compound |
-| `/claude-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
-| `/claude-workflows:setup` | Set up and verify plugin dependencies |
+| `/wdi-workflows:feature` | Full feature workflow: research → plan → work → review → compound |
+| `/wdi-workflows:commit` | Smart commit with tests, simplicity review, and changelog |
+| `/wdi-workflows:setup` | Set up and verify plugin dependencies |
 
 ## Requirements
 
@@ -39,10 +39,10 @@ cd claude-workflows
 ### Option 1: Bootstrap Script (Recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
 ```
 
-This installs both `compound-engineering` and `claude-workflows` plugins.
+This installs both `compound-engineering` and `wdi-workflows` plugins.
 
 ### Option 2: Manual Installation
 
@@ -53,11 +53,11 @@ This installs both `compound-engineering` and `claude-workflows` plugins.
 # Install compound-engineering
 /plugin install compound-engineering
 
-# Add claude-workflows marketplace
-/plugin marketplace add https://github.com/whitedoeinn/claude-workflows
+# Add wdi-workflows marketplace
+/plugin marketplace add https://github.com/whitedoeinn/wdi-workflows
 
-# Install claude-workflows
-/plugin install claude-workflows
+# Install wdi-workflows
+/plugin install wdi-workflows
 ```
 
 ## Updating
@@ -72,12 +72,12 @@ Or manually:
 
 ```bash
 claude plugin update compound-engineering --scope project
-claude plugin update claude-workflows --scope project
+claude plugin update wdi-workflows --scope project
 ```
 
 ## Workflow Details
 
-### /claude-workflows:feature
+### /wdi-workflows:feature
 
 Orchestrates the complete feature development cycle:
 
@@ -92,7 +92,7 @@ Flags:
 - `--plan-only` - Stop after planning
 - `--skip-research` - Skip research agents
 
-### /claude-workflows:commit
+### /wdi-workflows:commit
 
 Smart commit with quality gates:
 
@@ -115,7 +115,7 @@ Works on macOS, Linux, and Windows (WSL). The install script automatically detec
 
 ## How It Works
 
-This plugin uses Claude Code's markdown-based command system. Commands are defined as markdown files in `commands/` - the markdown IS the implementation. When you run `/claude-workflows:commit`, Claude Code reads `commands/commit.md` and follows the workflow steps.
+This plugin uses Claude Code's markdown-based command system. Commands are defined as markdown files in `commands/` - the markdown IS the implementation. When you run `/wdi-workflows:commit`, Claude Code reads `commands/commit.md` and follows the workflow steps.
 
 The plugin builds on top of `compound-engineering` which provides:
 - **Research agents** for codebase analysis
@@ -143,12 +143,12 @@ Add this to each project's README:
 This project uses custom Claude Code workflows. First-time setup:
 
 \`\`\`bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
 \`\`\`
 
 Available commands:
-- `/claude-workflows:feature` - Full feature workflow
-- `/claude-workflows:commit` - Smart commit with review
+- `/wdi-workflows:feature` - Full feature workflow
+- `/wdi-workflows:commit` - Smart commit with review
 
 To update: `./install.sh update`
 ```

@@ -1,13 +1,13 @@
 {
-  "name": "claude-workflows",
+  "name": "wdi-workflows",
   "description": "Compound engineering workflows for feature development and smart commits",
   "version": "1.0.0",
   "author": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
   },
-  "homepage": "https://github.com/whitedoeinn/claude-workflows",
-  "repository": "https://github.com/whitedoeinn/claude-workflows",
+  "homepage": "https://github.com/whitedoeinn/wdi-workflows",
+  "repository": "https://github.com/whitedoeinn/wdi-workflows",
   "license": "MIT",
   "keywords": ["workflow", "feature", "commit", "compound-engineering"],
   "commands": "./commands/",

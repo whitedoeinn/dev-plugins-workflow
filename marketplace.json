@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "claude-workflows",
+      "name": "wdi-workflows",
       "description": "Compound engineering workflows for feature development and smart commits",
       "source": "./"
     }

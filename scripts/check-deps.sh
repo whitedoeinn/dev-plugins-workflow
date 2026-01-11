@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Dependency checker for claude-workflows plugin
+# Dependency checker for wdi-workflows plugin
 # Runs on SessionStart to verify required plugins are installed
 
 # Required plugins (add more as needed)
@@ -17,7 +17,7 @@ done
 if [ ${#MISSING[@]} -gt 0 ]; then
   echo ""
   echo "Missing required plugins: ${MISSING[*]}"
-  echo "Run: ./install.sh (from claude-workflows directory)"
-  echo "Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/claude-workflows/main/install.sh | bash"
+  echo "Run: ./install.sh (from wdi-workflows directory)"
+  echo "Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash"
   echo ""
 fi
