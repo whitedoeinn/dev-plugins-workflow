@@ -23,6 +23,13 @@ All notable changes documented here.
   - decision-trees/repo-type.md - Mono vs standalone flowchart
   - decision-trees/package-location.md - Package placement guide
 
+### Enhanced
+- `/wdi-workflows:new-repo` now uses interview-driven workflow with `AskUserQuestion`
+  - Adaptive questions based on repo type (plugin, mono-repo, standalone, experiment)
+  - Proposes names following standards, allows modification with validation
+  - Captures exception reasons for non-standard names
+  - Auto-creates GitHub Issues for potential standard changes
+
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**
 - All commands now use `/wdi-workflows:` prefix
