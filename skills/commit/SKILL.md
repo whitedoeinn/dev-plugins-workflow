@@ -1,29 +1,38 @@
 ---
-description: Smart commit with tests, context detection, and changelog (project)
+name: commit
+description: This skill should be used when committing code changes to git. It applies when the user asks to commit, push changes, save work, or mentions finishing work that needs to be committed. Triggers on phrases like "commit these changes", "commit this", "push this", "let's commit", "ready to commit", "save these changes", or any request involving git commit operations. Provides quality-gated commits with tests, simplicity review, and automatic changelog updates.
 ---
 
-# /wdi-workflows:commit - Smart Commit Workflow
+<objective>
+Smart commit workflow that enforces quality gates before every commit:
+- Runs tests automatically
+- Performs simplicity review on large changes
+- Generates meaningful commit messages
+- Updates changelog automatically
+- Handles branch merging to main
 
-## Flags
+This ensures consistent code quality and documentation across all commits.
+</objective>
 
+<quick_start>
+When the user wants to commit:
+
+1. Run `git status --short` to check for changes
+2. If no changes: Tell user "Nothing to commit"
+3. If changes exist: Proceed with the full workflow below
+</quick_start>
+
+<flags>
 | Flag | Description |
 |------|-------------|
-| `--yes` | Skip prompts, auto-accept defaults |
+| `--yes` | Skip prompts, auto-accept defaults. Aborts on test/review failures. |
 | `--summary` | Generate fun changelog summary after commit |
 | `--skip-review` | Skip simplicity review |
 | `--skip-tests` | Skip tests |
+</flags>
 
-## Fast Path: --yes
-
-Stages all → runs tests → runs simplicity review → auto-generates message → merges feature branches to main → updates changelog → pushes.
-
-Aborts if: tests fail, simplicity issues found, merge conflicts.
-
----
-
-## Workflow
-
-### Step 1: Check Status
+<workflow>
+## Step 1: Check Status
 
 ```bash
 git status --short
@@ -33,7 +42,7 @@ git status --short
 - Unstaged changes: Ask "(a)dd all, (s)elect files, (c)ontinue with staged, (q)uit"
 - Optional: "Review diffs? [y/n]" → show file picker
 
-### Step 1.5: Validate Branch Name
+## Step 2: Validate Branch Name
 
 Check branch follows naming standards (see `docs/standards/BRANCH-NAMING.md`):
 
@@ -50,7 +59,7 @@ BRANCH=$(git branch --show-current)
 
 With `--yes`: Warnings don't block, just display.
 
-### Step 2: Run Tests
+## Step 3: Run Tests
 
 Skip if --skip-tests. Detect and run:
 
@@ -61,7 +70,7 @@ Skip if --skip-tests. Detect and run:
 
 Fail = ABORT
 
-### Step 3: Simplicity Review
+## Step 4: Simplicity Review
 
 Skip if --skip-review or <50 lines changed.
 
@@ -72,11 +81,11 @@ Catches: unnecessary abstraction, scope creep, premature optimization, YAGNI.
 - Issues found: Ask "Fix before committing? [y/n]"
 - With --yes: Issues = ABORT
 
-### Step 4: Generate Message
+## Step 5: Generate Message
 
 Analyze diff. Focus on "why" not "what". Keep concise.
 
-### Step 5: Detect Context
+## Step 6: Detect Context
 
 | Branch Pattern     | Prefix                                    |
 |--------------------|-------------------------------------------|
@@ -84,7 +93,7 @@ Analyze diff. Focus on "why" not "what". Keep concise.
 | fix/NNN-*          | Fixes #NNN:                               |
 | main               | Ask: (f)eature, (i)ssue, (h)otfix, (n)one |
 
-### Step 6: Confirm Message
+## Step 7: Confirm Message
 
 ```
 Proposed commit message:
@@ -93,20 +102,20 @@ FEAT-012: Add campaign filter dropdown
 
 Implement status and budget filters.
 
-🤖 Generated with Claude Code
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ───────────────────────────────────────
 
 (y)es, (e)dit, (a)bort:
 ```
 
-### Step 7: Branch Handling
+## Step 8: Branch Handling
 
 On feature/fix branch, ask: "Final commit? (merge to main) [y/n]"
 
 - Yes: Commit → checkout main → pull → merge --no-ff → continue
 - No: Commit → push → done
 
-### Step 8: Update Changelog
+## Step 9: Update Changelog
 
 File: docs/changelog.md
 
@@ -134,7 +143,7 @@ Rules:
 - If not, create new section at top
 - Keep entries concise
 
-### Step 9: Push
+## Step 10: Push
 
 ```bash
 git add docs/changelog.md
@@ -148,7 +157,7 @@ git branch -d <branch>
 git push origin --delete <branch>
 ```
 
-### Step 10: Summary (--summary flag)
+## Step 11: Summary (--summary flag only)
 
 Invoke the changelog skill:
 
@@ -156,62 +165,23 @@ Invoke the changelog skill:
 /compound-engineering:changelog
 ```
 
-Generates a fun summary with:
-- 🌟 New Features
-- 🐛 Bug Fixes
-- 🛠️ Improvements
-- 🙌 Shoutouts (you deserve it!)
-- 🎉 Fun Fact
+Generates a fun summary with emojis and shoutouts.
+</workflow>
 
----
+<success_criteria>
+A successful commit workflow:
+- Tests pass (or skipped with --skip-tests)
+- Simplicity review passes (or skipped)
+- Commit message is meaningful and approved
+- Changelog is updated with today's entry
+- Changes are pushed to remote
+- Branch is cleaned up if merged to main
+</success_criteria>
 
-## Examples
-
-### Quick commit
-
-```
-/wdi-workflows:commit --yes
-```
-
-```
-→ Staging all changes...
-→ Running tests... ✓ passed
-→ Simplicity review... ✓ clean
-✓ Committed: Add export button
-✓ Changelog updated
-✓ Pushed to main
-```
-
-### With celebration
-
-```
-/wdi-workflows:commit --yes --summary
-```
-
-```
-✓ Committed: Complete authentication system
-✓ Changelog updated
-✓ Pushed to main
-
-# 🚀 Daily Change Log: 2026-01-09
-
-## 🌟 New Features
-- **Authentication System** - JWT tokens, refresh flow, logout
-
-## 🙌 Shoutouts
-You absolute legend. Shipped auth in one session. 🏆
-
-## 🎉 Fun Fact
-That's 847 lines of secure, tested code. Treat yourself!
-```
-
----
-
-## Notes
-
-- Always adds 🤖 Generated with Claude Code to commits
+<notes>
+- Always adds `Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>` to commits
 - Never force push
 - Aborts on merge conflicts
 - Creates docs/changelog.md if missing
-
-**Requires:** compound-engineering plugin for `--summary` and simplicity review.
+- **Requires:** compound-engineering plugin for simplicity review and --summary
+</notes>

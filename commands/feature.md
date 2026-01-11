@@ -445,13 +445,9 @@ gh pr create --title "{type}: {feature-name}" --body "{plan-summary}"
 
 ### Update Changelog
 
-Invoke `/wdi-workflows:commit` workflow:
+Use the commit skill (say "commit these changes --yes"):
 
-```
-/wdi-workflows:commit --yes
-```
-
-Updates `docs/changelog.md` with the feature entry.
+The commit skill automatically updates `docs/changelog.md` with the feature entry.
 
 ### Invoke Compound Workflow
 

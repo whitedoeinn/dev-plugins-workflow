@@ -121,7 +121,7 @@ For each dependent file:
 git diff --cached
 
 # Test affected commands if applicable
-/wdi-workflows:commit --skip-tests  # dry run
+# Use commit skill with --skip-tests flag
 ```
 
 ### Step 6: Update Changelog

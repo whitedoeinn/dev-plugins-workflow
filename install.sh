@@ -25,8 +25,10 @@ if [ "$1" = "--show-commands" ]; then
 
 ### Workflow Commands
 - `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi-workflows:commit` - Smart commit with tests, simplicity review, and changelog
 - `/wdi-workflows:setup` - Set up and verify plugin dependencies
+
+### Skills (Auto-Invoked)
+- `commit` - Smart commit with tests, simplicity review, and changelog (say "commit these changes")
 
 ### Standards Commands
 - `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
@@ -110,8 +112,10 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ### Workflow Commands
 - `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi-workflows:commit` - Smart commit with tests, simplicity review, and changelog
 - `/wdi-workflows:setup` - Set up and verify plugin dependencies
+
+### Skills (Auto-Invoked)
+- `commit` - Smart commit with tests, simplicity review, and changelog (say "commit these changes")
 
 ### Standards Commands
 - `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
@@ -138,7 +142,8 @@ echo ""
 echo "Available commands:"
 echo "  Workflow:"
 echo "    /wdi-workflows:feature         - Full feature workflow"
-echo "    /wdi-workflows:commit          - Smart commit with review"
+echo "  Skills (auto-invoked):"
+echo "    commit                         - Say 'commit these changes' to trigger"
 echo "  Standards:"
 echo "    /wdi-workflows:new-repo        - Create new repository"
 echo "    /wdi-workflows:new-package     - Add package to mono-repo"

@@ -459,8 +459,7 @@ Next steps:
 3. Add tests in tests/
 4. Update README with usage examples
 
-Commit when ready:
-/wdi-workflows:commit
+Commit when ready (say "commit these changes")
 ```
 
 ---

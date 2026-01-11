@@ -96,7 +96,7 @@ Expected output...
 Changes to command files take effect immediately in this repo. To test:
 
 1. Make your edits to `commands/*.md`
-2. Run the command: `/wdi-workflows:commit`, `/wdi-workflows:feature`, etc.
+2. Run the command: `/wdi-workflows:feature`, etc. (or say "commit these changes" for commits)
 3. Verify the workflow works as expected
 
 ## Pushing Changes
@@ -115,7 +115,7 @@ Changes to command files take effect immediately in this repo. To test:
    ## YYYY-MM-DD
 
    - Added: New /my-command workflow
-   - Changed: Updated /wdi-workflows:commit to handle edge case
+   - Changed: Updated commit skill to handle edge case
    ```
 
 3. **Commit and push**

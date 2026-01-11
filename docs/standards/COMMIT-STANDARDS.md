@@ -119,7 +119,7 @@ When using Claude Code, commits automatically include:
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-The `/wdi-workflows:commit` command handles this automatically.
+The `commit` skill handles this automatically (say "commit these changes").
 
 ---
 

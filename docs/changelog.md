@@ -6,6 +6,13 @@ All notable changes documented here.
 
 ## 2026-01-11
 
+### Breaking Change - Commit Workflow Converted to Skill
+- **REMOVED:** `/wdi-workflows:commit` command no longer exists
+- **ADDED:** `commit` skill that auto-invokes when you say "commit these changes"
+- The skill provides the same functionality (tests, simplicity review, changelog)
+- Trigger phrases: "commit these changes", "commit this", "push this", "let's commit"
+- New file: `skills/commit/SKILL.md`
+
 ### Added - Standards Update Protocol (v1.2.0)
 - **Standards Update Protocol** for comprehensive updates when changing standards:
   - `/wdi-workflows:update-standard` - Impact analysis and guided update workflow

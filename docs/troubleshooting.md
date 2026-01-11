@@ -72,28 +72,28 @@ bash install.sh
 
 ---
 
-### /wdi-workflows:commit fails at simplicity review
+### commit skill fails at simplicity review
 
 **Cause:** The `compound-engineering` plugin's review agent found issues.
 
 **Solution:**
 - Review the issues shown
-- Fix them or use `--skip-review` to bypass:
+- Fix them or use `--skip-review` flag when committing:
   ```
-  /wdi-workflows:commit --skip-review
+  commit these changes --skip-review
   ```
 
 ---
 
-### /wdi-workflows:commit fails at tests
+### commit skill fails at tests
 
 **Cause:** Tests are failing in your project.
 
 **Solution:**
 - Fix the failing tests, or
-- Use `--skip-tests` to bypass:
+- Use `--skip-tests` flag when committing:
   ```
-  /wdi-workflows:commit --skip-tests
+  commit these changes --skip-tests
   ```
 
 ---

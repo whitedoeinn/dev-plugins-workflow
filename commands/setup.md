@@ -13,7 +13,8 @@ This command helps set up the wdi-workflows plugin and its dependencies.
    - If missing, provide installation instructions
 
 2. **Verify Installation**
-   - Check that `/wdi-workflows:feature` and `/wdi-workflows:commit` commands are available
+   - Check that `/wdi-workflows:feature` command is available
+   - Check that `commit` skill is available (say "commit these changes" to trigger)
    - List available commands from this plugin
 
 3. **Initialize Project**

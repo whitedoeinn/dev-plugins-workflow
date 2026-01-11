@@ -13,7 +13,6 @@ This is the source repository for the `wdi-workflows` Claude Code plugin. It pro
 ```
 dev-plugins-workflows/
 ├── commands/               # Markdown-based command definitions
-│   ├── commit.md           # /wdi-workflows:commit workflow
 │   ├── feature.md          # /wdi-workflows:feature workflow
 │   ├── setup.md            # /wdi-workflows:setup verification
 │   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
@@ -47,6 +46,9 @@ dev-plugins-workflows/
 │   └── decision-trees/
 │       ├── repo-type.md
 │       └── package-location.md
+├── skills/                 # Auto-invoked skills
+│   └── commit/             # Smart commit skill (say "commit these changes")
+│       └── SKILL.md
 └── install.sh              # Bootstrap installation script
 ```
 
@@ -56,9 +58,14 @@ dev-plugins-workflows/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:commit` | Smart commit with branch validation, tests, simplicity review, and changelog |
 | `/wdi-workflows:feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
 | `/wdi-workflows:setup` | Verify dependencies and installation status |
+
+### Skills (Auto-Invoked)
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
 
 ### Standards Commands
 
@@ -94,10 +101,12 @@ Full details in `docs/standards/` and quick reference in `knowledge/standards-su
 
 ## How It Works
 
-Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:commit`:
-1. Claude Code finds `commands/commit.md` via `plugin.json`
+Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:feature`:
+1. Claude Code finds `commands/feature.md` via `plugin.json`
 2. Loads the markdown as instructions
 3. Executes the workflow steps described in the markdown
+
+Skills work similarly but auto-invoke based on context. When you say "commit these changes", Claude loads `skills/commit/SKILL.md` and follows the workflow.
 
 The markdown files contain both documentation AND executable instructions for Claude.
 

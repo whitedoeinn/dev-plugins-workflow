@@ -27,8 +27,13 @@ cd dev-plugins-workflows
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
-| `/wdi-workflows:commit` | Smart commit with tests, branch validation, simplicity review, and changelog |
 | `/wdi-workflows:setup` | Set up and verify plugin dependencies |
+
+### Skills (Auto-Invoked)
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
 
 ### Standards Commands
 
@@ -104,9 +109,9 @@ Flags:
 - `--plan-only` - Stop after planning
 - `--skip-research` - Skip research agents
 
-### /wdi-workflows:commit
+### commit skill
 
-Smart commit with quality gates:
+Smart commit with quality gates. **Auto-invoked** when you say "commit these changes" or similar.
 
 1. Stage changes (interactive or all)
 2. Run tests (pytest, npm test based on file types)
@@ -115,7 +120,7 @@ Smart commit with quality gates:
 5. Update changelog (`docs/changelog.md`)
 6. Push
 
-Flags:
+Flags (pass to Claude when requesting commit):
 - `--yes` - Auto-accept defaults
 - `--summary` - Generate fun changelog summary
 - `--skip-review` - Skip simplicity review
@@ -127,7 +132,7 @@ Works on macOS, Linux, and Windows (WSL). The install script automatically detec
 
 ## How It Works
 
-This plugin uses Claude Code's markdown-based command system. Commands are defined as markdown files in `commands/` - the markdown IS the implementation. When you run `/wdi-workflows:commit`, Claude Code reads `commands/commit.md` and follows the workflow steps.
+This plugin uses Claude Code's markdown-based command system. Commands are defined as markdown files in `commands/` - the markdown IS the implementation. Skills in `skills/` auto-invoke based on context (e.g., say "commit these changes" to trigger the commit skill).
 
 The plugin builds on top of `compound-engineering` which provides:
 - **Research agents** for codebase analysis
@@ -183,8 +188,10 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/ma
 
 Available commands:
 - `/wdi-workflows:feature` - Full feature workflow
-- `/wdi-workflows:commit` - Smart commit with review
 - `/wdi-workflows:check-standards` - Validate against WDI standards
+
+Skills (auto-invoked):
+- `commit` - Say "commit these changes" for smart commit with review
 
 To update: `./install.sh update`
 ```

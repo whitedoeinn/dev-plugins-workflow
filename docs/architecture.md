@@ -13,9 +13,9 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 │  ┌─────────────────────┐    ┌─────────────────────────────┐ │
 │  │  wdi-workflows   │───▶│   compound-engineering      │ │
 │  │                     │    │                             │ │
-│  │  :commit            │    │  Research Agents            │ │
-│  │  :feature           │    │  Review Agents              │ │
-│  │  :setup             │    │  Workflow Skills            │ │
+│  │  :feature           │    │  Research Agents            │ │
+│  │  :setup             │    │  Review Agents              │ │
+│  │  commit (skill)     │    │  Workflow Skills            │ │
 │  └─────────────────────┘    └─────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -24,10 +24,10 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 
 | Type | Definition | Invocation | Example |
 |------|------------|------------|---------|
-| **Command** | Markdown file in `commands/` | `/wdi-workflows:commit` | User-facing workflows |
-| **Skill** | Defined by plugins | `Task` tool with `subagent_type` | Internal building blocks |
+| **Command** | Markdown file in `commands/` | `/wdi-workflows:feature` | User-facing workflows |
+| **Skill** | SKILL.md in `skills/` | Auto-detected by context | `commit` (say "commit these changes") |
 
-Commands are user-facing entry points. Skills are internal capabilities that commands can invoke.
+Commands are user-facing entry points invoked explicitly. Skills auto-invoke based on conversation context.
 
 ## Workflow: /wdi-workflows:feature
 
@@ -67,11 +67,12 @@ Commands are user-facing entry points. Skills are internal capabilities that com
 └──────────────┘
 ```
 
-## Workflow: /wdi-workflows:commit
+## Skill: commit (auto-invoked)
 
 ```
 ┌────────────────────────────┐
-│  /wdi-workflows:commit  │
+│  commit skill              │
+│  (say "commit these")      │
 └─────────────┬──────────────┘
        │
        ▼
@@ -120,9 +121,12 @@ Commands are user-facing entry points. Skills are internal capabilities that com
 └── marketplace.json    # Local marketplace config
 
 commands/
-├── commit.md           # /wdi-workflows:commit definition
 ├── feature.md          # /wdi-workflows:feature definition
 └── setup.md            # /wdi-workflows:setup definition
+
+skills/
+└── commit/
+    └── SKILL.md        # commit skill (auto-invoked)
 
 hooks/
 └── hooks.json          # SessionStart triggers check-deps.sh
