@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 1.1.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 1.2.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -37,6 +37,7 @@ cd wdi-workflows
 | `/wdi-workflows:new-repo` | Create a new repository following WDI naming and structure standards |
 | `/wdi-workflows:new-package` | Add a new package to a mono-repo following standards |
 | `/wdi-workflows:check-standards` | Validate current repository against WDI development standards |
+| `/wdi-workflows:update-standard` | Impact analysis and guided updates when changing development standards |
 
 ## Requirements
 

@@ -10,6 +10,17 @@
           }
         ]
       }
+    ],
+    "PreCommit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-commit-standards.sh"
+          }
+        ]
+      }
     ]
   }
 }

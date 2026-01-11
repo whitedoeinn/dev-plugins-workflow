@@ -156,6 +156,26 @@ repo/
 
 ---
 
+## Updating Standards
+
+When changing any standard, use the update protocol:
+
+```bash
+# See impact before making changes
+/wdi-workflows:update-standard --analyze <STANDARD>
+
+# Guided update workflow
+/wdi-workflows:update-standard <STANDARD>
+
+# List all standards with impact scores
+/wdi-workflows:update-standard --list
+```
+
+See: `docs/standards/STANDARDS-UPDATE-PROTOCOL.md`
+Dependencies: `knowledge/standards-dependency-map.md`
+
+---
+
 ## Decision Quick Checks
 
 **New project?**
@@ -167,3 +187,8 @@ repo/
 → Create branch: `feature/FEAT-XXX-description`
 → Commits: `feat: Description`
 → PR: Link to issue
+
+**Changing a standard?**
+→ Run `--analyze` first to see impact
+→ Use guided workflow to update all dependents
+→ Commit all changes together

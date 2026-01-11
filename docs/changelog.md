@@ -6,6 +6,21 @@ All notable changes documented here.
 
 ## 2026-01-11
 
+### Added - Standards Update Protocol (v1.2.0)
+- **Standards Update Protocol** for comprehensive updates when changing standards:
+  - `/wdi-workflows:update-standard` - Impact analysis and guided update workflow
+  - `--analyze` flag for read-only impact assessment before making changes
+  - `--list` flag to show all standards with impact scores
+  - PreCommit hook (`scripts/pre-commit-standards.sh`) for automatic detection
+- **Standards Dependency Map** (`knowledge/standards-dependency-map.md`):
+  - Machine-readable reference showing which files depend on each standard
+  - Impact scores and complexity assessments
+  - Used by command and hook for lookup
+- **Protocol Documentation** (`docs/standards/STANDARDS-UPDATE-PROTOCOL.md`):
+  - Step-by-step process for updating standards
+  - Impact assessment guide
+  - Examples for common scenarios
+
 ### Added - Standards Framework (v1.1.0)
 - **Development Standards** in `docs/standards/`:
   - REPO-STANDARDS.md - Repository naming conventions
