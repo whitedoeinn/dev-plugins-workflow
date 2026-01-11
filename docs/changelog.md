@@ -34,6 +34,12 @@ All notable changes documented here.
   - Proposes names following patterns (api-*, guest-*, lib-*)
   - Validates modifications, captures exceptions in `.github/package-naming-exceptions.md`
   - Auto-creates GitHub Issues for potential standard changes
+- `/wdi-workflows:feature` now uses interview-driven workflow with `AskUserQuestion`
+  - Gathers feature type (new, enhancement, bug fix, refactor, experiment)
+  - Assesses complexity to determine agent selection and planning depth
+  - Selects target package in mono-repos (or triggers new-package creation)
+  - Offers research preference (full, light, skip)
+  - Adapts research and review agents based on answers
 
 ### Changed
 - **Renamed plugin from `claude-workflows` to `wdi-workflows`**
