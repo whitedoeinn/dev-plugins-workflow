@@ -9,13 +9,13 @@ Claude Code plugin providing compound-engineering workflows, development standar
 Run in any project:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
 ```
 
 Or clone and run locally:
 
 ```bash
-git clone https://github.com/whitedoeinn/wdi-workflows
+git clone https://github.com/whitedoeinn/dev-plugins-workflows
 cd wdi-workflows
 ./install.sh
 ```
@@ -51,7 +51,7 @@ cd wdi-workflows
 ### Option 1: Bootstrap Script (Recommended)
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
 ```
 
 This installs both `compound-engineering` and `wdi-workflows` plugins.
@@ -66,7 +66,7 @@ This installs both `compound-engineering` and `wdi-workflows` plugins.
 /plugin install compound-engineering
 
 # Add wdi-workflows marketplace
-/plugin marketplace add https://github.com/whitedoeinn/wdi-workflows
+/plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows
 
 # Install wdi-workflows
 /plugin install wdi-workflows
@@ -178,7 +178,7 @@ Add this to each project's README:
 This project uses custom Claude Code workflows. First-time setup:
 
 \`\`\`bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/wdi-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
 \`\`\`
 
 Available commands:
