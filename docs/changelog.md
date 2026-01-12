@@ -21,6 +21,7 @@ All notable changes documented here.
 - **Stale file reference validation (v0.1.3)** - `check-docs-drift.sh` now detects references to non-existent `commands/*.md` and `skills/*/SKILL.md` files, with smart exclusions for changelogs, examples, and context docs
 
 ### Fixed
+- **Documentation drift** - Added enhanced-ralph and milestone commands to README, fixed version numbers in README and CLAUDE.md
 - **Stale documentation references** - Updated `commands/commit.md` references to `skills/commit/SKILL.md` in standards-dependency-map and update-standard command after skill migration
 - **Enhanced-ralph commit instructions** - Changed "Ready for: /wdi-workflows:commit" to skill invocation pattern ("commit these changes") in 6 places
 - **Context docs commit references** - Updated migration notes and capability docs to use skill invocation pattern
