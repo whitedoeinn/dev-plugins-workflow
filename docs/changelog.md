@@ -13,6 +13,9 @@ All notable changes documented here.
 - **Test fixtures** - 8 feature files and 5 milestone files for testing dependency resolution, circular detection, and cross-milestone scenarios
 - **Test runner script** - `scripts/test-enhanced-ralph.sh` documents 10 test scenarios and 5 edge cases for manual verification
 - **Showcase page** - Visual guide at `docs/showcase/enhanced-ralph-guide.html` explaining the workflow with Terminal Noir aesthetic
+- **Enhanced Ralph logo illustration** - CSS-only Looney Toons-inspired hero image at `docs/showcase/enhanced-ralph-logo.html` featuring BoneMonkey riding Ralph as a rocket ship with animated flame and catchphrase
+- **Enhanced Ralph marketing site** - Full marketing page at `docs/showcase/enhanced-ralph-marketing.html` with pipeline visualization, features grid, and "Sorry folks, I'm all outta bubble gum!" messaging
+- **BoneMonkey infographic update** - Refreshed `docs/showcase/bonemonkey-infographic.html` with Enhanced Ralph branding and "Speed of Imagination" theme
 - **Auto-update-docs skill (v0.1.1)** - Say "update the docs" to detect and fix documentation drift. Finds undocumented commands/skills and version mismatches, then updates CLAUDE.md and README.md tables automatically
 - **Semantic versioning (v0.1.0)** - Plugin now uses proper semver starting at 0.1.0 for pre-production development. Version bumps are integrated into the commit skill with smart detection: fixes auto-bump patch, features prompt for minor/patch/none
 - **CI validation on every PR** - GitHub Actions validates JSON syntax, plugin structure, script permissions, and runs hook unit tests

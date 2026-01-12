@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BoneMonkey | From Solo Developer to Development Army</title>
+    <title>Enhanced Ralph | Production-Ready Features at the Speed of Imagination</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Permanent+Marker&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #0a0d10;
@@ -905,6 +905,77 @@
             }
         }
 
+        /* ========== CATCHPHRASE BANNER ========== */
+        .catchphrase-banner {
+            background: linear-gradient(135deg, var(--accent-amber), #ff8c42);
+            padding: 50px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catchphrase-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(0,0,0,0.05) 20px,
+                rgba(0,0,0,0.05) 40px
+            );
+        }
+
+        .catchphrase-text {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 42px;
+            color: var(--bg-deep);
+            text-shadow: 3px 3px 0 rgba(255,255,255,0.3);
+            position: relative;
+            z-index: 1;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(-0.5deg); }
+            50% { transform: rotate(0.5deg); }
+        }
+
+        .catchphrase-sub {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--bg-deep);
+            opacity: 0.8;
+            margin-top: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .catchphrase-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: var(--bg-deep);
+            color: var(--accent-amber);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .catchphrase-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
         /* ========== PRINT STYLES ========== */
         @media print {
             .blueprint-grid {
@@ -939,14 +1010,14 @@
     <!-- HERO SECTION -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">BoneMonkey Plugin</div>
+            <div class="hero-badge">Enhanced Ralph</div>
             <h1 class="hero-title">
-                From Solo Developer<br>
-                to <span class="highlight">Development Army</span>
+                Production-Ready Features<br>
+                at the <span class="highlight">Speed of Imagination</span>
             </h1>
             <p class="hero-subtitle">
-                How BoneMonkey transforms one person into a high-performing
-                team equivalent through intelligent automation and disciplined workflows.
+                What if velocity wasn't constrained by how fast humans can code—only by how fast you can <em>imagine</em>?
+                Feed your requirements into Enhanced Ralph. Watch our army deliver.
             </p>
         </div>
         <div class="army-visual">
@@ -1181,6 +1252,15 @@
         </div>
     </section>
 
+    <!-- CATCHPHRASE BANNER -->
+    <section class="catchphrase-banner">
+        <div class="container">
+            <div class="catchphrase-text">"Sorry folks, I'm all outta bubble gum!"</div>
+            <div class="catchphrase-sub">—But we're fresh outta features!</div>
+            <a href="enhanced-ralph-marketing.html" class="catchphrase-link">See the Full Vision →</a>
+        </div>
+    </section>
+
     <!-- MULTIPLIER SECTION -->
     <section class="multiplier">
         <div class="container">
@@ -1281,8 +1361,8 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-logo">BoneMonkey</div>
-            <div class="footer-tagline">wdi-workflows plugin • Transforming solo developers into development armies</div>
+            <div class="footer-logo">Enhanced Ralph</div>
+            <div class="footer-tagline">A BoneMonkey Production • Production-ready features at the speed of imagination</div>
         </div>
     </footer>
 </body>
