@@ -22,6 +22,9 @@ All notable changes documented here.
 - **Hook script unit tests** - `./scripts/test-hooks.sh` validates hook behavior without needing a Claude Code session
 - **Development workflow docs** - CLAUDE.md and troubleshooting.md now explain how to test hooks during plugin development
 
+### Fixed
+- **Stale documentation references** - Updated `commands/commit.md` references to `skills/commit/SKILL.md` in standards-dependency-map and update-standard command after skill migration
+
 ### Changed
 - **Smarter feature workflow** - Claude now assesses complexity and suggests target subproject after research, reducing upfront questions from 5 to 3
 - **Renamed `new-package` to `new-subproject`** - clearer terminology for mono-repo components
