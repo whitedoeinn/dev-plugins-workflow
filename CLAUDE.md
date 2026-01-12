@@ -6,7 +6,7 @@ This is the source repository for the `wdi-workflows` Claude Code plugin. It pro
 - Compound-engineering workflows for feature development
 - Smart commit workflows with quality gates
 - Development standards and project scaffolding
-- Repository and package creation commands
+- Repository and subproject creation commands
 
 ## Structure
 
@@ -16,7 +16,7 @@ dev-plugins-workflows/
 │   ├── feature.md          # /wdi-workflows:feature workflow
 │   ├── setup.md            # /wdi-workflows:setup verification
 │   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
-│   ├── new-package.md      # /wdi-workflows:new-package scaffolding
+│   ├── new-subproject.md   # /wdi-workflows:new-subproject scaffolding
 │   ├── check-standards.md  # /wdi-workflows:check-standards validation
 │   ├── update-standard.md  # /wdi-workflows:update-standard impact analysis
 │   └── new-command.md      # /wdi-workflows:new-command workflow
@@ -74,7 +74,7 @@ dev-plugins-workflows/
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:new-repo` | Create repository following WDI naming standards |
-| `/wdi-workflows:new-package` | Add package to mono-repo following standards |
+| `/wdi-workflows:new-subproject` | Add subproject to mono-repo following standards |
 | `/wdi-workflows:check-standards` | Validate current repo against standards |
 | `/wdi-workflows:update-standard` | Impact analysis and guided updates for standard changes |
 | `/wdi-workflows:new-command` | Create a new command and update all dependent files |

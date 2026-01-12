@@ -32,7 +32,7 @@ if [ "$1" = "--show-commands" ]; then
 
 ### Standards Commands
 - `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
-- `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
+- `/wdi-workflows:new-subproject` - Add a new subproject to a mono-repo following standards
 - `/wdi-workflows:check-standards` - Validate current repository against development standards
 - `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
 - `/wdi-workflows:new-command` - Create a new command and update all dependent files
@@ -119,7 +119,7 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ### Standards Commands
 - `/wdi-workflows:new-repo` - Create a new repository following naming and structure standards
-- `/wdi-workflows:new-package` - Add a new package to a mono-repo following standards
+- `/wdi-workflows:new-subproject` - Add a new subproject to a mono-repo following standards
 - `/wdi-workflows:check-standards` - Validate current repository against development standards
 - `/wdi-workflows:update-standard` - Impact analysis and guided updates when changing standards
 - `/wdi-workflows:new-command` - Create a new command and update all dependent files
@@ -146,7 +146,7 @@ echo "  Skills (auto-invoked):"
 echo "    commit                         - Say 'commit these changes' to trigger"
 echo "  Standards:"
 echo "    /wdi-workflows:new-repo        - Create new repository"
-echo "    /wdi-workflows:new-package     - Add package to mono-repo"
+echo "    /wdi-workflows:new-subproject     - Add subproject to mono-repo"
 echo "    /wdi-workflows:check-standards - Validate against standards"
 echo "    /wdi-workflows:update-standard - Update standard dependencies"
 echo "    /wdi-workflows:new-command     - Create new command"

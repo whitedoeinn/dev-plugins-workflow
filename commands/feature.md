@@ -27,7 +27,7 @@ Each phase pauses for approval unless `--yes` is passed.
 
 ## Phase 1: Interview
 
-Use `AskUserQuestion` to gather context. Answers determine which agents to run and how deep to plan.
+Use `AskUserQuestion` to gather context. Complexity and target subproject are assessed by Claude after research, not asked upfront.
 
 #### Question 1: Feature Type
 
@@ -43,35 +43,7 @@ What type of work is this?
 | **Refactor** | Restructuring code without changing behavior |
 | **Experiment** | Exploratory work, spike, or proof of concept |
 
-#### Question 2: Complexity Assessment
-
-```
-How complex is this work?
-```
-
-| Option | Description |
-|--------|-------------|
-| **Simple** | 1-2 files, straightforward implementation |
-| **Moderate** | Multiple files, some design decisions needed |
-| **Complex** | Architectural changes, extensive testing required |
-| **Unknown** | Need research to determine scope |
-
-#### Question 3: Target Location (Mono-repos Only)
-
-If repository has `packages/` directory:
-
-```
-Where does this work belong?
-```
-
-| Option | Description |
-|--------|-------------|
-| **{package-1}** | Existing package (dynamically listed) |
-| **{package-2}** | Existing package (dynamically listed) |
-| **New Package** | Create new package first (triggers /new-package) |
-| **Repo-Level** | Shared code, scripts, or root-level changes |
-
-#### Question 4: Research Preference
+#### Question 2: Research Preference
 
 ```
 How much research should we do?
@@ -79,16 +51,16 @@ How much research should we do?
 
 | Option | Description |
 |--------|-------------|
-| **Full Research** | Run all relevant agents (recommended for complex/unknown) |
+| **Full Research** | Run all relevant agents (recommended for unfamiliar areas) |
 | **Light Research** | Quick codebase scan only |
 | **Skip Research** | Go straight to planning (you know the codebase well) |
 
-#### Question 5: Feature Description
+#### Question 3: Feature Description
 
 ```
 Briefly describe the feature or work:
 ```
-(Free text - used for research queries and issue creation)
+(Free text - used for research queries and issue creation. If a feature spec file was provided via `@file`, extract the description from it instead of asking.)
 
 ---
 
@@ -122,42 +94,41 @@ Quick check that essential files exist:
 - README.md
 - docs/changelog.md (or will be created)
 
-### Check 4: New Package (If Selected)
+### Check 4: Mono-repo Detection
 
-If user selected "New Package" in Question 3:
+Detect if this is a mono-repo for later subproject targeting:
 
+```bash
+if [ -d "packages" ]; then
+  IS_MONOREPO=true
+  # List existing subprojects for later suggestion
+  ls packages/
+fi
 ```
-You selected "New Package". Let's create it first.
-```
-
-Invoke `/wdi-workflows:new-package` workflow, then continue.
 
 ---
 
 ## Phase 3: Research (Adaptive)
 
-Research depth and agents determined by interview answers.
+Research depth determined by user preference. Complexity and target subproject are assessed after research.
 
-### Agent Selection Matrix
+### Agent Selection by Feature Type
 
-| Feature Type | Complexity | Agents |
-|--------------|------------|--------|
-| New Feature | Complex/Unknown | repo-analyst, framework-docs, best-practices, git-history |
-| New Feature | Moderate | repo-analyst, framework-docs |
-| New Feature | Simple | repo-analyst |
-| Enhancement | Any | repo-analyst, git-history |
-| Bug Fix | Any | repo-analyst, git-history |
-| Refactor | Complex | repo-analyst, git-history, best-practices |
-| Refactor | Simple/Moderate | repo-analyst |
-| Experiment | Any | repo-analyst, best-practices |
+| Feature Type | Full Research Agents | Light Research |
+|--------------|---------------------|----------------|
+| New Feature | repo-analyst, framework-docs, best-practices, git-history | repo-analyst |
+| Enhancement | repo-analyst, git-history | repo-analyst |
+| Bug Fix | repo-analyst, git-history | repo-analyst |
+| Refactor | repo-analyst, git-history, best-practices | repo-analyst |
+| Experiment | repo-analyst, best-practices | repo-analyst |
 
-### Research Preference Override
+### Research Preference Effect
 
 | Preference | Effect |
 |------------|--------|
 | Full Research | Use all agents from matrix above |
 | Light Research | repo-analyst only |
-| Skip Research | Skip to Phase 4 |
+| Skip Research | Skip to Phase 3.5 (Assessment) |
 
 ### Run Research Agents
 
@@ -171,9 +142,8 @@ subagent_type='compound-engineering:research:best-practices-researcher'
 ```
 
 Prompt each agent with:
-- Feature description from interview
+- Feature description from interview (or from provided spec file)
 - Feature type context
-- Target package (if applicable)
 
 Ask for:
 - Relevant existing patterns
@@ -189,15 +159,74 @@ Combine agent outputs into a research summary:
 - Files to modify
 - Constraints identified
 
+---
+
+## Phase 3.5: Assessment (Claude Suggests, User Confirms)
+
+After research, Claude assesses complexity and target subproject based on findings.
+
+### Complexity Assessment
+
+Analyze the feature and research findings to determine complexity:
+
+| Signal | Simple | Moderate | Complex |
+|--------|--------|----------|---------|
+| Files affected | 1-2 | 3-10 | 10+ |
+| New abstractions | None | 1-2 | New patterns/systems |
+| External deps | None | Existing only | New dependencies |
+| Architectural impact | None | Local | System-wide |
+| Existing patterns | Clear match | Partial match | Greenfield |
+
+**Complexity determines:**
+- Planning depth (Phase 4)
+- Review agents (Phase 6)
+- Merge strategy (Phase 7)
+
+### Target Subproject (Mono-repos Only)
+
+If `IS_MONOREPO=true`, suggest target subproject based on:
+- Feature description keywords
+- Files identified in research
+- Existing subproject purposes
+
+**Present selectable list:**
+
+```
+Which subproject does this affect?
+
+Based on the feature description and research, this appears to
+affect: packages/api-ga4
+  • Feature mentions "GA4 reporting"
+  • Related files found in packages/api-ga4/src/
+
+Existing subprojects:
+  [1] api-ga4 (Recommended)
+  [2] api-mailchimp
+  [3] dashboard
+  [4] lib-auth
+  [5] New Subproject (create first)
+  [6] Repo-Level (root scripts, docs, CI)
+
+Select option or press Enter to accept recommendation:
+```
+
+**If "New Subproject" selected:**
+
+```
+Creating new subproject first...
+```
+
+Invoke `/wdi-workflows:new-subproject` workflow, then continue with the new subproject as target.
+
 ### Pause (unless --yes)
 
 ```
-Research Phase Complete
+Assessment Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Feature Type: {type}
-Complexity: {complexity}
-Target: {package or "repo-level"}
+Complexity: {assessed-complexity}
+Target: {subproject or "repo-level"}
 
 Agents run: [list agents]
 
@@ -514,12 +543,6 @@ Learnings:
 ? What type of work is this?
   → New Feature
 
-? How complex is this work?
-  → Complex
-
-? Where does this work belong?
-  → packages/dashboard
-
 ? How much research should we do?
   → Full Research
 
@@ -528,6 +551,7 @@ Learnings:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Pre-flight: ✓ All checks passed
+  Mono-repo detected: packages/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Research Phase
@@ -537,6 +561,22 @@ Pre-flight: ✓ All checks passed
   • Existing Chart.js integration in packages/dashboard
   • WebSocket support available via existing lib-ws
   • Similar pattern in guest-portal for live updates
+
+→ Assessment Phase
+  Complexity: Complex (10+ files, new WebSocket patterns)
+
+  Target subproject: packages/dashboard
+    • Feature mentions "dashboard"
+    • Chart.js already integrated there
+
+  Existing subprojects:
+    [1] dashboard (Recommended)
+    [2] api-ga4
+    [3] lib-ws
+    [4] New Subproject
+    [5] Repo-Level
+
+  ? Select [1]: ↵
 
   Continue to planning? [y]
 
@@ -585,9 +625,6 @@ Pre-flight: ✓ All checks passed
 ? What type of work is this?
   → Bug Fix
 
-? How complex is this work?
-  → Simple
-
 ? How much research should we do?
   → Light Research
 
@@ -597,6 +634,12 @@ Pre-flight: ✓ All checks passed
 → Research Phase
   Running: repo-analyst only
   Found: Navigation in src/components/Nav.tsx
+
+→ Assessment Phase
+  Complexity: Simple (1 file, CSS fix)
+  Target: Repo-Level (standalone repo)
+
+  Continue to planning? [y]
 
 → Plan Phase
   Created: Issue #24 "Bug Fix: Mobile nav highlighting"
@@ -616,22 +659,18 @@ Pre-flight: ✓ All checks passed
 ✓ Bug fix complete
 ```
 
-### Plan only (for discussion)
+### Enhancement with feature spec provided
 
 ```
-/wdi-workflows:feature --plan-only
+/wdi-workflows:feature @docs/product/planning/features/dark-mode.md
 
 ? What type of work is this?
   → Enhancement
 
-? How complex is this work?
-  → Unknown
-
 ? How much research should we do?
   → Full Research
 
-? Briefly describe the feature:
-  → "Add dark mode support across all pages"
+  (Description extracted from spec: "Add dark mode support across all pages")
 
 → Research Phase
   Running: repo-analyst, framework-docs, best-practices, git-history
@@ -641,13 +680,68 @@ Pre-flight: ✓ All checks passed
   • 15 pages need theme-aware styling
   • LocalStorage can persist preference
 
+→ Assessment Phase
+  Complexity: Moderate (15 files, existing pattern in DaisyUI)
+  Target: Repo-Level (affects multiple areas)
+
+  Continue to planning? [y]
+
 → Plan Phase
+  Updated: docs/product/planning/features/dark-mode.md
   Created: Issue #25 "Enhancement: Dark mode support"
-  Plan: docs/product/planning/features/dark-mode.md
 
-  Complexity revised: Moderate (15 files, pattern exists)
+  Continue to work? [y]
 
-✓ Planning complete. Run /wdi-workflows:feature to continue.
+...
+```
+
+### New subproject creation during workflow
+
+```
+/wdi-workflows:feature
+
+? What type of work is this?
+  → New Feature
+
+? How much research should we do?
+  → Light Research
+
+? Briefly describe the feature:
+  → "Add Stripe payment processing integration"
+
+→ Research Phase
+  Running: repo-analyst only
+  No existing Stripe integration found.
+
+→ Assessment Phase
+  Complexity: Moderate (new integration, existing patterns for APIs)
+
+  Target subproject: (no clear match)
+    • Feature requires new API wrapper
+
+  Existing subprojects:
+    [1] api-ga4
+    [2] api-mailchimp
+    [3] dashboard
+    [4] New Subproject (Recommended)
+    [5] Repo-Level
+
+  ? Select [4]: ↵
+
+  Creating new subproject first...
+  → Running /wdi-workflows:new-subproject
+
+  ? What type of subproject is this?
+    → API Wrapper
+  ? Which external service?
+    → stripe
+
+  ✓ Created: packages/api-stripe/
+
+  Continuing with target: packages/api-stripe
+
+→ Plan Phase
+  ...
 ```
 
 ### Experiment with minimal overhead
@@ -658,16 +752,16 @@ Pre-flight: ✓ All checks passed
 ? What type of work is this?
   → Experiment
 
-? How complex is this work?
-  → Simple
-
 ? How much research should we do?
   → Skip Research
 
 ? Briefly describe the feature:
   → "Test GraphQL subscriptions for live data"
 
-→ Skipping research (user preference)
+→ Assessment Phase (skip research)
+  Complexity: Simple (experiment)
+  Target: Repo-Level
+
 → Light planning (experiment)
 → Branch: experiment/graphql-subscriptions
 → Light review (simplicity only)

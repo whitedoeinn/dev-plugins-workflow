@@ -40,7 +40,7 @@ cd dev-plugins-workflows
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:new-repo` | Create a new repository following WDI naming and structure standards |
-| `/wdi-workflows:new-package` | Add a new package to a mono-repo following standards |
+| `/wdi-workflows:new-subproject` | Add a new subproject to a mono-repo following standards |
 | `/wdi-workflows:check-standards` | Validate current repository against WDI development standards |
 | `/wdi-workflows:update-standard` | Impact analysis and guided updates when changing development standards |
 | `/wdi-workflows:new-command` | Create a new command and update all dependent files |

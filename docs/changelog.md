@@ -4,6 +4,14 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-12
+
+### Changed
+- **Smarter feature workflow** - Claude now assesses complexity and suggests target subproject after research, reducing upfront questions from 5 to 3
+- **Renamed `new-package` to `new-subproject`** - clearer terminology for mono-repo components
+
+---
+
 ## 2026-01-11
 
 ### Breaking Change
@@ -30,10 +38,10 @@ Install: `curl -sSL .../scripts/wdi | bash -s install`
 ### Standards Framework
 - **Consistent naming across repos** - standards for repos, branches, commits, files prevent bike-shedding and make navigation predictable
 - **Faster issue creation** - templates pre-fill structure so you focus on content
-- **Scaffolding commands** - `/wdi-workflows:new-repo` and `/wdi-workflows:new-package` apply standards automatically
+- **Scaffolding commands** - `/wdi-workflows:new-repo` and `/wdi-workflows:new-subproject` apply standards automatically
 
 ### Enhanced Workflows
-- **Interview-driven scaffolding** - `new-repo`, `new-package`, and `feature` commands ask adaptive questions instead of requiring you to remember flags
+- **Interview-driven scaffolding** - `new-repo`, `new-subproject`, and `feature` commands ask adaptive questions instead of requiring you to remember flags
 - **Exception tracking** - non-standard names get documented with reasons, creating a paper trail for future standard updates
 
 ### Changed

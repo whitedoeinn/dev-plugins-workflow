@@ -72,7 +72,7 @@ These files reference all standards by design and don't need updating for indivi
 - commands/feature.md (directory creation, docs/product layout)
 - commands/check-standards.md (structure validation)
 - commands/new-repo.md (structure templates)
-- commands/new-package.md (package structure)
+- commands/new-subproject.md (package structure)
 
 **Referenced by:**
 - knowledge/standards-summary.md (project structure quick reference)
@@ -85,7 +85,7 @@ These files reference all standards by design and don't need updating for indivi
 ## FILE-NAMING.md
 
 **Enforced by:**
-- commands/new-package.md (package naming conventions)
+- commands/new-subproject.md (package naming conventions)
 - commands/check-standards.md (file name checks)
 
 **Referenced by:**
