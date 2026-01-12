@@ -255,7 +255,7 @@ This validates hook behavior without needing a full Claude Code session.
 
 ## Version
 
-Current version: 0.1.4 (see `.claude-plugin/plugin.json`)
+Current version: 0.1.5 (see `.claude-plugin/plugin.json`)
 
 ### Versioning Policy
 

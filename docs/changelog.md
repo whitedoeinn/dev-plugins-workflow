@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-12
 
 ### Added
+- **Auto-mark feature specs complete (v0.1.5)** - Feature workflow compound phase now automatically marks feature specification files as complete, updating status and checkboxes. No more manual cleanup after merging features
 - **Environment consistency validation (v0.1.4)** - Automatic environment validation on every session start. Checks required plugins and CLI tools against `env-baseline.json`, auto-remediates fixable issues (missing plugins, jq), and blocks with clear guidance for unfixable issues (gh auth). Say "check my config" to manually re-validate. Foundation for future "safety scissor" mode for non-developer users
 - **sync-config skill** - Auto-invokes on "check my config" to validate environment against baseline with detailed output
 - **Component labels for GitHub issues** - `component:cli`, `component:hooks`, `component:commands`, `component:skills`, `component:standards`, `component:core` for filtering issues by area
