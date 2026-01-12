@@ -196,106 +196,27 @@
 
         .illustration-wrapper {
             width: 100%;
-            aspect-ratio: 1;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             animation: heroFloat 4s ease-in-out infinite;
         }
 
         @keyframes heroFloat {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.02); }
         }
 
-        /* Simplified inline illustration */
-        .rocket-combo {
-            position: relative;
-            width: 300px;
-            height: 400px;
-            margin: 0 auto;
+        .hero-monkey {
+            width: 350px;
+            height: auto;
+            filter: drop-shadow(0 0 40px rgba(196, 30, 58, 0.8))
+                    drop-shadow(0 0 80px rgba(255, 136, 0, 0.4));
+            transition: transform 0.3s ease;
         }
 
-        .ralph-rocket {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 220px;
-            background: linear-gradient(180deg, var(--ralph-yellow), var(--ralph-orange));
-            border-radius: 80px 80px 50px 50px;
-            border: 5px solid var(--outline);
-        }
-
-        .ralph-rocket::before {
-            content: '😄';
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 60px;
-        }
-
-        .ralph-rocket::after {
-            content: '';
-            position: absolute;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 80px;
-            background: linear-gradient(180deg, var(--ralph-yellow), var(--speed-red), #ff0000);
-            border-radius: 30% 30% 50% 50%;
-            animation: flame 0.15s ease-in-out infinite alternate;
-        }
-
-        @keyframes flame {
-            0% { transform: translateX(-50%) scaleY(1); }
-            100% { transform: translateX(-50%) scaleY(1.15); }
-        }
-
-        .bone-monkey {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 120px;
-        }
-
-        .bone-monkey::before {
-            content: '💀';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 70px;
-            filter: drop-shadow(0 0 10px var(--star-glow));
-        }
-
-        .speed-trail {
-            position: absolute;
-            left: -80px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .trail-line {
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--speed-orange), var(--speed-red));
-            margin: 10px 0;
-            border-radius: 4px;
-            animation: trail 0.6s ease-out infinite;
-        }
-
-        .trail-line:nth-child(1) { width: 100px; animation-delay: 0s; }
-        .trail-line:nth-child(2) { width: 140px; animation-delay: 0.1s; }
-        .trail-line:nth-child(3) { width: 120px; animation-delay: 0.2s; }
-        .trail-line:nth-child(4) { width: 160px; animation-delay: 0.15s; }
-
-        @keyframes trail {
-            0% { opacity: 0; transform: translateX(30px); }
-            50% { opacity: 1; }
-            100% { opacity: 0; transform: translateX(-30px); }
+        .hero-monkey:hover {
+            transform: scale(1.05);
         }
 
         /* ========== CATCHPHRASE BANNER ========== */
@@ -704,21 +625,14 @@
                     </p>
                     <div class="hero-cta">
                         <a href="#pipeline" class="btn btn-primary">See How It Works</a>
-                        <a href="enhanced-ralph-logo.html" class="btn btn-secondary">View Full Logo</a>
+                        <a href="bonemonkey-logo.html" class="btn btn-secondary">View Full Logo</a>
                     </div>
                 </div>
                 <div class="hero-illustration">
                     <div class="illustration-wrapper">
-                        <div class="rocket-combo">
-                            <div class="speed-trail">
-                                <div class="trail-line"></div>
-                                <div class="trail-line"></div>
-                                <div class="trail-line"></div>
-                                <div class="trail-line"></div>
-                            </div>
-                            <div class="bone-monkey"></div>
-                            <div class="ralph-rocket"></div>
-                        </div>
+                        <a href="bonemonkey-logo.html">
+                            <img src="bonemonkey.jpg" alt="BoneMonkey" class="hero-monkey">
+                        </a>
                     </div>
                 </div>
             </div>

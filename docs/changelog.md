@@ -13,7 +13,7 @@ All notable changes documented here.
 - **Test fixtures** - 8 feature files and 5 milestone files for testing dependency resolution, circular detection, and cross-milestone scenarios
 - **Test runner script** - `scripts/test-enhanced-ralph.sh` documents 10 test scenarios and 5 edge cases for manual verification
 - **Showcase page** - Visual guide at `docs/showcase/enhanced-ralph-guide.html` explaining the workflow with Terminal Noir aesthetic
-- **Enhanced Ralph logo illustration** - CSS-only Looney Toons-inspired hero image at `docs/showcase/enhanced-ralph-logo.html` featuring BoneMonkey riding Ralph as a rocket ship with animated flame and catchphrase
+- **BoneMonkey logo page** - Intense hero image at `docs/showcase/bonemonkey-logo.html` featuring the actual BoneMonkey mascot with "Dave of all Trades" title, fire effects, pulsing energy rings, and "LET'S GOOOOO!" catchphrase
 - **Enhanced Ralph marketing site** - Full marketing page at `docs/showcase/enhanced-ralph-marketing.html` with pipeline visualization, features grid, and "Sorry folks, I'm all outta bubble gum!" messaging
 - **BoneMonkey infographic update** - Refreshed `docs/showcase/bonemonkey-infographic.html` with Enhanced Ralph branding and "Speed of Imagination" theme
 - **Auto-update-docs skill (v0.1.1)** - Say "update the docs" to detect and fix documentation drift. Finds undocumented commands/skills and version mismatches, then updates CLAUDE.md and README.md tables automatically
