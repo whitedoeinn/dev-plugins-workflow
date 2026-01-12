@@ -94,7 +94,7 @@ Verify:
   [ ] UI tasks invoke frontend-design (NOT design-principles)
   [ ] Research agents invoke when needed
   [ ] Quality gates invoke per task type
-  [ ] Final output suggests /wdi-workflows:commit
+  [ ] Final output suggests commit skill ("commit these changes")
 
 SCENARIO 2: Multiple Features in Milestone
 ──────────────────────────────────────────
