@@ -59,7 +59,7 @@ Migrate the enhanced-ralph skill and milestone command from the google-ads proje
 | `ralph-loop:ralph-loop` | ralph-loop plugin | Available |
 | `compound-engineering` agents | compound-engineering plugin | Available |
 | `playwright-test` | compound-engineering plugin | Available |
-| `wdi-workflows:commit` | This plugin | Available |
+| `commit` skill | This plugin | Available (say "commit these changes") |
 
 ### Agents Used (from compound-engineering)
 **Research:** framework-docs-researcher, best-practices-researcher, git-history-analyzer, repo-research-analyst
@@ -74,7 +74,7 @@ Migrate the enhanced-ralph skill and milestone command from the google-ads proje
 1. **Line 110:** Remove `Apply design-principles skill for consistent styling`
 2. **Lines 155-160:** Remove design-principles from UI workflow diagram
 3. **Line 184:** Change `frontend-design + design-principles` to just `frontend-design`
-4. **Line 256:** Change `Ready for: /commit` to `Ready for: /wdi-workflows:commit`
+4. **Line 256:** Change `Ready for: /commit` to `Ready to commit - say "commit these changes"` (DONE)
 
 ### Add to Enhanced-Ralph
 New `--milestone` flag with this behavior:
@@ -117,7 +117,7 @@ When invoked with `--milestone`:
 ### Phase 1: Prepare Enhanced-Ralph
 - [ ] Copy source SKILL.md to this project
 - [ ] Remove design-principles references (4 locations)
-- [ ] Update final step to reference wdi-workflows:commit
+- [x] Update final step to use commit skill invocation pattern
 - [ ] Add `--milestone` flag support with milestone execution logic
 - [ ] Abstract project-specific task keywords if needed
 
@@ -137,7 +137,7 @@ When invoked with `--milestone`:
 - [ ] Test milestone execution with `--milestone` flag
 - [ ] Verify all compound-engineering agents invoke correctly
 - [ ] Verify frontend-design invocation works
-- [ ] Verify wdi-workflows:commit integration
+- [ ] Verify commit skill integration (say "commit these changes")
 
 ---
 
@@ -158,7 +158,7 @@ When invoked with `--milestone`:
 - [ ] UI tasks invoke frontend-design (not design-principles)
 - [ ] Research agents invoked appropriately
 - [ ] Quality gate agents invoked per task type
-- [ ] Final output suggests /wdi-workflows:commit
+- [ ] Final output suggests commit skill ("commit these changes")
 
 ### Milestone Test
 - [ ] Milestone file parsed correctly

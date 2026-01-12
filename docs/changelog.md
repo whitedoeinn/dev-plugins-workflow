@@ -25,6 +25,7 @@ All notable changes documented here.
 ### Fixed
 - **Stale documentation references** - Updated `commands/commit.md` references to `skills/commit/SKILL.md` in standards-dependency-map and update-standard command after skill migration
 - **Enhanced-ralph commit instructions** - Changed "Ready for: /wdi-workflows:commit" to skill invocation pattern ("commit these changes") in 6 places
+- **Context docs commit references** - Updated migration notes and capability docs to use skill invocation pattern
 
 ### Changed
 - **Smarter feature workflow** - Claude now assesses complexity and suggests target subproject after research, reducing upfront questions from 5 to 3

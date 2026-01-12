@@ -190,7 +190,7 @@ docs/
 ├── standards/
 │   ├── ISSUE-STANDARDS.md      # Issue format
 │   └── DEPENDENCY-STANDARDS.md # Dependency tracking
-└── changelog.md                # Updated by /commit
+└── changelog.md                # Updated by commit skill
 ```
 
 **Missing:**
