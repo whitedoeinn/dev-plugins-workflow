@@ -101,6 +101,65 @@ if [[ -f .claude-plugin/plugin.json ]]; then
   fi
 fi
 
+# Check for stale file references in documentation
+log "${YELLOW}Checking for stale file references...${NC}"
+
+# Files/patterns to exclude from stale reference checks:
+# - changelog.md: describes historical changes
+# - CONTRIBUTING.md: contains examples
+# - docs/context/: session context files may reference external projects
+# - Example patterns like my-command.md, example-*.md
+is_excluded_ref() {
+  local source_file="$1"
+  local ref_file="$2"
+
+  # Exclude changelog (historical references)
+  [[ "$source_file" == *"changelog.md" ]] && return 0
+
+  # Exclude CONTRIBUTING (examples)
+  [[ "$source_file" == *"CONTRIBUTING.md" ]] && return 0
+
+  # Exclude context docs (may reference external projects)
+  [[ "$source_file" == *"docs/context/"* ]] && return 0
+
+  # Exclude obvious example patterns
+  [[ "$ref_file" == *"my-command"* ]] && return 0
+  [[ "$ref_file" == *"example-"* ]] && return 0
+
+  return 1
+}
+
+# Find all references to commands/*.md files and verify they exist
+while IFS= read -r line; do
+  # Extract file path and source file
+  ref_file=$(echo "$line" | grep -oE 'commands/[a-zA-Z0-9_-]+\.md' | head -1)
+  source_file=$(echo "$line" | cut -d: -f1)
+
+  # Skip if excluded
+  is_excluded_ref "$source_file" "$ref_file" && continue
+
+  if [[ -n "$ref_file" && ! -f "$ref_file" ]]; then
+    echo "DRIFT:stale_ref:$ref_file:$source_file"
+    log "  ${RED}STALE${NC}: $ref_file referenced in $source_file (file not found)"
+    DRIFT_FOUND=1
+  fi
+done < <(grep -rn 'commands/[a-zA-Z0-9_-]*\.md' --include="*.md" --include="*.sh" 2>/dev/null | grep -v "^Binary" || true)
+
+# Find all references to skills/*/SKILL.md files and verify they exist
+while IFS= read -r line; do
+  ref_file=$(echo "$line" | grep -oE 'skills/[a-zA-Z0-9_-]+/SKILL\.md' | head -1)
+  source_file=$(echo "$line" | cut -d: -f1)
+
+  # Skip if excluded
+  is_excluded_ref "$source_file" "$ref_file" && continue
+
+  if [[ -n "$ref_file" && ! -f "$ref_file" ]]; then
+    echo "DRIFT:stale_ref:$ref_file:$source_file"
+    log "  ${RED}STALE${NC}: $ref_file referenced in $source_file (file not found)"
+    DRIFT_FOUND=1
+  fi
+done < <(grep -rn 'skills/[a-zA-Z0-9_-]*/SKILL\.md' --include="*.md" --include="*.sh" 2>/dev/null | grep -v "^Binary" || true)
+
 # Summary
 if [[ "$DRIFT_FOUND" -eq 0 ]]; then
   log "${GREEN}No documentation drift detected.${NC}"
