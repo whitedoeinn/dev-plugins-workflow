@@ -42,6 +42,49 @@ EOF
   exit 0
 fi
 
+# Handle show-dev-workflow flag
+if [ "$1" = "--show-dev-workflow" ]; then
+  cat << 'EOF'
+## Development Workflow
+
+When developing this plugin:
+
+### Commands and Skills
+Changes to `commands/*.md` and `skills/*/SKILL.md` take effect immediately.
+No restart required.
+
+### Testing Hooks
+Hooks require special handling:
+
+1. Start Claude Code with plugin loaded from source:
+   ```bash
+   claude --plugin-dir .
+   ```
+
+2. Test hook behavior (e.g., try running `git commit` directly)
+
+3. Restart Claude Code after modifying:
+   - hooks/hooks.json
+   - scripts/pre-tool-standards-check.sh
+
+### Unit Testing Hook Scripts
+Run without needing a Claude Code session:
+```bash
+./scripts/test-hooks.sh
+```
+
+### CI Validation
+GitHub Actions validates on every PR:
+- JSON syntax
+- File existence
+- Script permissions
+- Hook script unit tests
+
+Hook changes trigger a reminder to test in a live Claude session.
+EOF
+  exit 0
+fi
+
 echo -e "${YELLOW}Setting up wdi-workflows and dependencies...${NC}"
 echo ""
 

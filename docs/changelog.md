@@ -6,6 +6,11 @@ All notable changes documented here.
 
 ## 2026-01-12
 
+### Added
+- **CI validation on every PR** - GitHub Actions validates JSON syntax, plugin structure, script permissions, and runs hook unit tests
+- **Hook script unit tests** - `./scripts/test-hooks.sh` validates hook behavior without needing a Claude Code session
+- **Development workflow docs** - CLAUDE.md and troubleshooting.md now explain how to test hooks during plugin development
+
 ### Changed
 - **Smarter feature workflow** - Claude now assesses complexity and suggests target subproject after research, reducing upfront questions from 5 to 3
 - **Renamed `new-package` to `new-subproject`** - clearer terminology for mono-repo components

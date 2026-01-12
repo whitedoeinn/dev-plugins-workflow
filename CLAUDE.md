@@ -139,9 +139,34 @@ The markdown files contain both documentation AND executable instructions for Cl
 
 ## Development Workflow
 
-1. **Edit command files** in `/commands/*.md`
+### Commands and Skills
+1. **Edit command files** in `/commands/*.md` or skill files in `/skills/*/SKILL.md`
 2. **Test locally** - Changes take effect immediately in this project
 3. **Push to GitHub** - Other projects can then update via `./install.sh update`
+
+### Testing Hooks
+
+Hooks require special handling because they only fire when the plugin is properly loaded:
+
+```bash
+# Start Claude Code with plugin loaded from current directory
+claude --plugin-dir .
+```
+
+**Important:**
+- Hooks (e.g., `pre-tool-standards-check.sh`) need the `--plugin-dir` flag to activate
+- Restart Claude Code after modifying `hooks/hooks.json` or hook scripts
+- Commands and skills work immediately without restart
+
+### Unit Testing Hook Scripts
+
+Run script tests before committing hook changes:
+
+```bash
+./scripts/test-hooks.sh
+```
+
+This validates hook behavior without needing a full Claude Code session.
 
 ## Key Files
 

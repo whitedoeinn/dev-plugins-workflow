@@ -129,6 +129,36 @@ Follow the prompts to authenticate with GitHub.
 
 ---
 
+### Hooks not firing during development
+
+**Cause:** Hooks only work when the plugin is properly loaded via `--plugin-dir` or installation.
+
+**Solution:**
+```bash
+# Start Claude Code with plugin loaded from source
+claude --plugin-dir /path/to/dev-plugins-workflows
+```
+
+**Important notes:**
+- You must restart Claude Code after modifying `hooks/hooks.json` or hook scripts
+- Commands and skills work immediately without restart
+- Run `./scripts/test-hooks.sh` to unit test hook behavior without needing a Claude Code session
+
+---
+
+### PreToolUse hook not blocking git commit
+
+**Cause:** The `COMMIT_SKILL_ACTIVE` environment variable may be set from a previous run.
+
+**Solution:**
+1. Verify the variable is not set: `echo $COMMIT_SKILL_ACTIVE`
+2. If set, unset it: `unset COMMIT_SKILL_ACTIVE`
+3. Restart Claude Code
+
+The commit skill sets this variable to bypass its own hook. If Claude Code exits abnormally, the variable may persist in your shell.
+
+---
+
 ## Debugging
 
 ### Check installed plugins
