@@ -43,7 +43,7 @@ These files reference all standards by design and don't need updating for indivi
 ## BRANCH-NAMING.md
 
 **Enforced by:**
-- commands/commit.md (branch validation step)
+- skills/commit/SKILL.md (branch validation step)
 - commands/check-standards.md (branch name check)
 
 **Referenced by:**
@@ -56,7 +56,7 @@ These files reference all standards by design and don't need updating for indivi
 ## COMMIT-STANDARDS.md
 
 **Enforced by:**
-- commands/commit.md (message generation and format)
+- skills/commit/SKILL.md (message generation and format)
 - commands/check-standards.md (commit format validation)
 
 **Referenced by:**
