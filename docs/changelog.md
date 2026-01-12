@@ -21,6 +21,7 @@ All notable changes documented here.
 - **CI validation on every PR** - GitHub Actions validates JSON syntax, plugin structure, script permissions, and runs hook unit tests
 - **Hook script unit tests** - `./scripts/test-hooks.sh` validates hook behavior without needing a Claude Code session
 - **Development workflow docs** - CLAUDE.md and troubleshooting.md now explain how to test hooks during plugin development
+- **Stale file reference validation (v0.1.3)** - `check-docs-drift.sh` now detects references to non-existent `commands/*.md` and `skills/*/SKILL.md` files, with smart exclusions for changelogs, examples, and context docs
 
 ### Fixed
 - **Stale documentation references** - Updated `commands/commit.md` references to `skills/commit/SKILL.md` in standards-dependency-map and update-standard command after skill migration
