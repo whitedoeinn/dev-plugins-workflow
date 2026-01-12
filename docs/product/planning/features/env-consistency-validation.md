@@ -1,6 +1,6 @@
 # Feature: Environment Consistency Validation
 
-**Status:** In Progress
+**Status:** Complete
 **Issue:** #7
 **Type:** New Feature
 **Complexity:** Moderate
@@ -23,15 +23,15 @@ Implement environment consistency validation with:
 ## Done When
 
 - [x] GitHub issue created (#7)
-- [ ] `env-baseline.json` template created in plugin root
-- [ ] `scripts/validate-env.sh` validation script created
-- [ ] `scripts/check-deps.sh` updated to integrate validation
-- [ ] Auto-remediation works for: plugins, jq
-- [ ] Hard block with admin contact for unfixable issues
-- [ ] `sync-config` skill created for manual re-validation
-- [ ] Documentation updated (CLAUDE.md, README.md)
-- [ ] Changelog entry added
-- [ ] Tests pass
+- [x] `env-baseline.json` template created in plugin root
+- [x] `scripts/validate-env.sh` validation script created
+- [x] `scripts/check-deps.sh` updated to integrate validation
+- [x] Auto-remediation works for: plugins, jq
+- [x] Hard block with admin contact for unfixable issues
+- [x] `sync-config` skill created for manual re-validation
+- [x] Documentation updated (CLAUDE.md, README.md)
+- [x] Changelog entry added
+- [x] Tests pass
 
 ## Implementation Plan
 

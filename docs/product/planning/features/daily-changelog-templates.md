@@ -1,6 +1,6 @@
 # Feature: Daily Changelog GitHub Action Templates
 
-**Status:** In Progress
+**Status:** Complete
 **Issue:** #4
 **Type:** New Feature
 **Complexity:** Moderate
@@ -19,15 +19,15 @@ Provide two GitHub Action workflow templates:
 
 ## Done When
 
-- [ ] Bash template workflow file exists at `docs/templates/workflows/daily-changelog.yml`
-- [ ] Claude-enhanced template exists at `docs/templates/workflows/daily-changelog-claude.yml`
-- [ ] Both templates run at midnight ET (5 AM UTC)
-- [ ] Both templates include manual trigger (workflow_dispatch)
-- [ ] Both templates prevent infinite loops (skip ci)
-- [ ] Documentation explains setup steps for each template
-- [ ] CLAUDE.md updated with new capability
-- [ ] README.md updated with documentation
-- [ ] Changelog entry added
+- [x] Bash template workflow file exists at `docs/templates/workflows/daily-changelog.yml`
+- [x] Claude-enhanced template exists at `docs/templates/workflows/daily-changelog-claude.yml`
+- [x] Both templates run at midnight ET (5 AM UTC)
+- [x] Both templates include manual trigger (workflow_dispatch)
+- [x] Both templates prevent infinite loops (skip ci)
+- [x] Documentation explains setup steps for each template
+- [x] CLAUDE.md updated with new capability
+- [x] README.md updated with documentation
+- [x] Changelog entry added
 
 ## Implementation Plan
 
