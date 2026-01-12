@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-12
 
 ### Added
+- **Auto-update-docs skill (v0.1.1)** - Say "update the docs" to detect and fix documentation drift. Finds undocumented commands/skills and version mismatches, then updates CLAUDE.md and README.md tables automatically
 - **Semantic versioning (v0.1.0)** - Plugin now uses proper semver starting at 0.1.0 for pre-production development. Version bumps are integrated into the commit skill with smart detection: fixes auto-bump patch, features prompt for minor/patch/none
 - **CI validation on every PR** - GitHub Actions validates JSON syntax, plugin structure, script permissions, and runs hook unit tests
 - **Hook script unit tests** - `./scripts/test-hooks.sh` validates hook behavior without needing a Claude Code session

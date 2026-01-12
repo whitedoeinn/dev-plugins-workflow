@@ -28,6 +28,7 @@ dev-plugins-workflows/
 ├── scripts/                # Helper scripts
 │   ├── wdi                 # Global CLI for project bootstrapping
 │   ├── check-deps.sh       # Dependency and standards checker
+│   ├── check-docs-drift.sh # Detects documentation drift
 │   ├── pre-tool-standards-check.sh  # PreToolUse hook for commit skill + standards
 │   ├── validate-dependency-map.sh   # Validates dependency map accuracy
 │   └── get-standard-deps.sh         # Helper for parsing dependency map
@@ -49,7 +50,9 @@ dev-plugins-workflows/
 │       ├── repo-type.md
 │       └── package-location.md
 ├── skills/                 # Auto-invoked skills
-│   └── commit/             # Smart commit skill (say "commit these changes")
+│   ├── commit/             # Smart commit skill (say "commit these changes")
+│   │   └── SKILL.md
+│   └── auto-update-docs/   # Doc sync skill (say "update the docs")
 │       └── SKILL.md
 └── install.sh              # Bootstrap installation script
 ```
@@ -68,6 +71,7 @@ dev-plugins-workflows/
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
 
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
 > The skill ensures changelog updates, runs tests, and performs simplicity review.
@@ -181,7 +185,7 @@ This validates hook behavior without needing a full Claude Code session.
 
 ## Version
 
-Current version: 0.1.0 (see `.claude-plugin/plugin.json`)
+Current version: 0.1.1 (see `.claude-plugin/plugin.json`)
 
 ### Versioning Policy
 

@@ -34,6 +34,7 @@ cd dev-plugins-workflows
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
 
 ### Standards Commands
 
