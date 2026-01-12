@@ -28,7 +28,7 @@ dev-plugins-workflows/
 ├── scripts/                # Helper scripts
 │   ├── wdi                 # Global CLI for project bootstrapping
 │   ├── check-deps.sh       # Dependency and standards checker
-│   ├── pre-tool-standards-check.sh  # PreToolUse hook for standards detection
+│   ├── pre-tool-standards-check.sh  # PreToolUse hook for commit skill + standards
 │   ├── validate-dependency-map.sh   # Validates dependency map accuracy
 │   └── get-standard-deps.sh         # Helper for parsing dependency map
 ├── docs/                   # Documentation
@@ -68,6 +68,10 @@ dev-plugins-workflows/
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+
+> **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
+> The skill ensures changelog updates, runs tests, and performs simplicity review.
+> A PreToolUse hook will warn if you try to run `git commit` directly.
 
 ### Standards Commands
 

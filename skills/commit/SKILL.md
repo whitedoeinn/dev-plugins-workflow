@@ -20,6 +20,8 @@ When the user wants to commit:
 1. Run `git status --short` to check for changes
 2. If no changes: Tell user "Nothing to commit"
 3. If changes exist: Proceed with the full workflow below
+
+**Note:** All `git commit` commands must use `COMMIT_SKILL_ACTIVE=1 git commit ...` to bypass the hook that blocks direct commits.
 </quick_start>
 
 <flags>
@@ -149,7 +151,7 @@ Rules:
 
 ```bash
 git add docs/changelog.md
-git commit --amend --no-edit
+COMMIT_SKILL_ACTIVE=1 git commit --amend --no-edit
 git push
 ```
 
@@ -186,4 +188,5 @@ A successful commit workflow:
 - Aborts on merge conflicts
 - Creates docs/changelog.md if missing
 - **Requires:** compound-engineering plugin for simplicity review and --summary
+- **IMPORTANT:** All `git commit` commands MUST be prefixed with `COMMIT_SKILL_ACTIVE=1` to bypass the PreToolUse hook that blocks direct commits. Example: `COMMIT_SKILL_ACTIVE=1 git commit -m "message"`
 </notes>

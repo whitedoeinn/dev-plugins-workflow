@@ -1,9 +1,12 @@
 #!/bin/bash
-# PreToolUse hook for standards file change detection
-# Part of the Standards Update Protocol
+# PreToolUse hook for git commit interception
+# Part of the Standards Update Protocol and Commit Skill Enforcement
 #
-# This hook intercepts Bash commands and checks for git commits
-# when standard files are staged. It warns but doesn't block.
+# This hook intercepts Bash commands and:
+# 1. Reminds to use the commit skill (for changelog updates, tests, review)
+# 2. Warns when standard files are staged
+#
+# Advisory only - warns but doesn't block.
 
 set -e
 
@@ -18,13 +21,41 @@ if [[ ! "$COMMAND" =~ ^git[[:space:]]+commit ]] && [[ ! "$COMMAND" =~ \&\&[[:spa
   exit 0
 fi
 
-# Check for staged standard files
+# ============================================================
+# Check 1: Enforce commit skill usage
+# ============================================================
+# Block direct git commit unless COMMIT_SKILL_ACTIVE is set.
+# The commit skill sets this marker before running git commands.
+
+if [ "$COMMIT_SKILL_ACTIVE" != "1" ]; then
+  {
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  ❌ Direct git commit blocked"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    echo "  Use the commit skill instead:"
+    echo "    Say \"commit these changes\""
+    echo ""
+    echo "  The skill ensures:"
+    echo "    • Changelog is updated"
+    echo "    • Tests pass"
+    echo "    • Code is reviewed for simplicity"
+    echo ""
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+  } >&2
+  exit 1  # Block the commit
+fi
+
+# ============================================================
+# Check 2: Standards file change detection
+# ============================================================
 STAGED_STANDARDS=$(git diff --cached --name-only 2>/dev/null | grep "^docs/standards/.*\.md$" || true)
 
 if [ -n "$STAGED_STANDARDS" ]; then
-  # Output warning to stderr (shown to user)
+  # Output additional warning to stderr
   {
-    echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "  Standards file change detected in commit"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

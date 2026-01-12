@@ -9,6 +9,7 @@ All notable changes documented here.
 ### Changed
 - **Smarter feature workflow** - Claude now assesses complexity and suggests target subproject after research, reducing upfront questions from 5 to 3
 - **Renamed `new-package` to `new-subproject`** - clearer terminology for mono-repo components
+- **Commit skill now enforced** - Direct `git commit` blocked by PreToolUse hook; must use commit skill for changelog updates and quality gates
 
 ---
 
