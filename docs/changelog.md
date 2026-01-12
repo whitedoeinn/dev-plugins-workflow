@@ -9,6 +9,15 @@ All notable changes documented here.
 ### Breaking Change
 - **Commit workflow is now a skill** - say "commit these changes" instead of running `/wdi-workflows:commit`. Same quality gates (tests, review, changelog) but smoother UX.
 
+### Added - `wdi` CLI
+- **Standards-aware project creation from terminal** - `wdi create_project` guides you through naming before Claude Code even starts, preventing misnamed directories
+- **Environment doctor** - `wdi doctor` checks and installs dependencies (git, gh, jq, claude) using your package manager
+- **Configurable domains** - `wdi config` lets you set business domains, plugin domains, GitHub org - values populate interview choices
+- **Full interview flow** - same REPO-STANDARDS.md compliance as `/wdi-workflows:new-repo` but works pre-Claude-Code
+- **Exception tracking** - non-standard names get documented with reasons, issues created for standard reviews
+
+Install: `curl -sSL .../scripts/wdi | bash -s install`
+
 ### Fixed
 - Skills now auto-invoke properly - directory wasn't registered in plugin.json
 - Changelog entries now guide toward impact over description - prevents generic "added X" entries
