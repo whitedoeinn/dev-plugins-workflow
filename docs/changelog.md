@@ -7,6 +7,9 @@ All notable changes documented here.
 ## 2026-01-12
 
 ### Added
+- **Environment consistency validation (v0.1.4)** - Automatic environment validation on every session start. Checks required plugins and CLI tools against `env-baseline.json`, auto-remediates fixable issues (missing plugins, jq), and blocks with clear guidance for unfixable issues (gh auth). Say "check my config" to manually re-validate. Foundation for future "safety scissor" mode for non-developer users
+- **sync-config skill** - Auto-invokes on "check my config" to validate environment against baseline with detailed output
+- **Component labels for GitHub issues** - `component:cli`, `component:hooks`, `component:commands`, `component:skills`, `component:standards`, `component:core` for filtering issues by area
 - **Daily changelog GitHub Action templates** - Two workflow templates for automatic daily commit summaries. Bash version (free, reliable) and Claude-enhanced version (smarter AI summaries). Both run at midnight ET with manual trigger support. Located in `docs/templates/workflows/`
 - **Enhanced-Ralph command (v0.1.2)** - Quality-gated feature execution with research agents and type-specific reviews. Detects 8 task types (ui, database, api, security, data, test, config, external), invokes appropriate research/review agents, and enforces quality gates per task. Supports `--strict`, `--fast`, `--skip-gates`, and `--continue` flags
 - **Milestone command (v0.1.2)** - Create and manage milestones that group related features for delivery. Execute entire milestones with `--milestone` flag on enhanced-ralph

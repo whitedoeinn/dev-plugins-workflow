@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.1.3 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.1.4 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
