@@ -37,6 +37,7 @@ cd dev-plugins-workflows
 |-------|---------|-------------|
 | `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
 | `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
+| `sync-config` | "check my config" | Validate environment against baseline, auto-remediate drift |
 
 ### Standards Commands
 
@@ -185,6 +186,8 @@ Quick fixes:
 - **"Unknown skill: commit"** → Plugin not installed. Run `install.sh`
 - **Commands not found** → Restart Claude Code after installation
 - **Simplicity review fails** → Use `--skip-review` or fix the issues
+- **"Environment cannot be auto-fixed"** → Follow the remediation steps shown, then say "check my config"
+- **"gh not authenticated"** → Run `gh auth login` to authenticate GitHub CLI
 
 ## Development Standards
 

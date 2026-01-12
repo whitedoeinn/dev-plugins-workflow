@@ -30,11 +30,13 @@ dev-plugins-workflows/
 ├── scripts/                # Helper scripts
 │   ├── wdi                 # Global CLI for project bootstrapping
 │   ├── check-deps.sh       # Dependency and standards checker
+│   ├── validate-env.sh     # Environment validation with auto-remediation
 │   ├── check-docs-drift.sh # Detects documentation drift
 │   ├── pre-tool-standards-check.sh  # PreToolUse hook for commit skill + standards
 │   ├── validate-dependency-map.sh   # Validates dependency map accuracy
 │   ├── get-standard-deps.sh         # Helper for parsing dependency map
 │   └── test-enhanced-ralph.sh       # Test scenarios for enhanced-ralph
+├── env-baseline.json       # Environment baseline definition
 ├── docs/                   # Documentation
 │   ├── standards/          # Development standards
 │   │   ├── REPO-STANDARDS.md
@@ -62,7 +64,9 @@ dev-plugins-workflows/
 ├── skills/                 # Auto-invoked skills
 │   ├── commit/             # Smart commit skill (say "commit these changes")
 │   │   └── SKILL.md
-│   └── auto-update-docs/   # Doc sync skill (say "update the docs")
+│   ├── auto-update-docs/   # Doc sync skill (say "update the docs")
+│   │   └── SKILL.md
+│   └── sync-config/        # Environment validation (say "check my config")
 │       └── SKILL.md
 ├── test/                   # Test fixtures
 │   └── fixtures/           # Test data for enhanced-ralph scenarios
@@ -88,6 +92,7 @@ dev-plugins-workflows/
 |-------|---------|-------------|
 | `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
 | `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
+| `sync-config` | "check my config" | Validate environment and auto-remediate drift |
 
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
 > The skill ensures changelog updates, runs tests, and performs simplicity review.
@@ -152,6 +157,33 @@ This plugin requires the `compound-engineering` plugin for:
 - Research agents (repo-research-analyst, git-history-analyzer, etc.)
 - Review agents (code-simplicity-reviewer, security-sentinel, etc.)
 - Workflow skills (plan, work, review, compound)
+
+## Environment Validation
+
+On every session start, the plugin validates your environment against `env-baseline.json`:
+
+1. **Required plugins** - Checks and auto-installs missing plugins
+2. **Required CLI tools** - Checks for gh, jq, and auto-installs if possible
+3. **Authentication** - Checks gh auth status
+
+### Validation Outcomes
+
+| State | What Happens |
+|-------|--------------|
+| Valid | Brief confirmation message |
+| Auto-fixed | Shows what was fixed, then confirms valid |
+| Blocked | Shows issues, remediation steps, and admin contact |
+
+### Manual Re-validation
+
+Say "check my config" to run validation manually (useful after fixing issues).
+
+### Customizing the Baseline
+
+Edit `env-baseline.json` to:
+- Add/remove required plugins
+- Add/remove required CLI tools
+- Update admin contact information
 
 ## Key Standards
 
