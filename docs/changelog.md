@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-12
 
 ### Added
+- **Semantic versioning (v0.1.0)** - Plugin now uses proper semver starting at 0.1.0 for pre-production development. Version bumps are integrated into the commit skill with smart detection: fixes auto-bump patch, features prompt for minor/patch/none
 - **CI validation on every PR** - GitHub Actions validates JSON syntax, plugin structure, script permissions, and runs hook unit tests
 - **Hook script unit tests** - `./scripts/test-hooks.sh` validates hook behavior without needing a Claude Code session
 - **Development workflow docs** - CLAUDE.md and troubleshooting.md now explain how to test hooks during plugin development

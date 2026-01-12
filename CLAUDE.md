@@ -181,4 +181,21 @@ This validates hook behavior without needing a full Claude Code session.
 
 ## Version
 
-Current version: 1.1.0 (see `.claude-plugin/plugin.json`)
+Current version: 0.1.0 (see `.claude-plugin/plugin.json`)
+
+### Versioning Policy
+
+This plugin uses [semantic versioning](https://semver.org/). During `0.x.x` development:
+
+| Bump | When to use |
+|------|-------------|
+| `patch` | Bug fixes, small enhancements, documentation |
+| `minor` | New features, breaking changes |
+| `major` | Reserved for `1.0.0` (production-ready release) |
+
+The commit skill automatically handles version bumps based on commit type:
+- `fix:`, `perf:` → auto-bump patch
+- `feat:`, `refactor:` → prompts for minor/patch/none
+- `docs:`, `chore:`, `test:`, `style:` → no bump
+
+Run manually: `./scripts/bump-version.sh [patch|minor|major]`

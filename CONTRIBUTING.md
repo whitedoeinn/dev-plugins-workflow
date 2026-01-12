@@ -101,30 +101,27 @@ Changes to command files take effect immediately in this repo. To test:
 
 ## Pushing Changes
 
-1. **Update version** (for significant changes)
+Use the commit skill - it handles everything automatically:
 
-   Edit `.claude-plugin/plugin.json`:
-   ```json
-   "version": "1.1.0"
-   ```
+```
+Say: "commit these changes"
+```
 
-2. **Update changelog**
+The commit skill will:
+1. Run tests (if applicable)
+2. Perform simplicity review (for large changes)
+3. Bump version based on commit type (`feat:` → prompt, `fix:` → auto patch)
+4. Update changelog
+5. Create git tag
+6. Push to remote
 
-   Add entry to `docs/changelog.md`:
-   ```markdown
-   ## YYYY-MM-DD
-
-   - Added: New /my-command workflow
-   - Changed: Updated commit skill to handle edge case
-   ```
-
-3. **Commit and push**
-
-   ```bash
-   git add .
-   git commit -m "Add /my-command workflow"
-   git push origin main
-   ```
+**Manual alternative** (not recommended):
+```bash
+./scripts/bump-version.sh patch  # or minor
+# Edit docs/changelog.md
+git add . && git commit -m "feat: Add new feature"
+git push
+```
 
 4. **Other projects update**
 

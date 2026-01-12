@@ -95,6 +95,54 @@ Analyze diff. Focus on "why" not "what". Keep concise.
 | fix/NNN-*          | Fixes #NNN:                               |
 | main               | Ask: (f)eature, (i)ssue, (h)otfix, (n)one |
 
+## Step 6.5: Version Bump (if plugin repo)
+
+Skip this step if `.claude-plugin/plugin.json` doesn't exist or has no `version` field.
+
+### Detect bump type from commit
+
+Analyze the proposed commit message per `docs/standards/COMMIT-STANDARDS.md`:
+
+| Signal | Action |
+|--------|--------|
+| Message starts with `docs:`, `chore:`, `test:`, `style:` | No bump |
+| Message starts with `fix:`, `perf:` | Auto-bump patch |
+| Message starts with `feat:`, `refactor:` | Prompt |
+| Message body contains `BREAKING CHANGE:` | Prompt |
+| Staged files in `commands/`, `skills/`, `hooks/` | Prompt |
+
+### Auto-bump (no prompt)
+
+For `fix:` or `perf:` commits, bump patch automatically:
+```
+Version: 0.1.0 → 0.1.1 (patch for fix)
+```
+
+### Prompt when needed
+
+For features, refactors, or core file changes:
+```
+Version bump for feature commit.
+Current: 0.1.0
+
+  [m] Minor (0.2.0) - New feature or capability
+  [p] Patch (0.1.1) - Small enhancement
+  [n] None - Skip version bump
+
+Choice [m/p/n]:
+```
+
+With `--yes`: Default to patch for features, skip for breaking (requires explicit choice).
+
+### Apply bump
+
+```bash
+NEW_VERSION=$(./scripts/bump-version.sh <type>)
+git add .claude-plugin/plugin.json
+```
+
+The version change is included in the same commit.
+
 ## Step 7: Confirm Message
 
 ```
@@ -161,6 +209,21 @@ git branch -d <branch>
 git push origin --delete <branch>
 ```
 
+## Step 10.5: Git Tag (if version bumped)
+
+If a version bump was applied in Step 6.5, create and push a git tag:
+
+```bash
+VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+git tag "v$VERSION"
+git push origin "v$VERSION"
+```
+
+Output:
+```
+Tagged: v0.2.0
+```
+
 ## Step 11: Summary (--summary flag only)
 
 Invoke the changelog skill:
@@ -177,8 +240,10 @@ A successful commit workflow:
 - Tests pass (or skipped with --skip-tests)
 - Simplicity review passes (or skipped)
 - Commit message is meaningful and approved
+- Version bumped appropriately (if plugin repo)
 - Changelog is updated with today's entry
 - Changes are pushed to remote
+- Git tag created (if version bumped)
 - Branch is cleaned up if merged to main
 </success_criteria>
 
