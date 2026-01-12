@@ -495,6 +495,28 @@ Capture what was learned:
 
 **For Complex features:** Update `CLAUDE.md` with new patterns if significant.
 
+### Update Feature Spec
+
+Mark the feature specification as complete:
+
+1. Locate the feature spec file at `docs/product/planning/features/{feature-slug}.md`
+2. Update status: `**Status:** In Progress` → `**Status:** Complete`
+3. Mark all "Done When" checkboxes: `- [ ]` → `- [x]`
+
+```markdown
+# Before
+**Status:** In Progress
+- [ ] Criterion 1
+- [ ] Criterion 2
+
+# After
+**Status:** Complete
+- [x] Criterion 1
+- [x] Criterion 2
+```
+
+Include the spec update in the final commit before pushing.
+
 ### Cleanup
 
 ```bash
@@ -521,6 +543,7 @@ Target: {package}
 ✓ Issue #{issue-number} closed
 ✓ Merged to main
 ✓ Changelog updated
+✓ Feature spec marked complete
 ✓ Learnings documented
 
 Research agents used: {list}
