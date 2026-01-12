@@ -1,7 +1,7 @@
 {
   "name": "wdi-workflows",
   "description": "Compound engineering workflows for feature development and smart commits",
-  "version": "2.0.0",
+  "version": "5dabfc30e25e",
   "author": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
@@ -9,7 +9,12 @@
   "homepage": "https://github.com/whitedoeinn/dev-plugins-workflows",
   "repository": "https://github.com/whitedoeinn/dev-plugins-workflows",
   "license": "MIT",
-  "keywords": ["workflow", "feature", "commit", "compound-engineering"],
+  "keywords": [
+    "workflow",
+    "feature",
+    "commit",
+    "compound-engineering"
+  ],
   "commands": "./commands/",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"
