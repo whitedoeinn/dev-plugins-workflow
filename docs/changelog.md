@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-12
 
 ### Added
+- **Daily changelog GitHub Action templates** - Two workflow templates for automatic daily commit summaries. Bash version (free, reliable) and Claude-enhanced version (smarter AI summaries). Both run at midnight ET with manual trigger support. Located in `docs/templates/workflows/`
 - **Enhanced-Ralph command (v0.1.2)** - Quality-gated feature execution with research agents and type-specific reviews. Detects 8 task types (ui, database, api, security, data, test, config, external), invokes appropriate research/review agents, and enforces quality gates per task. Supports `--strict`, `--fast`, `--skip-gates`, and `--continue` flags
 - **Milestone command (v0.1.2)** - Create and manage milestones that group related features for delivery. Execute entire milestones with `--milestone` flag on enhanced-ralph
 - **Milestone mode for enhanced-ralph** - Execute all features in a milestone sequentially with automatic dependency resolution via topological sort. Detects circular dependencies, cross-milestone dependencies, and supports `--force` to proceed despite incomplete prerequisites
