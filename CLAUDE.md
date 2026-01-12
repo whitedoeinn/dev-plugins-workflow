@@ -14,6 +14,8 @@ This is the source repository for the `wdi-workflows` Claude Code plugin. It pro
 dev-plugins-workflows/
 ├── commands/               # Markdown-based command definitions
 │   ├── feature.md          # /wdi-workflows:feature workflow
+│   ├── enhanced-ralph.md   # /wdi-workflows:enhanced-ralph quality-gated execution
+│   ├── milestone.md        # /wdi-workflows:milestone grouping features
 │   ├── setup.md            # /wdi-workflows:setup verification
 │   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
 │   ├── new-subproject.md   # /wdi-workflows:new-subproject scaffolding
@@ -31,7 +33,8 @@ dev-plugins-workflows/
 │   ├── check-docs-drift.sh # Detects documentation drift
 │   ├── pre-tool-standards-check.sh  # PreToolUse hook for commit skill + standards
 │   ├── validate-dependency-map.sh   # Validates dependency map accuracy
-│   └── get-standard-deps.sh         # Helper for parsing dependency map
+│   ├── get-standard-deps.sh         # Helper for parsing dependency map
+│   └── test-enhanced-ralph.sh       # Test scenarios for enhanced-ralph
 ├── docs/                   # Documentation
 │   ├── standards/          # Development standards
 │   │   ├── REPO-STANDARDS.md
@@ -41,6 +44,7 @@ dev-plugins-workflows/
 │   │   ├── COMMIT-STANDARDS.md
 │   │   └── CLAUDE-CODE-STANDARDS.md
 │   ├── context/            # Session context files (for resuming work)
+│   ├── showcase/           # Visual documentation and guides
 │   ├── architecture.md
 │   ├── troubleshooting.md
 │   └── changelog.md
@@ -54,6 +58,10 @@ dev-plugins-workflows/
 │   │   └── SKILL.md
 │   └── auto-update-docs/   # Doc sync skill (say "update the docs")
 │       └── SKILL.md
+├── test/                   # Test fixtures
+│   └── fixtures/           # Test data for enhanced-ralph scenarios
+│       ├── features/       # Test feature files
+│       └── milestones/     # Test milestone files
 └── install.sh              # Bootstrap installation script
 ```
 
@@ -64,6 +72,8 @@ dev-plugins-workflows/
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
+| `/wdi-workflows:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi-workflows:milestone` | Create and execute milestone-based feature groupings |
 | `/wdi-workflows:setup` | Verify dependencies and installation status |
 
 ### Skills (Auto-Invoked)
