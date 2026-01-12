@@ -26,6 +26,7 @@ dev-plugins-workflows/
 ├── hooks/                  # Claude Code hooks
 │   └── hooks.json          # SessionStart hook config
 ├── scripts/                # Helper scripts
+│   ├── wdi                 # Global CLI for project bootstrapping
 │   ├── check-deps.sh       # Dependency and standards checker
 │   ├── pre-tool-standards-check.sh  # PreToolUse hook for standards detection
 │   ├── validate-dependency-map.sh   # Validates dependency map accuracy
@@ -38,6 +39,7 @@ dev-plugins-workflows/
 │   │   ├── BRANCH-NAMING.md
 │   │   ├── COMMIT-STANDARDS.md
 │   │   └── CLAUDE-CODE-STANDARDS.md
+│   ├── context/            # Session context files (for resuming work)
 │   ├── architecture.md
 │   ├── troubleshooting.md
 │   └── changelog.md
@@ -76,6 +78,27 @@ dev-plugins-workflows/
 | `/wdi-workflows:check-standards` | Validate current repo against standards |
 | `/wdi-workflows:update-standard` | Impact analysis and guided updates for standard changes |
 | `/wdi-workflows:new-command` | Create a new command and update all dependent files |
+
+## WDI CLI (Pre-Claude-Code)
+
+The `wdi` CLI runs **before** Claude Code starts, solving the problem of creating directories without knowing naming standards.
+
+```bash
+# Install globally
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/scripts/wdi | bash -s install
+
+# Commands
+wdi create_project   # Interactive project creation with standards compliance
+wdi doctor           # Check/install dependencies (git, gh, jq, claude)
+wdi config           # Configure org, domains, project location
+wdi update           # Update CLI to latest version
+```
+
+## Session Context
+
+Save work-in-progress context to `docs/context/` when pausing a task. Files here help resume work across sessions.
+
+To resume: "Read docs/context/{filename}.md and continue"
 
 ## Dependencies
 
