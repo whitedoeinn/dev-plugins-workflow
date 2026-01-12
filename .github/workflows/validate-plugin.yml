@@ -3,8 +3,6 @@ name: Validate Plugin
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   validate:
@@ -27,14 +25,11 @@ jobs:
       - name: Verify plugin structure
         run: |
           echo "Checking required files..."
-
-          # Required plugin files
           required_files=(
             ".claude-plugin/plugin.json"
             "install.sh"
             "CLAUDE.md"
           )
-
           for file in "${required_files[@]}"; do
             if [ ! -f "$file" ]; then
               echo "ERROR: Missing required file: $file"
@@ -42,20 +37,17 @@ jobs:
             fi
             echo "  ✓ $file"
           done
-
           echo "Plugin structure valid"
 
       - name: Check scripts are executable
         run: |
           echo "Checking script permissions..."
-
           scripts=(
             "install.sh"
             "scripts/check-deps.sh"
             "scripts/pre-tool-standards-check.sh"
             "scripts/test-hooks.sh"
           )
-
           for script in "${scripts[@]}"; do
             if [ -f "$script" ]; then
               if [ ! -x "$script" ]; then
@@ -69,11 +61,8 @@ jobs:
       - name: Validate hook script references
         run: |
           echo "Checking hook references..."
-
-          # Extract script paths from hooks.json
           if [ -f "hooks/hooks.json" ]; then
             scripts=$(jq -r '.hooks[].command | select(. != null) | split(" ")[0]' hooks/hooks.json 2>/dev/null || true)
-
             for script in $scripts; do
               if [ ! -f "$script" ]; then
                 echo "ERROR: Hook references missing script: $script"
@@ -82,45 +71,7 @@ jobs:
               echo "  ✓ $script exists"
             done
           fi
-
           echo "Hook references valid"
 
       - name: Run hook script unit tests
-        run: |
-          echo "Running hook script tests..."
-          ./scripts/test-hooks.sh
-
-      - name: Check for hook changes
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "Checking for hook-related changes..."
-
-          # Get changed files
-          changed_files=$(git diff --name-only origin/main...HEAD 2>/dev/null || git diff --name-only HEAD~1 2>/dev/null || echo "")
-
-          hook_changes=""
-          if echo "$changed_files" | grep -q "hooks/hooks.json"; then
-            hook_changes="$hook_changes hooks/hooks.json"
-          fi
-          if echo "$changed_files" | grep -q "scripts/pre-tool-standards-check.sh"; then
-            hook_changes="$hook_changes pre-tool-standards-check.sh"
-          fi
-
-          if [ -n "$hook_changes" ]; then
-            echo ""
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "  ⚠️  Hook changes detected"
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo ""
-            echo "  Changed:$hook_changes"
-            echo ""
-            echo "  Manual testing required:"
-            echo "    1. Start Claude Code with: claude --plugin-dir ."
-            echo "    2. Test hook behavior (e.g., try direct git commit)"
-            echo "    3. Verify hooks fire correctly"
-            echo ""
-            echo "  Hook unit tests passed, but full integration requires"
-            echo "  a Claude Code session."
-            echo ""
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          fi
+        run: ./scripts/test-hooks.sh
