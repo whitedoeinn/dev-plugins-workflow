@@ -43,6 +43,12 @@ dev-plugins-workflows/
 │   │   ├── BRANCH-NAMING.md
 │   │   ├── COMMIT-STANDARDS.md
 │   │   └── CLAUDE-CODE-STANDARDS.md
+│   ├── templates/          # Reusable templates
+│   │   ├── feature.md      # Feature spec template
+│   │   ├── milestone.md    # Milestone template
+│   │   └── workflows/      # GitHub Actions templates
+│   │       ├── daily-changelog.yml        # Bash-based daily changelog
+│   │       └── daily-changelog-claude.yml # Claude-enhanced version
 │   ├── context/            # Session context files (for resuming work)
 │   ├── showcase/           # Visual documentation and guides
 │   ├── architecture.md
@@ -117,6 +123,28 @@ wdi update           # Update CLI to latest version
 Save work-in-progress context to `docs/context/` when pausing a task. Files here help resume work across sessions.
 
 To resume: "Read docs/context/{filename}.md and continue"
+
+## GitHub Actions Templates
+
+Workflow templates for common CI/CD tasks. Copy to your project's `.github/workflows/`.
+
+### Daily Changelog
+
+Automatically generate daily summaries of commits.
+
+| Template | Description |
+|----------|-------------|
+| `docs/templates/workflows/daily-changelog.yml` | Simple bash-based (free, reliable) |
+| `docs/templates/workflows/daily-changelog-claude.yml` | Claude-enhanced (smarter summaries, requires API key) |
+
+**Setup (Bash version):**
+1. Copy `docs/templates/workflows/daily-changelog.yml` to `.github/workflows/`
+2. Enable write permissions: Settings > Actions > General > Workflow permissions
+
+**Setup (Claude-enhanced):**
+1. Copy `docs/templates/workflows/daily-changelog-claude.yml` to `.github/workflows/`
+2. Add `ANTHROPIC_API_KEY` secret (get one at console.anthropic.com)
+3. Enable write permissions: Settings > Actions > General > Workflow permissions
 
 ## Dependencies
 

@@ -144,6 +144,39 @@ The plugin builds on top of `compound-engineering` which provides:
 
 See [docs/architecture.md](docs/architecture.md) for detailed diagrams.
 
+## Templates
+
+### Daily Changelog Automation
+
+GitHub Action templates for automatic daily commit summaries.
+
+| Template | Cost | Best For |
+|----------|------|----------|
+| [daily-changelog.yml](docs/templates/workflows/daily-changelog.yml) | Free | Most projects |
+| [daily-changelog-claude.yml](docs/templates/workflows/daily-changelog-claude.yml) | ~$0.01-0.05/run | Teams wanting AI-enhanced summaries |
+
+**Quick Setup (Bash version):**
+```bash
+# Copy to your project
+cp docs/templates/workflows/daily-changelog.yml .github/workflows/
+
+# Enable workflow permissions in GitHub:
+# Settings > Actions > General > Workflow permissions > Read and write
+```
+
+**Claude-Enhanced Setup:**
+```bash
+# Copy to your project
+cp docs/templates/workflows/daily-changelog-claude.yml .github/workflows/daily-changelog.yml
+
+# Add your API key as a repository secret:
+# Settings > Secrets and variables > Actions > New repository secret
+# Name: ANTHROPIC_API_KEY
+# Value: (your key from console.anthropic.com)
+```
+
+Both run at midnight Eastern Time and can be triggered manually from the Actions tab.
+
 ## Troubleshooting
 
 Common issues and solutions are documented in [docs/troubleshooting.md](docs/troubleshooting.md).

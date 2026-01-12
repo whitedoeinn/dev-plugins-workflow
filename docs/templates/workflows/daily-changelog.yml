@@ -1,0 +1,105 @@
+# Daily Changelog Summary
+#
+# Generates a daily summary of commits and appends to docs/changelog-daily-summary.md
+#
+# Setup:
+# 1. Copy this file to .github/workflows/daily-changelog.yml
+# 2. Ensure repository allows GitHub Actions to create commits:
+#    Settings > Actions > General > Workflow permissions > Read and write
+# 3. Adjust the cron schedule for your timezone if needed (default: midnight EST)
+#
+# Usage:
+# - Runs automatically at midnight Eastern Time
+# - Manual trigger: Actions > Daily Changelog Summary > Run workflow
+
+name: Daily Changelog Summary
+
+on:
+  schedule:
+    # Midnight ET = 5 AM UTC (EST) / 4 AM UTC (EDT)
+    # Using 5 AM UTC for EST; will run at 1 AM during EDT
+    - cron: '0 5 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    # Prevent infinite loops from bot commits
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Need full history for git log
+
+      - name: Check for commits in last 24 hours
+        id: check_commits
+        run: |
+          COMMIT_COUNT=$(git log --oneline --since="24 hours ago" main | wc -l | tr -d ' ')
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+          if [ "$COMMIT_COUNT" -eq "0" ]; then
+            echo "No commits in the last 24 hours"
+          else
+            echo "Found $COMMIT_COUNT commits"
+          fi
+
+      - name: Generate changelog summary
+        if: steps.check_commits.outputs.commit_count != '0'
+        run: |
+          DATE=$(date +%Y-%m-%d)
+
+          # Create summary header
+          cat > /tmp/summary.md << EOF
+
+---
+
+## $DATE
+
+### Changes
+
+EOF
+
+          # List all commits chronologically
+          git log --since="24 hours ago" main --format="- %s (\`%h\`)" >> /tmp/summary.md
+
+          echo "" >> /tmp/summary.md
+
+          # Add contributors
+          echo "### Contributors" >> /tmp/summary.md
+          git log --since="24 hours ago" main --format="%an" | sort -u | sed 's/^/- /' >> /tmp/summary.md
+
+          echo "" >> /tmp/summary.md
+
+          # Show the summary
+          cat /tmp/summary.md
+
+      - name: Append to daily summary file
+        if: steps.check_commits.outputs.commit_count != '0'
+        run: |
+          # Create file if it doesn't exist
+          if [ ! -f docs/changelog-daily-summary.md ]; then
+            cat << 'HEADER_EOF' > docs/changelog-daily-summary.md
+# Daily Changelog Summaries
+
+Auto-generated daily summaries of commits to main.
+
+HEADER_EOF
+          fi
+
+          # Prepend new summary (after header)
+          head -4 docs/changelog-daily-summary.md > /tmp/header.md
+          tail -n +5 docs/changelog-daily-summary.md > /tmp/body.md 2>/dev/null || true
+          cat /tmp/header.md /tmp/summary.md /tmp/body.md > docs/changelog-daily-summary.md
+
+      - name: Commit and push
+        if: steps.check_commits.outputs.commit_count != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/changelog-daily-summary.md
+          git diff --staged --quiet || git commit -m "chore: Add daily changelog summary for $(date +%Y-%m-%d) [skip ci]"
+          git push
