@@ -1,0 +1,117 @@
+# Daily Changelog Summary (Claude-Enhanced)
+#
+# AI-powered daily changelog generation with smarter summaries.
+# Uses Claude to analyze commits and generate natural language summaries.
+#
+# Setup:
+# 1. Copy this file to .github/workflows/daily-changelog.yml
+# 2. Create repository secret ANTHROPIC_API_KEY with your API key
+#    - Get a key at: https://console.anthropic.com/settings/keys
+# 3. Ensure repository allows GitHub Actions to create commits:
+#    Settings > Actions > General > Workflow permissions > Read and write
+# 4. Adjust the cron schedule for your timezone if needed (default: midnight EST)
+#
+# Usage:
+# - Runs automatically at midnight Eastern Time
+# - Manual trigger: Actions > Daily Changelog Summary > Run workflow
+#
+# Cost: ~$0.01-0.05 per run (depends on commit volume)
+
+name: Daily Changelog Summary (Claude)
+
+on:
+  schedule:
+    # Midnight ET = 5 AM UTC (EST) / 4 AM UTC (EDT)
+    - cron: '0 5 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for commits in last 24 hours
+        id: check_commits
+        run: |
+          COMMIT_COUNT=$(git log --oneline --since="24 hours ago" main | wc -l | tr -d ' ')
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+          if [ "$COMMIT_COUNT" -eq "0" ]; then
+            echo "No commits in the last 24 hours"
+          else
+            echo "Found $COMMIT_COUNT commits"
+          fi
+
+      - name: Gather commit data
+        if: steps.check_commits.outputs.commit_count != '0'
+        id: commits
+        run: |
+          # Get detailed commit info for Claude
+          {
+            echo "COMMITS<<EOF"
+            git log --since="24 hours ago" main --format="---
+hash: %h
+author: %an
+date: %ad
+subject: %s
+body: %b" --date=short
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Generate changelog with Claude
+        if: steps.check_commits.outputs.commit_count != '0'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Generate a daily changelog summary for today's commits.
+
+            DATE: $(date +%Y-%m-%d)
+
+            COMMITS:
+            ${{ steps.commits.outputs.COMMITS }}
+
+            Write a brief changelog entry in markdown format:
+            - Start with "## YYYY-MM-DD" header
+            - Add a one-line summary of what was accomplished
+            - List the commits with brief descriptions
+            - Include contributor names at the end
+
+            Save the markdown to /tmp/summary.md
+
+          claude_args: |
+            --allowedTools "Write,Bash(date:*)"
+
+      - name: Append to daily summary file
+        if: steps.check_commits.outputs.commit_count != '0'
+        run: |
+          if [ ! -f docs/changelog-daily-summary.md ]; then
+            cat << 'HEADER_EOF' > docs/changelog-daily-summary.md
+# Daily Changelog Summaries
+
+Auto-generated daily summaries of commits to main (Claude-enhanced).
+
+HEADER_EOF
+          fi
+
+          # Prepend new summary (after header)
+          head -4 docs/changelog-daily-summary.md > /tmp/header.md
+          tail -n +5 docs/changelog-daily-summary.md > /tmp/body.md 2>/dev/null || true
+          cat /tmp/header.md /tmp/summary.md /tmp/body.md > docs/changelog-daily-summary.md
+
+      - name: Commit and push
+        if: steps.check_commits.outputs.commit_count != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/changelog-daily-summary.md
+          git diff --staged --quiet || git commit -m "chore: Add daily changelog summary for $(date +%Y-%m-%d) [skip ci]"
+          git push
