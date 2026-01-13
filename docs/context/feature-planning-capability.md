@@ -42,8 +42,8 @@ Interview → Pre-flight → Research → Plan → Work → Review → Compound
 - Changelog entry on completion
 
 **Flags:**
-- `--yes` - Auto-continue through phases
-- `--plan-only` - Stop after planning (for discussion before committing)
+- `--yes` / `-y` - Auto-continue through phases
+- `--plan` - Stop after planning (for discussion before committing)
 
 ### 2. Feature Template
 

@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.1.5 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.1.6 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -109,8 +109,8 @@ Orchestrates the complete feature development cycle:
 5. **Compound** - Merge, changelog, document learnings
 
 Flags:
-- `--yes` - Auto-continue through phases
-- `--plan-only` - Stop after planning
+- `--yes` / `-y` - Auto-continue through phases
+- `--plan` - Stop after planning
 - `--skip-research` - Skip research agents
 
 ### commit skill

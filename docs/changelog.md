@@ -4,6 +4,13 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-13
+
+### Changed
+- **Cleaner CLI flags (v0.1.6)** - Renamed feature command flag `--plan-only` → `--plan` (simpler). Added `-y` short form for `--yes`. Old flag still works as alias for backwards compatibility
+
+---
+
 ## 2026-01-12
 
 ### Added

@@ -8,10 +8,16 @@ Full feature development workflow using an interview-driven approach to tailor r
 
 ## Flags
 
-| Flag | Description |
-|------|-------------|
-| `--yes` | Auto-continue through phases (no pauses) |
-| `--plan-only` | Stop after planning phase |
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--yes` | `-y` | Auto-continue through phases (no pauses) |
+| `--plan` | | Stop after planning phase |
+
+### Aliases (backwards compatibility)
+
+| Alias | Maps to |
+|-------|---------|
+| `--plan-only` | `--plan` |
 
 ---
 
@@ -327,7 +333,7 @@ Feature: docs/product/planning/features/{feature-slug}.md
 Review the plan and continue to work? (y)es, (e)dit plan, (a)bort:
 ```
 
-If `--plan-only`, stop here.
+If `--plan`, stop here.
 
 ---
 
