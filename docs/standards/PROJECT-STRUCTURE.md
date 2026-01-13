@@ -138,11 +138,15 @@ For projects with formal product planning, use this structure:
 
 ```
 docs/product/
+├── ideas/                      # Raw ideas (captured but not shaped)
+│   └── {idea-slug}.md          # Minimal idea files
+├── shaping/                    # Ideas being actively shaped
+│   └── {idea-slug}.md          # Ideas under design/research
 ├── design/                     # Design documents
 │   ├── prd-{name}.md           # Product Requirements Documents
 │   └── {design-doc}.md         # Other design docs
 └── planning/                   # Planning artifacts
-    ├── features/               # Feature specifications
+    ├── features/               # Feature specifications (ready to build)
     │   ├── {feature-slug}.md   # Individual feature files
     │   └── ...
     ├── milestones/             # Milestone definitions

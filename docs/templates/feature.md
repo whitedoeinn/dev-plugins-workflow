@@ -1,6 +1,6 @@
 # {Feature Title}
 
-**Status:** Planning | In Progress | Review | Complete
+**Status:** Idea | Shaping | Planning | In Progress | Review | Complete
 **Created:** {YYYY-MM-DD}
 **Issue:** #{issue-number}
 **Branch:** {branch-name}

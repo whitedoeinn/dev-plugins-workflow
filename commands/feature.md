@@ -18,6 +18,7 @@ Full feature development workflow using an interview-driven approach to tailor r
 
 | Alias | Maps to |
 |-------|---------|
+| `--capture` | `--idea` |
 | `--plan-only` | `--plan` |
 
 ---

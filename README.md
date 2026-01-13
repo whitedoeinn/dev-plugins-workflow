@@ -111,6 +111,7 @@ Orchestrates the complete feature development cycle:
 
 Flags:
 - `--yes` / `-y` - Auto-continue through phases
+- `--idea` - Quick idea capture (creates idea file + draft issue, no implementation)
 - `--plan` - Stop after planning
 - `--idea` - Quick idea capture mode (minimal structure, no implementation)
 - `--skip-research` - Skip research agents

@@ -44,6 +44,7 @@ Interview → Pre-flight → Research → Plan → Work → Review → Compound
 **Flags:**
 - `--yes` / `-y` - Auto-continue through phases
 - `--plan` - Stop after planning (for discussion before committing)
+- `--idea` - Quick idea capture mode
 
 ### 2. Feature Template
 

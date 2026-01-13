@@ -16,6 +16,9 @@ All notable changes documented here.
 
 ## 2026-01-12
 
+### Changed
+- **Cleaner CLI flags (v0.1.6)** - Renamed feature command flags based on CLI best practices research. `--capture` → `--idea` (matches lifecycle terminology), `--plan-only` → `--plan` (simpler). Added `-y` short form for `--yes`. Old flags still work as aliases for backwards compatibility
+
 ### Added
 - **Auto-mark feature specs complete (v0.1.5)** - Feature workflow compound phase now automatically marks feature specification files as complete, updating status and checkboxes. No more manual cleanup after merging features
 - **Environment consistency validation (v0.1.4)** - Automatic environment validation on every session start. Checks required plugins and CLI tools against `env-baseline.json`, auto-remediates fixable issues (missing plugins, jq), and blocks with clear guidance for unfixable issues (gh auth). Say "check my config" to manually re-validate. Foundation for future "safety scissor" mode for non-developer users
