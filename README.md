@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.1.6 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.1.7 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -27,6 +27,7 @@ cd dev-plugins-workflows
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
+| `/wdi-workflows:feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
 | `/wdi-workflows:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi-workflows:milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi-workflows:setup` | Set up and verify plugin dependencies |
@@ -111,6 +112,7 @@ Orchestrates the complete feature development cycle:
 Flags:
 - `--yes` / `-y` - Auto-continue through phases
 - `--plan` - Stop after planning
+- `--idea` - Quick idea capture mode (minimal structure, no implementation)
 - `--skip-research` - Skip research agents
 
 ### commit skill

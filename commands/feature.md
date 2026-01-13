@@ -12,6 +12,7 @@ Full feature development workflow using an interview-driven approach to tailor r
 |------|-------|-------------|
 | `--yes` | `-y` | Auto-continue through phases (no pauses) |
 | `--plan` | | Stop after planning phase |
+| `--idea` | | Quick idea capture mode (minimal structure, no implementation) |
 
 ### Aliases (backwards compatibility)
 
@@ -23,11 +24,159 @@ Full feature development workflow using an interview-driven approach to tailor r
 
 ## Workflow Overview
 
+### Full Workflow (default)
 ```
 Interview → Pre-flight → Research → Plan → Work → Review → Compound
 ```
 
 Each phase pauses for approval unless `--yes` is passed.
+
+### Idea Mode (`--idea`)
+```
+Quick Interview → Create Idea File → Create Draft Issue → Done
+```
+
+Use idea mode when you have an idea but aren't ready to implement. Creates a lightweight idea spec and draft GitHub issue for later triage.
+
+---
+
+## Idea Mode
+
+When `--idea` flag is passed, run this simplified workflow instead of the full workflow.
+
+### Step 1: Quick Interview
+
+Use `AskUserQuestion` to gather minimal context.
+
+#### Question 1: Idea Title
+
+```
+What's the idea? (short title)
+```
+(Free text - becomes the idea title and issue title)
+
+#### Question 2: Problem Statement
+
+```
+What problem does this solve or what opportunity does it address?
+```
+(Free text - the "why" behind the idea)
+
+#### Question 3: Appetite
+
+```
+How much time would this be worth?
+```
+
+| Option | Description |
+|--------|-------------|
+| **Small** | Hours to days - quick win |
+| **Medium** | 1-2 weeks - meaningful feature |
+| **Big** | 3-6 weeks - significant undertaking |
+| **Unknown** | Need research to estimate |
+
+#### Question 4: Rough Solution (Optional)
+
+```
+Any initial thoughts on approach? (leave blank if none)
+```
+(Free text - optional early thinking)
+
+#### Question 5: Open Questions
+
+```
+What questions need answers before this can be built?
+```
+(Free text - captures unknowns)
+
+### Step 2: Create Idea File
+
+Create idea file from template:
+
+1. Read template from `docs/templates/idea.md`
+2. Generate slug from title (lowercase, hyphens)
+3. Fill in placeholders from interview
+4. Save to `docs/product/ideas/{slug}.md`
+
+Create directories if needed:
+```bash
+mkdir -p docs/product/ideas
+```
+
+### Step 3: Create Draft GitHub Issue
+
+```bash
+gh issue create \
+  --title "Idea: {title}" \
+  --label "status:idea" \
+  --body "$(cat <<'EOF'
+## Problem
+
+{problem-statement}
+
+## Appetite
+
+{appetite}
+
+## Rough Solution
+
+{rough-solution or "TBD - needs shaping"}
+
+## Open Questions
+
+{open-questions}
+
+---
+
+**Spec:** `docs/product/ideas/{slug}.md`
+**Status:** Idea - not ready for implementation
+
+*Captured by `/wdi-workflows:feature --idea`*
+EOF
+)"
+```
+
+If `status:idea` label doesn't exist, create it:
+```bash
+gh label create "status:idea" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null || true
+```
+
+### Step 4: Output
+
+```
+Idea Captured
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Title: {title}
+Appetite: {appetite}
+
+✓ Created: docs/product/ideas/{slug}.md
+✓ Issue: #{issue-number} (status:idea)
+
+Next steps:
+• Shape the idea when ready: research feasibility, define approach
+• Promote to feature: /wdi-workflows:feature @docs/product/ideas/{slug}.md
+• Or close the issue if the idea doesn't pan out
+```
+
+**Exit after idea mode - do not continue to full workflow.**
+
+---
+
+## Promoting Ideas to Features
+
+When an idea is ready for implementation, run the feature workflow with the idea file:
+
+```
+/wdi-workflows:feature @docs/product/ideas/{slug}.md
+```
+
+The workflow will:
+1. Read the idea file and extract problem/appetite/questions
+2. Pre-populate interview answers from the idea
+3. Run full research → plan → work → review → compound workflow
+4. Move the file from `docs/product/ideas/` to `docs/product/planning/features/`
+5. Update the GitHub issue labels: `status:idea` → `status:in-progress`
 
 ---
 

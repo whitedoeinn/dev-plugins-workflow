@@ -47,6 +47,7 @@ dev-plugins-workflows/
 │   │   └── CLAUDE-CODE-STANDARDS.md
 │   ├── templates/          # Reusable templates
 │   │   ├── feature.md      # Feature spec template
+│   │   ├── idea.md         # Idea capture template
 │   │   ├── milestone.md    # Milestone template
 │   │   └── workflows/      # GitHub Actions templates
 │   │       ├── daily-changelog.yml        # Bash-based daily changelog
@@ -82,6 +83,8 @@ dev-plugins-workflows/
 | Command | Description |
 |---------|-------------|
 | `/wdi-workflows:feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
+| `/wdi-workflows:feature --idea` | Quick idea capture (creates idea file + draft issue, no implementation) |
+| `/wdi-workflows:feature --plan` | Stop after planning phase |
 | `/wdi-workflows:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi-workflows:milestone` | Create and execute milestone-based feature groupings |
 | `/wdi-workflows:setup` | Verify dependencies and installation status |
@@ -121,6 +124,39 @@ wdi create_project   # Interactive project creation with standards compliance
 wdi doctor           # Check/install dependencies (git, gh, jq, claude)
 wdi config           # Configure org, domains, project location
 wdi update           # Update CLI to latest version
+```
+
+## Idea Capture Workflow
+
+Use `--idea` mode to quickly capture ideas without implementing them:
+
+```bash
+/wdi-workflows:feature --idea
+```
+
+**Creates:**
+- Idea file: `docs/product/ideas/{slug}.md`
+- Draft issue: GitHub issue with `status:idea` label
+
+**Lifecycle:**
+```
+Capture → Shape → Plan → Build
+```
+
+| Status | Location | Next Step |
+|--------|----------|-----------|
+| Idea | `docs/product/ideas/` | Shape when ready |
+| Shaping | `docs/product/shaping/` | Research and design |
+| Planning | `docs/product/planning/features/` | Ready to build |
+
+**Promote an idea to a feature:**
+```bash
+/wdi-workflows:feature @docs/product/ideas/{slug}.md
+```
+
+**Setup labels in a repo:**
+```bash
+./scripts/setup-labels.sh
 ```
 
 ## Session Context
@@ -255,7 +291,7 @@ This validates hook behavior without needing a full Claude Code session.
 
 ## Version
 
-Current version: 0.1.6 (see `.claude-plugin/plugin.json`)
+Current version: 0.1.7 (see `.claude-plugin/plugin.json`)
 
 ### Versioning Policy
 

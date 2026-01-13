@@ -25,6 +25,7 @@ if [ "$1" = "--show-commands" ]; then
 
 ### Workflow Commands
 - `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi-workflows:feature --idea` - Quick idea capture (creates idea file + draft issue)
 - `/wdi-workflows:enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi-workflows:milestone` - Create and execute milestone-based feature groupings
 - `/wdi-workflows:setup` - Set up and verify plugin dependencies
@@ -157,6 +158,7 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 ### Workflow Commands
 - `/wdi-workflows:feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi-workflows:feature --idea` - Quick idea capture (creates idea file + draft issue)
 - `/wdi-workflows:enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi-workflows:milestone` - Create and execute milestone-based feature groupings
 - `/wdi-workflows:setup` - Set up and verify plugin dependencies
@@ -189,6 +191,7 @@ echo ""
 echo "Available commands:"
 echo "  Workflow:"
 echo "    /wdi-workflows:feature         - Full feature workflow"
+echo "    /wdi-workflows:feature --idea  - Quick idea capture"
 echo "    /wdi-workflows:enhanced-ralph  - Quality-gated feature execution"
 echo "    /wdi-workflows:milestone       - Create/execute milestone groupings"
 echo "  Skills (auto-invoked):"

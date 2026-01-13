@@ -6,6 +6,9 @@ All notable changes documented here.
 
 ## 2026-01-13
 
+### Added
+- **Idea capture mode (v0.1.7)** - New `--idea` flag for `/wdi-workflows:feature` enables quick idea capture without implementation. Creates minimal idea file in `docs/product/ideas/` and draft GitHub issue with `status:idea` label. Includes `setup-labels.sh` script to create lifecycle labels (`status:idea`, `status:ready`, `appetite:*`, `needs:*`). Promote ideas to features when ready via `@docs/product/ideas/{slug}.md`
+
 ### Changed
 - **Cleaner CLI flags (v0.1.6)** - Renamed feature command flag `--plan-only` → `--plan` (simpler). Added `-y` short form for `--yes`. Old flag still works as alias for backwards compatibility
 
