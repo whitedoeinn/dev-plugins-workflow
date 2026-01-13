@@ -47,10 +47,10 @@ claude plugin install compound-engineering --scope project
 **Solution:** Check installation and reinstall for project:
 ```bash
 # View current installations
-cat ~/.claude/plugins/installed_plugins.json | grep -A5 "wdi-workflows"
+cat ~/.claude/plugins/installed_plugins.json | grep -A5 "wdi"
 
 # Reinstall for project scope
-claude plugin install wdi-workflows --scope project
+claude plugin install wdi --scope project
 ```
 
 ---
@@ -98,7 +98,7 @@ bash install.sh
 
 ---
 
-### /wdi-workflows:feature can't create GitHub Issue
+### /wdi:feature can't create GitHub Issue
 
 **Cause:** The `gh` CLI is not authenticated.
 
@@ -119,11 +119,11 @@ Follow the prompts to authenticate with GitHub.
 1. Exit Claude Code
 2. Clear the plugin cache:
    ```bash
-   rm -rf ~/.claude/plugins/cache/wdi-workflows*
+   rm -rf ~/.claude/plugins/cache/wdi*
    ```
 3. Reinstall:
    ```bash
-   claude plugin install wdi-workflows --scope project
+   claude plugin install wdi --scope project
    ```
 4. Restart Claude Code
 
@@ -176,7 +176,7 @@ cat /path/to/project/.claude/settings.json
 ### View plugin installation paths
 
 ```bash
-cat ~/.claude/plugins/installed_plugins.json | jq '.plugins["wdi-workflows@wdi-workflows-local"]'
+cat ~/.claude/plugins/installed_plugins.json | jq '.plugins["wdi@wdi-local"]'
 ```
 
 ### View known marketplaces

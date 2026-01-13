@@ -99,4 +99,4 @@ Per semver spec, `0.x.x` is for initial development where breaking changes are e
 
 ---
 
-*Created by `/wdi-workflows:feature`*
+*Created by `/wdi:feature`*

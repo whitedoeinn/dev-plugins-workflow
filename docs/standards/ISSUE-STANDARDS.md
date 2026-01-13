@@ -217,7 +217,7 @@ Issues are closed when:
 
 ## Issue-Driven Development
 
-The `/wdi-workflows:feature` command creates issues automatically. This ensures:
+The `/wdi:feature` command creates issues automatically. This ensures:
 
 1. Every feature has a tracking issue
 2. Issues include requirements and acceptance criteria

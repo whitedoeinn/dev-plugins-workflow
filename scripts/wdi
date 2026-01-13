@@ -629,15 +629,15 @@ cmd_create_project() {
   gh repo create "${github_org}/${repo_name}" --private --description "$description" --source=. --push
   success "Created GitHub repo: ${github_org}/${repo_name}"
 
-  # Install wdi-workflows plugin (for plugins and other projects)
-  info "Installing wdi-workflows plugin..."
+  # Install wdi plugin (for plugins and other projects)
+  info "Installing wdi plugin..."
   if [[ -f "install.sh" ]]; then
     ./install.sh >/dev/null 2>&1 || true
   else
     # Download and run install.sh for non-plugin projects
     curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash -s project >/dev/null 2>&1 || true
   fi
-  success "Installed wdi-workflows plugin"
+  success "Installed wdi plugin"
 
   echo ""
   echo -e "${GREEN}Project created successfully!${NC}"
@@ -858,9 +858,9 @@ echo "Installing plugin..."
 claude plugin marketplace add https://github.com/EveryInc/compound-engineering-plugin 2>/dev/null || true
 claude plugin install compound-engineering --scope project 2>/dev/null || true
 
-# Install wdi-workflows dependency
+# Install wdi dependency
 claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows 2>/dev/null || true
-claude plugin install wdi-workflows --scope project 2>/dev/null || true
+claude plugin install wdi --scope project 2>/dev/null || true
 
 echo "Installation complete!"
 EOF

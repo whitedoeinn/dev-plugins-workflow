@@ -1,10 +1,10 @@
 ---
-description: Set up wdi-workflows and its dependencies
+description: Set up wdi plugin and its dependencies
 ---
 
 # Setup Claude Workflows
 
-This command helps set up the wdi-workflows plugin and its dependencies.
+This command helps set up the wdi plugin and its dependencies.
 
 ## Steps
 
@@ -13,7 +13,7 @@ This command helps set up the wdi-workflows plugin and its dependencies.
    - If missing, provide installation instructions
 
 2. **Verify Installation**
-   - Check that `/wdi-workflows:feature` command is available
+   - Check that `/wdi:feature` command is available
    - Check that `commit` skill is available (say "commit these changes" to trigger)
    - List available commands from this plugin
 
@@ -32,11 +32,11 @@ If dependencies are missing, run:
 # Install compound-engineering
 /plugin install compound-engineering
 
-# Add wdi-workflows marketplace
+# Add wdi marketplace
 /plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows
 
-# Install wdi-workflows
-/plugin install wdi-workflows
+# Install wdi
+/plugin install wdi
 ```
 
 Or use the bootstrap script:
@@ -57,5 +57,5 @@ Or manually:
 
 ```bash
 claude plugin update compound-engineering --scope project
-claude plugin update wdi-workflows --scope project
+claude plugin update wdi --scope project
 ```

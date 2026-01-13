@@ -68,7 +68,7 @@ if [ -n "$STAGED_STANDARDS" ]; then
     echo "Ensure you've updated all dependent files."
     echo "See: knowledge/standards-dependency-map.md"
     echo ""
-    echo "To check impact: /wdi-workflows:update-standard --analyze"
+    echo "To check impact: /wdi:update-standard --analyze"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo ""
   } >&2

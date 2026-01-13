@@ -2,14 +2,14 @@
 description: Impact analysis and guided updates when changing development standards
 ---
 
-# /wdi-workflows:update-standard - Standards Update Command
+# /wdi:update-standard - Standards Update Command
 
 Analyze the impact of standard changes and guide updates to dependent files.
 
 ## Usage
 
 ```
-/wdi-workflows:update-standard [--analyze] [--list] [--yes] [STANDARD-NAME]
+/wdi:update-standard [--analyze] [--list] [--yes] [STANDARD-NAME]
 ```
 
 ## Flags
@@ -29,7 +29,7 @@ Analyze the impact of standard changes and guide updates to dependent files.
 Shows all standards with impact scores:
 
 ```
-/wdi-workflows:update-standard --list
+/wdi:update-standard --list
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Standards Overview
@@ -46,7 +46,7 @@ Standards Overview
 | FILE-NAMING.md            | 3      | Simple     |
 | DEPENDENCY-STANDARDS.md   | 3      | Simple     |
 
-Use: /wdi-workflows:update-standard --analyze <STANDARD>
+Use: /wdi:update-standard --analyze <STANDARD>
 ```
 
 ### 2. Analyze Mode (`--analyze`)
@@ -54,7 +54,7 @@ Use: /wdi-workflows:update-standard --analyze <STANDARD>
 Read-only impact analysis before making changes:
 
 ```
-/wdi-workflows:update-standard --analyze BRANCH-NAMING
+/wdi:update-standard --analyze BRANCH-NAMING
 ```
 
 **Output:**
@@ -83,7 +83,7 @@ Proceed with the change? This affects 3 files.
 Full guided workflow for updating all dependent files:
 
 ```
-/wdi-workflows:update-standard BRANCH-NAMING
+/wdi:update-standard BRANCH-NAMING
 ```
 
 ---
@@ -257,10 +257,10 @@ Changed standards:
   BRANCH-NAMING
 
 Run impact analysis:
-  /wdi-workflows:update-standard --analyze
+  /wdi:update-standard --analyze
 
 Or use the full update workflow:
-  /wdi-workflows:update-standard BRANCH-NAMING
+  /wdi:update-standard BRANCH-NAMING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -271,7 +271,7 @@ Or use the full update workflow:
 ### Check impact before making a change
 
 ```
-/wdi-workflows:update-standard --analyze PROJECT-STRUCTURE
+/wdi:update-standard --analyze PROJECT-STRUCTURE
 
 Impact Score: 6 files (High complexity)
 
@@ -284,7 +284,7 @@ This is a high-impact change. Consider:
 ### Quick update for simple standard
 
 ```
-/wdi-workflows:update-standard --yes COMMIT-STANDARDS
+/wdi:update-standard --yes COMMIT-STANDARDS
 
 → Updating skills/commit/SKILL.md... done
 → Updating commands/check-standards.md... done
@@ -297,7 +297,7 @@ This is a high-impact change. Consider:
 ### Interactive update with review
 
 ```
-/wdi-workflows:update-standard ISSUE-STANDARDS
+/wdi:update-standard ISSUE-STANDARDS
 
 Step 1 of 5: Update commands/feature.md
 This file enforces: ISSUE-STANDARDS

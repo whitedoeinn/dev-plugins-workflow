@@ -99,7 +99,7 @@ if [ $WARNINGS -gt 0 ]; then
   echo -e "${YELLOW}WARNINGS: $WARNINGS (undocumented references)${NC}"
   echo ""
   echo "To add missing references to map, run:"
-  echo "  /wdi-workflows:update-standard --analyze"
+  echo "  /wdi:update-standard --analyze"
 fi
 
 if [ $ERRORS -eq 0 ] && [ $WARNINGS -eq 0 ]; then

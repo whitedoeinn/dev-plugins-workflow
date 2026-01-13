@@ -6,10 +6,21 @@ All notable changes documented here.
 
 ## 2026-01-13
 
+### Breaking Changes
+- **Plugin renamed to `wdi` (v1.0.0)** - Major architecture change implementing the One Internal Plugin Policy. All WDI internal tooling now lives in a single plugin named `wdi` instead of `wdi-workflows`. Commands use domain-prefixed naming:
+  - `/wdi-workflows:feature` → `/wdi:workflows-feature`
+  - `/wdi-workflows:new-repo` → `/wdi:standards-new-repo`
+  - Skills: `commit` → `workflow-commit`, `auto-update-docs` → `workflow-auto-docs`
+
+  External dependencies (compound-engineering) remain global via marketplace. See `docs/standards/PLUGIN-ARCHITECTURE.md` for full rationale.
+
 ### Added
-- **Idea capture mode (v0.1.7)** - New `--idea` flag for `/wdi-workflows:feature` enables quick idea capture without implementation. Creates minimal idea file in `docs/product/ideas/` and draft GitHub issue with `status:idea` label. Includes `setup-labels.sh` script to create lifecycle labels (`status:idea`, `status:ready`, `appetite:*`, `needs:*`). Promote ideas to features when ready via `@docs/product/ideas/{slug}.md`
+- **Plugin architecture standard** - New `docs/standards/PLUGIN-ARCHITECTURE.md` documents the one-plugin policy, domain-prefixed naming, and scaling guidelines
+- **Vendor tooling** - `scripts/vendor-to-project.sh` copies wdi plugin into target projects for version control isolation. Creates `update-plugins.sh` in target for easy updates
+- **Project-local plugins milestone** - Tracks the architectural decision and implementation
 
 ### Changed
+- **Idea capture mode (v0.1.7)** - New `--idea` flag for `/wdi:workflows-feature` enables quick idea capture without implementation. Creates minimal idea file in `docs/product/ideas/` and draft GitHub issue with `status:idea` label. Includes `setup-labels.sh` script to create lifecycle labels (`status:idea`, `status:ready`, `appetite:*`, `needs:*`). Promote ideas to features when ready via `@docs/product/ideas/{slug}.md`
 - **Cleaner CLI flags (v0.1.6)** - Renamed feature command flag `--plan-only` → `--plan` (simpler). Added `-y` short form for `--yes`. Old flag still works as alias for backwards compatibility
 
 ---
@@ -38,7 +49,7 @@ All notable changes documented here.
 ### Fixed
 - **Documentation drift** - Added enhanced-ralph and milestone commands to README, fixed version numbers in README and CLAUDE.md
 - **Stale documentation references** - Updated `commands/commit.md` references to `skills/commit/SKILL.md` in standards-dependency-map and update-standard command after skill migration
-- **Enhanced-ralph commit instructions** - Changed "Ready for: /wdi-workflows:commit" to skill invocation pattern ("commit these changes") in 6 places
+- **Enhanced-ralph commit instructions** - Changed "Ready for: /wdi:commit" to skill invocation pattern ("commit these changes") in 6 places
 - **Context docs commit references** - Updated migration notes and capability docs to use skill invocation pattern
 
 ### Changed
@@ -51,13 +62,13 @@ All notable changes documented here.
 ## 2026-01-11
 
 ### Breaking Change
-- **Commit workflow is now a skill** - say "commit these changes" instead of running `/wdi-workflows:commit`. Same quality gates (tests, review, changelog) but smoother UX.
+- **Commit workflow is now a skill** - say "commit these changes" instead of running `/wdi:commit`. Same quality gates (tests, review, changelog) but smoother UX.
 
 ### Added - `wdi` CLI
 - **Standards-aware project creation from terminal** - `wdi create_project` guides you through naming before Claude Code even starts, preventing misnamed directories
 - **Environment doctor** - `wdi doctor` checks and installs dependencies (git, gh, jq, claude) using your package manager
 - **Configurable domains** - `wdi config` lets you set business domains, plugin domains, GitHub org - values populate interview choices
-- **Full interview flow** - same REPO-STANDARDS.md compliance as `/wdi-workflows:new-repo` but works pre-Claude-Code
+- **Full interview flow** - same REPO-STANDARDS.md compliance as `/wdi:new-repo` but works pre-Claude-Code
 - **Exception tracking** - non-standard names get documented with reasons, issues created for standard reviews
 
 Install: `curl -sSL .../scripts/wdi | bash -s install`
@@ -68,13 +79,13 @@ Install: `curl -sSL .../scripts/wdi | bash -s install`
 - Missing plugin warnings now stand out - added emoji and indentation so they're not buried in output
 
 ### Standards Update Protocol
-- **Safer standards changes** - `/wdi-workflows:update-standard` analyzes ripple effects before you modify a standard, preventing broken references across docs and commands
+- **Safer standards changes** - `/wdi:update-standard` analyzes ripple effects before you modify a standard, preventing broken references across docs and commands
 - **Dependency visibility** - map shows which files depend on each standard so you know what breaks
 
 ### Standards Framework
 - **Consistent naming across repos** - standards for repos, branches, commits, files prevent bike-shedding and make navigation predictable
 - **Faster issue creation** - templates pre-fill structure so you focus on content
-- **Scaffolding commands** - `/wdi-workflows:new-repo` and `/wdi-workflows:new-subproject` apply standards automatically
+- **Scaffolding commands** - `/wdi:new-repo` and `/wdi:new-subproject` apply standards automatically
 
 ### Enhanced Workflows
 - **Interview-driven scaffolding** - `new-repo`, `new-subproject`, and `feature` commands ask adaptive questions instead of requiring you to remember flags
@@ -105,4 +116,4 @@ Install: `curl -sSL .../scripts/wdi | bash -s install`
 ### Added
 - **Feature workflow** - 5-phase compound engineering: pre-flight → research → plan → work → review
 - **Commit workflow** - quality gates (tests, simplicity review) before every commit
-- **Setup verification** - `/wdi-workflows:setup` confirms dependencies are installed
+- **Setup verification** - `/wdi:setup` confirms dependencies are installed

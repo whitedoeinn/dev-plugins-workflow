@@ -1,6 +1,6 @@
 #!/bin/bash
 # Returns dependencies for a given standard in structured format
-# Used by /wdi-workflows:update-standard command
+# Used by /wdi:update-standard command
 #
 # Usage: ./scripts/get-standard-deps.sh <STANDARD-NAME>
 #        ./scripts/get-standard-deps.sh --list

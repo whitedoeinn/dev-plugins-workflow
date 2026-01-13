@@ -1,6 +1,6 @@
 # Feature Planning Capability - Current State
 
-Context document describing how feature planning works in wdi-workflows. Use this as input for designing a more comprehensive roadmap planning feature.
+Context document describing how feature planning works in wdi. Use this as input for designing a more comprehensive roadmap planning feature.
 
 ---
 
@@ -20,7 +20,7 @@ The current system is optimized for **single-feature execution**, not portfolio 
 ### 1. Feature Workflow Command
 
 **File:** `commands/feature.md`
-**Invocation:** `/wdi-workflows:feature`
+**Invocation:** `/wdi:feature`
 
 An interview-driven workflow with 7 phases:
 
@@ -105,7 +105,7 @@ Defines GitHub Issue conventions:
 - Issue templates for bug reports, feature requests, enhancements
 - Issue lifecycle: Open → In Progress → Review → Closed
 
-**Integration:** `/wdi-workflows:feature` creates issues automatically using these standards.
+**Integration:** `/wdi:feature` creates issues automatically using these standards.
 
 ### 5. Dependency Standards
 
@@ -164,7 +164,7 @@ Condensed reference for all standards including:
 | Gap | Description |
 |-----|-------------|
 | **Roadmap file** | No `docs/roadmap.md` or equivalent |
-| **Roadmap command** | No `/wdi-workflows:roadmap` or `/wdi-workflows:plan-milestone` |
+| **Roadmap command** | No `/wdi:roadmap` or `/wdi:plan-milestone` |
 | **Milestone automation** | Template exists but no command uses it |
 | **Dependency visualization** | No way to see dependency graph across features |
 | **Prioritization framework** | No guidance on sequencing work |

@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.1.7 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 1.0.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -26,11 +26,11 @@ cd dev-plugins-workflows
 
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
-| `/wdi-workflows:feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
-| `/wdi-workflows:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
-| `/wdi-workflows:milestone` | Create and manage milestones that group related features for delivery |
-| `/wdi-workflows:setup` | Set up and verify plugin dependencies |
+| `/wdi:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
+| `/wdi:feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
+| `/wdi:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi:milestone` | Create and manage milestones that group related features for delivery |
+| `/wdi:setup` | Set up and verify plugin dependencies |
 
 ### Skills (Auto-Invoked)
 
@@ -44,11 +44,11 @@ cd dev-plugins-workflows
 
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:new-repo` | Create a new repository following WDI naming and structure standards |
-| `/wdi-workflows:new-subproject` | Add a new subproject to a mono-repo following standards |
-| `/wdi-workflows:check-standards` | Validate current repository against WDI development standards |
-| `/wdi-workflows:update-standard` | Impact analysis and guided updates when changing development standards |
-| `/wdi-workflows:new-command` | Create a new command and update all dependent files |
+| `/wdi:new-repo` | Create a new repository following WDI naming and structure standards |
+| `/wdi:new-subproject` | Add a new subproject to a mono-repo following standards |
+| `/wdi:check-standards` | Validate current repository against WDI development standards |
+| `/wdi:update-standard` | Impact analysis and guided updates when changing development standards |
+| `/wdi:new-command` | Create a new command and update all dependent files |
 
 ## Requirements
 
@@ -64,7 +64,7 @@ cd dev-plugins-workflows
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
 ```
 
-This installs both `compound-engineering` and `wdi-workflows` plugins.
+This installs both `compound-engineering` and `wdi` plugins.
 
 ### Option 2: Manual Installation
 
@@ -75,11 +75,11 @@ This installs both `compound-engineering` and `wdi-workflows` plugins.
 # Install compound-engineering
 /plugin install compound-engineering
 
-# Add wdi-workflows marketplace
+# Add wdi marketplace
 /plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows
 
-# Install wdi-workflows
-/plugin install wdi-workflows
+# Install wdi
+/plugin install wdi
 ```
 
 ## Updating
@@ -94,12 +94,12 @@ Or manually:
 
 ```bash
 claude plugin update compound-engineering --scope project
-claude plugin update wdi-workflows --scope project
+claude plugin update wdi --scope project
 ```
 
 ## Workflow Details
 
-### /wdi-workflows:feature
+### /wdi:feature
 
 Orchestrates the complete feature development cycle:
 
@@ -209,7 +209,7 @@ Quick reference: [knowledge/standards-summary.md](knowledge/standards-summary.md
 ### Key Conventions
 
 - **Repos:** No `wdi-` prefix (org name provides context)
-- **Commands:** Use `wdi-` prefix (`/wdi-workflow:*`) to avoid conflicts
+- **Commands:** Use `/wdi:*` prefix with domain-prefixed names (e.g., `/wdi:workflows-feature`)
 - **Mono-repos:** Cluster by domain (`marketing-ops`, `business-ops`)
 - **Plugins:** Standalone repos (`dev-plugins-*`)
 - **Branches:** `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/`
@@ -228,8 +228,8 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/ma
 \`\`\`
 
 Available commands:
-- `/wdi-workflows:feature` - Full feature workflow
-- `/wdi-workflows:check-standards` - Validate against WDI standards
+- `/wdi:feature` - Full feature workflow
+- `/wdi:check-standards` - Validate against WDI standards
 
 Skills (auto-invoked):
 - `commit` - Say "commit these changes" for smart commit with review

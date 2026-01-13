@@ -41,18 +41,18 @@ for cmd_file in commands/*.md; do
   cmd_name=$(basename "$cmd_file" .md)
 
   # Check if in CLAUDE.md (look for the command in any format)
-  if ! grep -q "/wdi-workflows:$cmd_name" CLAUDE.md 2>/dev/null; then
+  if ! grep -q "/wdi:$cmd_name" CLAUDE.md 2>/dev/null; then
     echo "DRIFT:command:$cmd_name:missing_claude"
-    log "  ${RED}MISSING${NC}: /wdi-workflows:$cmd_name not in CLAUDE.md"
+    log "  ${RED}MISSING${NC}: /wdi:$cmd_name not in CLAUDE.md"
     DRIFT_FOUND=1
   else
-    log "  ${GREEN}OK${NC}: /wdi-workflows:$cmd_name"
+    log "  ${GREEN}OK${NC}: /wdi:$cmd_name"
   fi
 
   # Check if in README.md
-  if ! grep -q "/wdi-workflows:$cmd_name" README.md 2>/dev/null; then
+  if ! grep -q "/wdi:$cmd_name" README.md 2>/dev/null; then
     echo "DRIFT:command:$cmd_name:missing_readme"
-    log "  ${RED}MISSING${NC}: /wdi-workflows:$cmd_name not in README.md"
+    log "  ${RED}MISSING${NC}: /wdi:$cmd_name not in README.md"
     DRIFT_FOUND=1
   fi
 done

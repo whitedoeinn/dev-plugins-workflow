@@ -156,7 +156,7 @@ docs/product/
 | Document | When |
 |----------|------|
 | PRD | New product, major feature, needs stakeholder alignment |
-| Feature | Any tracked work (created by `/wdi-workflows:feature`) |
+| Feature | Any tracked work (created by `/wdi:feature`) |
 | Milestone | Grouping features for a release or phase |
 | Status | Ongoing project tracking |
 

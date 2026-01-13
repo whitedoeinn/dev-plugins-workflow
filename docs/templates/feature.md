@@ -57,4 +57,4 @@ Additional context, decisions made, alternatives considered.
 
 ---
 
-*Created by `/wdi-workflows:feature`*
+*Created by `/wdi:feature`*

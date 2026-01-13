@@ -13,12 +13,12 @@ Execute feature specs with intelligent quality gates and agent support.
 ## Usage
 
 ```
-/wdi-workflows:enhanced-ralph [feature-name]              # Standard execution
-/wdi-workflows:enhanced-ralph [feature-name] --strict     # Fail on any quality issue
-/wdi-workflows:enhanced-ralph [feature-name] --fast       # Skip optional reviews, keep security
-/wdi-workflows:enhanced-ralph [feature-name] --skip-gates # Skip all quality gates
-/wdi-workflows:enhanced-ralph [feature-name] --continue   # Resume from last incomplete task
-/wdi-workflows:enhanced-ralph --milestone [name]          # Execute all features in milestone
+/wdi:enhanced-ralph [feature-name]              # Standard execution
+/wdi:enhanced-ralph [feature-name] --strict     # Fail on any quality issue
+/wdi:enhanced-ralph [feature-name] --fast       # Skip optional reviews, keep security
+/wdi:enhanced-ralph [feature-name] --skip-gates # Skip all quality gates
+/wdi:enhanced-ralph [feature-name] --continue   # Resume from last incomplete task
+/wdi:enhanced-ralph --milestone [name]          # Execute all features in milestone
 ```
 
 **Note:** `[feature-name]` resolves to `docs/product/planning/features/[feature-name].md`
@@ -323,7 +323,7 @@ Options:
 1. Complete MILE-001 first
 2. Run with --force to proceed anyway
 
-/wdi-workflows:enhanced-ralph --milestone MILE-002 --force
+/wdi:enhanced-ralph --milestone MILE-002 --force
 ```
 
 ### Step M4: Check Cross-Milestone Dependencies
@@ -406,7 +406,7 @@ Features completed: 1/3
 ○ feature-c (not started)
 
 Status: In Progress
-Resume with: /wdi-workflows:enhanced-ralph --milestone MILE-002 --continue
+Resume with: /wdi:enhanced-ralph --milestone MILE-002 --continue
 ```
 
 ---
@@ -416,7 +416,7 @@ Resume with: /wdi-workflows:enhanced-ralph --milestone MILE-002 --continue
 ### Standard Execution
 
 ```
-/wdi-workflows:enhanced-ralph user-preferences
+/wdi:enhanced-ralph user-preferences
 
 Parsing feature spec...
 ─────────────────────
@@ -444,7 +444,7 @@ Ready to commit - say "commit these changes"
 ### Fast Mode (Skip Gates)
 
 ```
-/wdi-workflows:enhanced-ralph simple-fix --skip-gates
+/wdi:enhanced-ralph simple-fix --skip-gates
 
 Parsing feature spec...
 ─────────────────────
@@ -460,7 +460,7 @@ Ready to commit - say "commit these changes"
 ### Strict Mode
 
 ```
-/wdi-workflows:enhanced-ralph auth-update --strict
+/wdi:enhanced-ralph auth-update --strict
 
 Parsing feature spec...
 ─────────────────────
@@ -481,7 +481,7 @@ STRICT MODE: Stopping execution. Fix issues manually or re-run without --strict.
 ### Milestone Execution
 
 ```
-/wdi-workflows:enhanced-ralph --milestone MILE-002-config-context
+/wdi:enhanced-ralph --milestone MILE-002-config-context
 
 Parsing milestone...
 ───────────────────
@@ -558,7 +558,7 @@ Tasks completed: 3/5
 Remaining: 2 tasks
 
 Options:
-1. Re-run with: /wdi-workflows:enhanced-ralph feature-name --continue
+1. Re-run with: /wdi:enhanced-ralph feature-name --continue
 2. Complete remaining tasks manually
 3. Split feature into smaller parts
 ```

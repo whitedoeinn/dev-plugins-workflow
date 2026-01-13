@@ -162,13 +162,13 @@ When changing any standard, use the update protocol:
 
 ```bash
 # See impact before making changes
-/wdi-workflows:update-standard --analyze <STANDARD>
+/wdi:update-standard --analyze <STANDARD>
 
 # Guided update workflow
-/wdi-workflows:update-standard <STANDARD>
+/wdi:update-standard <STANDARD>
 
 # List all standards with impact scores
-/wdi-workflows:update-standard --list
+/wdi:update-standard --list
 ```
 
 See: `docs/standards/STANDARDS-UPDATE-PROTOCOL.md`

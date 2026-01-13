@@ -169,13 +169,13 @@ At Risk ←───── Blocked
 
 ## Integration with Workflows
 
-### /wdi-workflows:feature
+### /wdi:feature
 
 When creating a feature, the workflow prompts for dependencies:
 - Blocked by (other features, milestones, external)
 - Blocks (what's waiting on this)
 
-### /wdi-workflows:new-subproject
+### /wdi:new-subproject
 
 When creating a package, document package dependencies in pyproject.toml or package.json, but also note external service dependencies in the README.
 

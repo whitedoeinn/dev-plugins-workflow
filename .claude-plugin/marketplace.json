@@ -1,14 +1,14 @@
 {
-  "name": "wdi-workflows-local",
+  "name": "wdi-local",
   "owner": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
   },
   "plugins": [
     {
-      "name": "wdi-workflows",
-      "description": "Compound engineering workflows for feature development and smart commits",
-      "version": "0.1.1",
+      "name": "wdi",
+      "description": "WDI development toolkit - workflows, standards, and automation for Claude Code",
+      "version": "1.0.0",
       "source": "./"
     }
   ]

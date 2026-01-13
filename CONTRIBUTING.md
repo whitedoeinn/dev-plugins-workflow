@@ -96,7 +96,7 @@ Expected output...
 Changes to command files take effect immediately in this repo. To test:
 
 1. Make your edits to `commands/*.md`
-2. Run the command: `/wdi-workflows:feature`, etc. (or say "commit these changes" for commits)
+2. Run the command: `/wdi:feature`, etc. (or say "commit these changes" for commits)
 3. Verify the workflow works as expected
 
 ## Pushing Changes

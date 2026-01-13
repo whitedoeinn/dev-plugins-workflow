@@ -65,7 +65,7 @@ Documentation Drift Detected
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Commands:
-  • /wdi-workflows:new-command - missing from README.md
+  • /wdi:new-command - missing from README.md
 
 Skills:
   • auto-update-docs - missing from CLAUDE.md
@@ -95,7 +95,7 @@ grep "^description:" commands/{name}.md | sed 's/description: *//'
 
 Add row to table:
 ```markdown
-| `/wdi-workflows:{name}` | {description} |
+| `/wdi:{name}` | {description} |
 ```
 
 ### Adding a Command to README.md

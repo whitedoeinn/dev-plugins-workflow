@@ -11,7 +11,7 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 │                     Claude Code CLI                         │
 ├─────────────────────────────────────────────────────────────┤
 │  ┌─────────────────────┐    ┌─────────────────────────────┐ │
-│  │  wdi-workflows   │───▶│   compound-engineering      │ │
+│  │  wdi   │───▶│   compound-engineering      │ │
 │  │                     │    │                             │ │
 │  │  :feature           │    │  Research Agents            │ │
 │  │  :setup             │    │  Review Agents              │ │
@@ -24,16 +24,16 @@ Claude Workflows is a Claude Code plugin that orchestrates compound-engineering 
 
 | Type | Definition | Invocation | Example |
 |------|------------|------------|---------|
-| **Command** | Markdown file in `commands/` | `/wdi-workflows:feature` | User-facing workflows |
+| **Command** | Markdown file in `commands/` | `/wdi:feature` | User-facing workflows |
 | **Skill** | SKILL.md in `skills/` | Auto-detected by context | `commit` (say "commit these changes") |
 
 Commands are user-facing entry points invoked explicitly. Skills auto-invoke based on conversation context.
 
-## Workflow: /wdi-workflows:feature
+## Workflow: /wdi:feature
 
 ```
 ┌────────────────────────────┐
-│ /wdi-workflows:feature  │
+│ /wdi:feature  │
 └─────────────┬──────────────┘
        │
        ▼
@@ -121,8 +121,8 @@ Commands are user-facing entry points invoked explicitly. Skills auto-invoke bas
 └── marketplace.json    # Local marketplace config
 
 commands/
-├── feature.md          # /wdi-workflows:feature definition
-└── setup.md            # /wdi-workflows:setup definition
+├── feature.md          # /wdi:feature definition
+└── setup.md            # /wdi:setup definition
 
 skills/
 └── commit/

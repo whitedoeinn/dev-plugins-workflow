@@ -1,79 +1,53 @@
-# WDI Workflows Plugin
+# WDI Plugin
 
 ## Project Overview
 
-This is the source repository for the `wdi-workflows` Claude Code plugin. It provides:
+This is the source repository for the `wdi` Claude Code plugin. It provides:
 - Compound-engineering workflows for feature development
 - Smart commit workflows with quality gates
 - Development standards and project scaffolding
 - Repository and subproject creation commands
 
+**Architecture:** See `docs/standards/PLUGIN-ARCHITECTURE.md` for the one-plugin policy and naming conventions.
+
 ## Structure
 
 ```
-dev-plugins-workflows/
-├── commands/               # Markdown-based command definitions
-│   ├── feature.md          # /wdi-workflows:feature workflow
-│   ├── enhanced-ralph.md   # /wdi-workflows:enhanced-ralph quality-gated execution
-│   ├── milestone.md        # /wdi-workflows:milestone grouping features
-│   ├── setup.md            # /wdi-workflows:setup verification
-│   ├── new-repo.md         # /wdi-workflows:new-repo scaffolding
-│   ├── new-subproject.md   # /wdi-workflows:new-subproject scaffolding
-│   ├── check-standards.md  # /wdi-workflows:check-standards validation
-│   ├── update-standard.md  # /wdi-workflows:update-standard impact analysis
-│   └── new-command.md      # /wdi-workflows:new-command workflow
-├── .claude-plugin/         # Plugin configuration
-│   ├── plugin.json         # Plugin metadata
-│   └── marketplace.json    # Local marketplace config
-├── hooks/                  # Claude Code hooks
-│   └── hooks.json          # SessionStart hook config
-├── scripts/                # Helper scripts
-│   ├── wdi                 # Global CLI for project bootstrapping
-│   ├── check-deps.sh       # Dependency and standards checker
-│   ├── validate-env.sh     # Environment validation with auto-remediation
-│   ├── check-docs-drift.sh # Detects documentation drift
-│   ├── pre-tool-standards-check.sh  # PreToolUse hook for commit skill + standards
-│   ├── validate-dependency-map.sh   # Validates dependency map accuracy
-│   ├── get-standard-deps.sh         # Helper for parsing dependency map
-│   └── test-enhanced-ralph.sh       # Test scenarios for enhanced-ralph
-├── env-baseline.json       # Environment baseline definition
-├── docs/                   # Documentation
-│   ├── standards/          # Development standards
+dev-plugins/
+├── commands/                        # Markdown-based command definitions
+│   ├── workflows-feature.md         # /wdi:workflows-feature
+│   ├── workflows-enhanced-ralph.md  # /wdi:workflows-enhanced-ralph
+│   ├── workflows-milestone.md       # /wdi:workflows-milestone
+│   ├── workflows-setup.md           # /wdi:workflows-setup
+│   ├── standards-new-repo.md        # /wdi:standards-new-repo
+│   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
+│   ├── standards-check.md           # /wdi:standards-check
+│   ├── standards-update.md          # /wdi:standards-update
+│   └── standards-new-command.md     # /wdi:standards-new-command
+├── .claude-plugin/                  # Plugin configuration
+│   ├── plugin.json                  # Plugin metadata (name: "wdi")
+│   └── marketplace.json             # Local marketplace config
+├── hooks/                           # Claude Code hooks
+│   └── hooks.json                   # SessionStart hook config
+├── scripts/                         # Helper scripts
+│   ├── wdi                          # Global CLI for project bootstrapping
+│   ├── vendor-to-project.sh         # Vendor plugin to target project
+│   ├── check-deps.sh                # Dependency and standards checker
+│   ├── validate-env.sh              # Environment validation
+│   └── ...
+├── env-baseline.json                # Environment baseline definition
+├── docs/
+│   ├── standards/                   # Development standards
+│   │   ├── PLUGIN-ARCHITECTURE.md   # One-plugin policy
 │   │   ├── REPO-STANDARDS.md
-│   │   ├── PROJECT-STRUCTURE.md
-│   │   ├── FILE-NAMING.md
-│   │   ├── BRANCH-NAMING.md
-│   │   ├── COMMIT-STANDARDS.md
-│   │   └── CLAUDE-CODE-STANDARDS.md
-│   ├── templates/          # Reusable templates
-│   │   ├── feature.md      # Feature spec template
-│   │   ├── idea.md         # Idea capture template
-│   │   ├── milestone.md    # Milestone template
-│   │   └── workflows/      # GitHub Actions templates
-│   │       ├── daily-changelog.yml        # Bash-based daily changelog
-│   │       └── daily-changelog-claude.yml # Claude-enhanced version
-│   ├── context/            # Session context files (for resuming work)
-│   ├── showcase/           # Visual documentation and guides
-│   ├── architecture.md
-│   ├── troubleshooting.md
-│   └── changelog.md
-├── knowledge/              # Reference docs for commands
-│   ├── standards-summary.md
-│   └── decision-trees/
-│       ├── repo-type.md
-│       └── package-location.md
-├── skills/                 # Auto-invoked skills
-│   ├── commit/             # Smart commit skill (say "commit these changes")
-│   │   └── SKILL.md
-│   ├── auto-update-docs/   # Doc sync skill (say "update the docs")
-│   │   └── SKILL.md
-│   └── sync-config/        # Environment validation (say "check my config")
-│       └── SKILL.md
-├── test/                   # Test fixtures
-│   └── fixtures/           # Test data for enhanced-ralph scenarios
-│       ├── features/       # Test feature files
-│       └── milestones/     # Test milestone files
-└── install.sh              # Bootstrap installation script
+│   │   └── ...
+│   ├── templates/
+│   └── ...
+├── skills/                          # Auto-invoked skills
+│   ├── workflow-commit/             # Smart commit (say "commit these changes")
+│   ├── workflow-auto-docs/          # Doc sync (say "update the docs")
+│   └── config-sync/                 # Environment validation (say "check my config")
+└── install.sh                       # Bootstrap installation script
 ```
 
 ## Commands
@@ -82,34 +56,43 @@ dev-plugins-workflows/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
-| `/wdi-workflows:feature --idea` | Quick idea capture (creates idea file + draft issue, no implementation) |
-| `/wdi-workflows:feature --plan` | Stop after planning phase |
-| `/wdi-workflows:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
-| `/wdi-workflows:milestone` | Create and execute milestone-based feature groupings |
-| `/wdi-workflows:setup` | Verify dependencies and installation status |
-
-### Skills (Auto-Invoked)
-
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
-| `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
-| `sync-config` | "check my config" | Validate environment and auto-remediate drift |
-
-> **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
-> The skill ensures changelog updates, runs tests, and performs simplicity review.
-> A PreToolUse hook will warn if you try to run `git commit` directly.
+| `/wdi:workflows-feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
+| `/wdi:workflows-feature --idea` | Quick idea capture (creates idea file + draft issue, no implementation) |
+| `/wdi:workflows-feature --plan` | Stop after planning phase |
+| `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi:workflows-milestone` | Create and execute milestone-based feature groupings |
+| `/wdi:workflows-setup` | Verify dependencies and installation status |
 
 ### Standards Commands
 
 | Command | Description |
 |---------|-------------|
-| `/wdi-workflows:new-repo` | Create repository following WDI naming standards |
-| `/wdi-workflows:new-subproject` | Add subproject to mono-repo following standards |
-| `/wdi-workflows:check-standards` | Validate current repo against standards |
-| `/wdi-workflows:update-standard` | Impact analysis and guided updates for standard changes |
-| `/wdi-workflows:new-command` | Create a new command and update all dependent files |
+| `/wdi:standards-new-repo` | Create repository following WDI naming standards |
+| `/wdi:standards-new-subproject` | Add subproject to mono-repo following standards |
+| `/wdi:standards-check` | Validate current repo against standards |
+| `/wdi:standards-update` | Impact analysis and guided updates for standard changes |
+| `/wdi:standards-new-command` | Create a new command and update all dependent files |
+
+### Skills (Auto-Invoked)
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `workflow-commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `workflow-auto-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
+| `config-sync` | "check my config" | Validate environment and auto-remediate drift |
+
+> **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
+> The skill ensures changelog updates, runs tests, and performs simplicity review.
+> A PreToolUse hook will warn if you try to run `git commit` directly.
+
+## Dependencies
+
+This plugin requires the `compound-engineering` plugin (external dependency):
+- Research agents (repo-research-analyst, git-history-analyzer, etc.)
+- Review agents (code-simplicity-reviewer, security-sentinel, etc.)
+- Workflow skills (plan, work, review, compound)
+
+**Installation:** compound-engineering is installed globally via marketplace, not vendored.
 
 ## WDI CLI (Pre-Claude-Code)
 
@@ -117,7 +100,7 @@ The `wdi` CLI runs **before** Claude Code starts, solving the problem of creatin
 
 ```bash
 # Install globally
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/scripts/wdi | bash -s install
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins/main/scripts/wdi | bash -s install
 
 # Commands
 wdi create_project   # Interactive project creation with standards compliance
@@ -131,7 +114,7 @@ wdi update           # Update CLI to latest version
 Use `--idea` mode to quickly capture ideas without implementing them:
 
 ```bash
-/wdi-workflows:feature --idea
+/wdi:workflows-feature --idea
 ```
 
 **Creates:**
@@ -151,54 +134,14 @@ Capture → Shape → Plan → Build
 
 **Promote an idea to a feature:**
 ```bash
-/wdi-workflows:feature @docs/product/ideas/{slug}.md
+/wdi:workflows-feature @docs/product/ideas/{slug}.md
 ```
-
-**Setup labels in a repo:**
-```bash
-./scripts/setup-labels.sh
-```
-
-## Session Context
-
-Save work-in-progress context to `docs/context/` when pausing a task. Files here help resume work across sessions.
-
-To resume: "Read docs/context/{filename}.md and continue"
-
-## GitHub Actions Templates
-
-Workflow templates for common CI/CD tasks. Copy to your project's `.github/workflows/`.
-
-### Daily Changelog
-
-Automatically generate daily summaries of commits.
-
-| Template | Description |
-|----------|-------------|
-| `docs/templates/workflows/daily-changelog.yml` | Simple bash-based (free, reliable) |
-| `docs/templates/workflows/daily-changelog-claude.yml` | Claude-enhanced (smarter summaries, requires API key) |
-
-**Setup (Bash version):**
-1. Copy `docs/templates/workflows/daily-changelog.yml` to `.github/workflows/`
-2. Enable write permissions: Settings > Actions > General > Workflow permissions
-
-**Setup (Claude-enhanced):**
-1. Copy `docs/templates/workflows/daily-changelog-claude.yml` to `.github/workflows/`
-2. Add `ANTHROPIC_API_KEY` secret (get one at console.anthropic.com)
-3. Enable write permissions: Settings > Actions > General > Workflow permissions
-
-## Dependencies
-
-This plugin requires the `compound-engineering` plugin for:
-- Research agents (repo-research-analyst, git-history-analyzer, etc.)
-- Review agents (code-simplicity-reviewer, security-sentinel, etc.)
-- Workflow skills (plan, work, review, compound)
 
 ## Environment Validation
 
 On every session start, the plugin validates your environment against `env-baseline.json`:
 
-1. **Required plugins** - Checks and auto-installs missing plugins
+1. **Required plugins** - Checks compound-engineering is installed
 2. **Required CLI tools** - Checks for gh, jq, and auto-installs if possible
 3. **Authentication** - Checks gh auth status
 
@@ -214,13 +157,6 @@ On every session start, the plugin validates your environment against `env-basel
 
 Say "check my config" to run validation manually (useful after fixing issues).
 
-### Customizing the Baseline
-
-Edit `env-baseline.json` to:
-- Add/remove required plugins
-- Add/remove required CLI tools
-- Update admin contact information
-
 ## Key Standards
 
 When working in WDI projects, follow these conventions:
@@ -228,31 +164,29 @@ When working in WDI projects, follow these conventions:
 | Topic | Convention |
 |-------|------------|
 | Repo names | No `wdi-` prefix (org provides context) |
-| Command prefix | `/wdi-*` (prevents conflicts with 3rd-party) |
+| Command prefix | `/wdi:` (single internal plugin) |
+| Domain prefixes | `workflows-`, `standards-`, `frontend-`, etc. |
 | Mono-repos | `{cluster}-ops` (marketing-ops, business-ops) |
-| Plugins | `dev-plugins-{domain}` standalone repos |
 | Branches | `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/` |
 | Commits | `feat:`, `fix:`, `docs:`, `refactor:`, `chore:` |
 
-Full details in `docs/standards/` and quick reference in `knowledge/standards-summary.md`.
+Full details in `docs/standards/` and `docs/standards/PLUGIN-ARCHITECTURE.md`.
 
 ## How It Works
 
-Claude Code plugins use markdown files as command definitions. When you run `/wdi-workflows:feature`:
-1. Claude Code finds `commands/feature.md` via `plugin.json`
+Claude Code plugins use markdown files as command definitions. When you run `/wdi:workflows-feature`:
+1. Claude Code finds `commands/workflows-feature.md` via `plugin.json`
 2. Loads the markdown as instructions
 3. Executes the workflow steps described in the markdown
 
-Skills work similarly but auto-invoke based on context. When you say "commit these changes", Claude loads `skills/commit/SKILL.md` and follows the workflow.
-
-The markdown files contain both documentation AND executable instructions for Claude.
+Skills work similarly but auto-invoke based on context. When you say "commit these changes", Claude loads `skills/workflow-commit/SKILL.md` and follows the workflow.
 
 ## Development Workflow
 
 ### Commands and Skills
 1. **Edit command files** in `/commands/*.md` or skill files in `/skills/*/SKILL.md`
 2. **Test locally** - Changes take effect immediately in this project
-3. **Push to GitHub** - Other projects can then update via `./install.sh update`
+3. **Push to GitHub** - Other projects can then update via `./scripts/update-plugins.sh`
 
 ### Testing Hooks
 
@@ -264,48 +198,34 @@ claude --plugin-dir .
 ```
 
 **Important:**
-- Hooks (e.g., `pre-tool-standards-check.sh`) need the `--plugin-dir` flag to activate
+- Hooks need the `--plugin-dir` flag to activate
 - Restart Claude Code after modifying `hooks/hooks.json` or hook scripts
 - Commands and skills work immediately without restart
-
-### Unit Testing Hook Scripts
-
-Run script tests before committing hook changes:
-
-```bash
-./scripts/test-hooks.sh
-```
-
-This validates hook behavior without needing a full Claude Code session.
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
 | `.claude-plugin/plugin.json` | Plugin metadata, version, command registration |
-| `install.sh` | Bootstrap script for installing in other projects |
+| `scripts/vendor-to-project.sh` | Vendor plugin to target projects |
 | `commands/*.md` | Command definitions (these ARE the implementation) |
 | `docs/standards/*.md` | Development standards documents |
-| `knowledge/*.md` | Quick reference for commands |
 | `hooks/hooks.json` | SessionStart hook to check dependencies |
 
 ## Version
 
-Current version: 0.1.7 (see `.claude-plugin/plugin.json`)
+Current version: 1.0.0 (see `.claude-plugin/plugin.json`)
+
+This is a major version representing the architecture change from `wdi-workflows` to `wdi`.
 
 ### Versioning Policy
 
-This plugin uses [semantic versioning](https://semver.org/). During `0.x.x` development:
+This plugin uses [semantic versioning](https://semver.org/):
 
 | Bump | When to use |
 |------|-------------|
 | `patch` | Bug fixes, small enhancements, documentation |
-| `minor` | New features, breaking changes |
-| `major` | Reserved for `1.0.0` (production-ready release) |
+| `minor` | New features, new commands/skills |
+| `major` | Breaking changes (command renames, removals) |
 
-The commit skill automatically handles version bumps based on commit type:
-- `fix:`, `perf:` → auto-bump patch
-- `feat:`, `refactor:` → prompts for minor/patch/none
-- `docs:`, `chore:`, `test:`, `style:` → no bump
-
-Run manually: `./scripts/bump-version.sh [patch|minor|major]`
+The commit skill automatically handles version bumps based on commit type.

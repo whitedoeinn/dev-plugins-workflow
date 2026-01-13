@@ -87,7 +87,7 @@ echo ""
 cat << 'EOF'
 SCENARIO 1: Single Feature Execution
 ─────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph simple-feature
+Command: /wdi:enhanced-ralph simple-feature
 
 Verify:
   [ ] Task type detection identifies ui, api, database types
@@ -98,7 +98,7 @@ Verify:
 
 SCENARIO 2: Multiple Features in Milestone
 ──────────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone simple-milestone
+Command: /wdi:enhanced-ralph --milestone simple-milestone
 
 Verify:
   [ ] Both features executed sequentially
@@ -109,7 +109,7 @@ Verify:
 
 SCENARIO 3: Features with Dependencies
 ──────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone ordered-milestone
+Command: /wdi:enhanced-ralph --milestone ordered-milestone
 
 Verify:
   [ ] Dependency graph built correctly
@@ -119,7 +119,7 @@ Verify:
 
 SCENARIO 4: Circular Dependency Detection
 ─────────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone circular-milestone
+Command: /wdi:enhanced-ralph --milestone circular-milestone
 
 Verify:
   [ ] Cycle detected before execution starts
@@ -128,7 +128,7 @@ Verify:
 
 SCENARIO 5: Milestone Dependencies
 ──────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone milestone-2
+Command: /wdi:enhanced-ralph --milestone milestone-2
 
 Verify:
   [ ] Warning: "Milestone depends on incomplete MILE-TEST-004"
@@ -137,7 +137,7 @@ Verify:
 
 SCENARIO 6: Implicit Cross-Milestone Dependencies
 ─────────────────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone milestone-2
+Command: /wdi:enhanced-ralph --milestone milestone-2
 
 Verify:
   [ ] Cross-milestone dependency detected
@@ -147,7 +147,7 @@ Verify:
 SCENARIO 7: Resume from Failure
 ───────────────────────────────
 Setup: Execute milestone, manually fail on feature 2
-Command: /wdi-workflows:enhanced-ralph --milestone ordered-milestone --continue
+Command: /wdi:enhanced-ralph --milestone ordered-milestone --continue
 
 Verify:
   [ ] Skips already-completed features
@@ -157,7 +157,7 @@ Verify:
 SCENARIO 8: Missing Feature Files
 ─────────────────────────────────
 Setup: Create milestone referencing non-existent feature
-Command: /wdi-workflows:enhanced-ralph --milestone broken-milestone
+Command: /wdi:enhanced-ralph --milestone broken-milestone
 
 Verify:
   [ ] Error on missing feature file
@@ -166,7 +166,7 @@ Verify:
 
 SCENARIO 9: Quality Gate Failure in Strict Mode
 ───────────────────────────────────────────────
-Command: /wdi-workflows:enhanced-ralph --milestone simple-milestone --strict
+Command: /wdi:enhanced-ralph --milestone simple-milestone --strict
 
 Verify:
   [ ] Execution stops on quality gate failure
@@ -176,12 +176,12 @@ Verify:
 SCENARIO 10: All Flags Work with Milestones
 ───────────────────────────────────────────
 Commands:
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --strict
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --fast
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --skip-gates
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --verbose
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --continue
-  /wdi-workflows:enhanced-ralph --milestone simple-milestone --force
+  /wdi:enhanced-ralph --milestone simple-milestone --strict
+  /wdi:enhanced-ralph --milestone simple-milestone --fast
+  /wdi:enhanced-ralph --milestone simple-milestone --skip-gates
+  /wdi:enhanced-ralph --milestone simple-milestone --verbose
+  /wdi:enhanced-ralph --milestone simple-milestone --continue
+  /wdi:enhanced-ralph --milestone simple-milestone --force
 
 Verify:
   [ ] --strict - fails on any quality issue

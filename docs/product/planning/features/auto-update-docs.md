@@ -89,4 +89,4 @@ The gap was identified when the `wdi` CLI was added - no skill existed to prompt
 
 ---
 
-*Created by `/wdi-workflows:feature`*
+*Created by `/wdi:feature`*

@@ -4,14 +4,14 @@ description: Create and manage milestones that group related features for delive
 argument-hint: "[name]"
 ---
 
-# /wdi-workflows:milestone - Create Milestone
+# /wdi:milestone - Create Milestone
 
 Group related features into a milestone that delivers value.
 
 ## Usage
 
 ```
-/wdi-workflows:milestone [name]
+/wdi:milestone [name]
 ```
 
 ## Workflow
@@ -118,7 +118,7 @@ Add the new milestone to `docs/product/planning/status.md` if it exists.
 ## Example
 
 ```
-/wdi-workflows:milestone config-context
+/wdi:milestone config-context
 
 → What value does this deliver?
 "User can see what settings produced their performance results"
@@ -141,7 +141,7 @@ Generated: docs/product/planning/milestones/MILE-002-config-context.md
 ### Option 1: Execute All Features (Recommended)
 
 ```bash
-/wdi-workflows:enhanced-ralph --milestone MILE-002-config-context
+/wdi:enhanced-ralph --milestone MILE-002-config-context
 ```
 
 This executes each feature in dependency order, updates status as it goes, and marks the milestone complete when done.
@@ -156,9 +156,9 @@ This executes each feature in dependency order, updates status as it goes, and m
 
 ```bash
 # Work on features one at a time
-/wdi-workflows:enhanced-ralph config-snapshots
-/wdi-workflows:enhanced-ralph config-timeline
-/wdi-workflows:enhanced-ralph change-alerts
+/wdi:enhanced-ralph config-snapshots
+/wdi:enhanced-ralph config-timeline
+/wdi:enhanced-ralph change-alerts
 ```
 
 After each feature, manually update the milestone file status.
@@ -167,16 +167,16 @@ After each feature, manually update the milestone file status.
 
 ```bash
 # Strict mode for critical milestones
-/wdi-workflows:enhanced-ralph --milestone MILE-002 --strict
+/wdi:enhanced-ralph --milestone MILE-002 --strict
 
 # Fast mode (skip optional reviews)
-/wdi-workflows:enhanced-ralph --milestone MILE-002 --fast
+/wdi:enhanced-ralph --milestone MILE-002 --fast
 
 # Resume after failure
-/wdi-workflows:enhanced-ralph --milestone MILE-002 --continue
+/wdi:enhanced-ralph --milestone MILE-002 --continue
 
 # Force execution despite incomplete dependencies
-/wdi-workflows:enhanced-ralph --milestone MILE-002 --force
+/wdi:enhanced-ralph --milestone MILE-002 --force
 ```
 
 No sprints. No velocity. Just: pick next feature, loop until done, repeat.

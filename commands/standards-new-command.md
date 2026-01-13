@@ -2,9 +2,9 @@
 description: Create a new command and update all dependent files
 ---
 
-# /wdi-workflows:new-command - Create Command
+# /wdi:new-command - Create Command
 
-Add a new command to wdi-workflows and automatically update all dependent files (install.sh, README.md, CLAUDE.md).
+Add a new command to the wdi plugin and automatically update all dependent files (install.sh, README.md, CLAUDE.md).
 
 ## Flags
 
@@ -95,7 +95,7 @@ Read template based on complexity:
 description: {short-description}
 ---
 
-# /wdi-workflows:{name} - {Title}
+# /wdi:{name} - {Title}
 
 {Description of what the command does.}
 
@@ -119,7 +119,7 @@ description: {short-description}
 description: {short-description}
 ---
 
-# /wdi-workflows:{name} - {Title}
+# /wdi:{name} - {Title}
 
 {Description of what the command does.}
 
@@ -148,7 +148,7 @@ description: {short-description}
 ### Basic usage
 
 ```
-/wdi-workflows:{name}
+/wdi:{name}
 ```
 
 ## Notes
@@ -162,7 +162,7 @@ description: {short-description}
 description: {short-description}
 ---
 
-# /wdi-workflows:{name} - {Title}
+# /wdi:{name} - {Title}
 
 {Description of what the command does.}
 
@@ -230,7 +230,7 @@ Use `AskUserQuestion` to gather context.
 ### Example 1: {Use case}
 
 ```
-/wdi-workflows:{name}
+/wdi:{name}
 
 ? {Question 1}
   → {Answer}
@@ -313,7 +313,7 @@ Find the command table for the appropriate type:
 
 Add row:
 ```markdown
-| `/wdi-workflows:{name}` | {short-description} |
+| `/wdi:{name}` | {short-description} |
 ```
 
 ### 3.3: Update CLAUDE.md
@@ -322,7 +322,7 @@ Find the appropriate section and add the command:
 
 ```markdown
 ### {Type} Commands
-- `/wdi-workflows:{name}` - {short-description}
+- `/wdi:{name}` - {short-description}
 ```
 
 ### 3.4: Update Dependency Map
@@ -374,7 +374,7 @@ git add -A
 ### Commit
 
 ```bash
-git commit -m "feat: Add /wdi-workflows:{name} command
+git commit -m "feat: Add /wdi:{name} command
 
 {Short description}
 
@@ -395,7 +395,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 ### Creating a new workflow command
 
 ```
-/wdi-workflows:new-command
+/wdi:new-command
 
 ? What type of command is this?
   → Workflow
@@ -410,7 +410,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
   → Moderate
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Creating: /wdi-workflows:run-tests
+Creating: /wdi:run-tests
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 → Creating commands/run-tests.md...
@@ -436,14 +436,14 @@ Files changed:
 
 Commit? (y)es, (r)eview, (a)bort: y
 
-✓ Committed: feat: Add /wdi-workflows:run-tests command
+✓ Committed: feat: Add /wdi:run-tests command
 ```
 
 ---
 
 ## Notes
 
-- Always use the `wdi-` prefix for commands (per CLAUDE-CODE-STANDARDS)
+- Commands use domain-prefixed naming: `workflows-*`, `standards-*` (per PLUGIN-ARCHITECTURE.md)
 - Command names should be lowercase with hyphens
 - Short descriptions should be under 80 characters
 - Complex commands should follow the interview-driven pattern

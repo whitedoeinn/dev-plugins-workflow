@@ -105,13 +105,14 @@ business-ops/
 
 ---
 
-## Current Migration Plan
+## Migration History
 
-| Current | New | Action |
-|---------|-----|--------|
-| `wdi-content` | `marketing-ops` | Rename, restructure as mono-repo |
-| `wdi-workflows` | `dev-plugins-workflow` | Rename |
-| Marketing Dashboard (local) | `marketing-ops/packages/dashboard` | Move into mono-repo |
+| From | To | Status |
+|------|-----|--------|
+| `wdi-content` | `marketing-ops` | Pending - Rename, restructure as mono-repo |
+| `wdi-workflows` plugin | `wdi` plugin | Complete - Renamed in v1.0.0 |
+| `wdi-workflows` repo | `dev-plugins-workflows` | Complete |
+| Marketing Dashboard (local) | `marketing-ops/packages/dashboard` | Pending - Move into mono-repo |
 
 ---
 

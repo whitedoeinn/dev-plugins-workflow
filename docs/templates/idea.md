@@ -22,4 +22,4 @@ Initial thoughts on how to solve it (can be vague):
 
 ---
 
-*Captured via `/wdi-workflows:feature --idea`*
+*Captured via `/wdi:feature --idea`*

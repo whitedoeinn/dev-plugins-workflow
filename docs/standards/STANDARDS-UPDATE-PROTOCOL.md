@@ -23,7 +23,7 @@ When a standard changes, all these files must stay in sync. This protocol ensure
 Before making any change, see what will be affected:
 
 ```
-/wdi-workflows:update-standard --analyze BRANCH-NAMING
+/wdi:update-standard --analyze BRANCH-NAMING
 ```
 
 This shows:
@@ -38,7 +38,7 @@ This shows:
 After deciding to proceed:
 
 ```
-/wdi-workflows:update-standard BRANCH-NAMING
+/wdi:update-standard BRANCH-NAMING
 ```
 
 This walks you through:
@@ -60,7 +60,7 @@ Changed standards:
   BRANCH-NAMING
 
 Run impact analysis:
-  /wdi-workflows:update-standard --analyze
+  /wdi:update-standard --analyze
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -74,7 +74,7 @@ This reminds you to update all dependents before committing.
 
 ```bash
 # See what will be affected
-/wdi-workflows:update-standard --analyze <STANDARD-NAME>
+/wdi:update-standard --analyze <STANDARD-NAME>
 ```
 
 Consider:
@@ -106,7 +106,7 @@ edit docs/standards/BRANCH-NAMING.md
 Run the guided update:
 
 ```bash
-/wdi-workflows:update-standard BRANCH-NAMING
+/wdi:update-standard BRANCH-NAMING
 ```
 
 For each dependent file:
@@ -260,16 +260,16 @@ Keep this map updated when:
 
 ```bash
 # List all standards with impact
-/wdi-workflows:update-standard --list
+/wdi:update-standard --list
 
 # Analyze before changing
-/wdi-workflows:update-standard --analyze <STANDARD>
+/wdi:update-standard --analyze <STANDARD>
 
 # Guided update after changing
-/wdi-workflows:update-standard <STANDARD>
+/wdi:update-standard <STANDARD>
 
 # Quick update (no prompts)
-/wdi-workflows:update-standard --yes <STANDARD>
+/wdi:update-standard --yes <STANDARD>
 ```
 
 ---

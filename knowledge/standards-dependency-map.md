@@ -1,7 +1,7 @@
 # Standards Dependency Map
 
 Quick reference for which files depend on each standard. Used by:
-- `/wdi-workflows:update-standard` command
+- `/wdi:update-standard` command
 - `scripts/pre-tool-standards-check.sh` hook
 - `scripts/validate-dependency-map.sh` validation
 
@@ -170,6 +170,6 @@ When adding a new standard:
 3. Add to knowledge/standards-summary.md
 
 When changing a standard:
-1. Run `/wdi-workflows:update-standard --analyze STANDARD-NAME`
+1. Run `/wdi:update-standard --analyze STANDARD-NAME`
 2. Review impact before proceeding
-3. Use `/wdi-workflows:update-standard STANDARD-NAME` for guided updates
+3. Use `/wdi:update-standard STANDARD-NAME` for guided updates

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Environment Checker for wdi-workflows plugin
+# Environment Checker for wdi plugin
 # Runs on SessionStart to validate environment against baseline
 #
 # This script delegates to validate-env.sh for comprehensive validation
@@ -44,7 +44,7 @@ else
   if [ ${#MISSING[@]} -gt 0 ]; then
     echo ""
     echo "Missing required plugins: ${MISSING[*]}"
-    echo "   Run: ./install.sh (from wdi-workflows directory)"
+    echo "   Run: ./install.sh (from wdi plugin directory)"
     echo "   Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash"
     echo ""
   fi

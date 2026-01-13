@@ -2,7 +2,7 @@
 description: Validate current repository against WDI standards
 ---
 
-# /wdi-workflows:check-standards - Standards Validation
+# /wdi:check-standards - Standards Validation
 
 Check the current repository against WDI development standards and report any issues.
 
@@ -210,7 +210,7 @@ Fixed 4 issues. 2 issues require manual attention.
 ### Basic check
 
 ```
-/wdi-workflows:check-standards
+/wdi:check-standards
 
 Standards Check: marketing-ops
 ══════════════════════════════════════════════════════
@@ -225,7 +225,7 @@ All critical standards met. See warnings above.
 ### Check with auto-fix
 
 ```
-/wdi-workflows:check-standards --fix
+/wdi:check-standards --fix
 
 Standards Check: new-project
 ══════════════════════════════════════════════════════
@@ -241,7 +241,7 @@ Remaining issues:
 ### Strict mode for CI
 
 ```
-/wdi-workflows:check-standards --strict
+/wdi:check-standards --strict
 
 Standards Check: dev-plugins-workflow
 ══════════════════════════════════════════════════════
