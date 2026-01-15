@@ -39,6 +39,8 @@ Every issue should have exactly one type label:
 | `documentation` | `#0075ca` (blue) | Documentation only |
 | `question` | `#d876e3` (purple) | Needs discussion or clarification |
 | `experiment` | `#fbca04` (yellow) | Exploratory work, spike, POC |
+| `idea` | `#c5def5` (light blue) | Captured idea, not yet shaped or planned |
+| `chore` | `#bfdadc` (gray-teal) | Maintenance, cleanup, dependencies, config |
 
 ### Optional Labels (Priority)
 
@@ -170,6 +172,125 @@ Why is this improvement valuable?
 ## Additional Context
 
 Any other relevant information.
+```
+
+### Idea Template
+
+```markdown
+---
+name: Idea
+about: Capture a rough idea for later shaping
+title: 'Idea: '
+labels: idea
+---
+
+## Idea
+
+What's the rough concept?
+
+## Problem/Opportunity
+
+What might this solve or enable?
+
+## Initial Thoughts
+
+Any early thinking on approach?
+```
+
+### Chore Template
+
+```markdown
+---
+name: Chore
+about: Maintenance, cleanup, dependencies, or configuration
+title: ''
+labels: chore
+---
+
+## Task
+
+What needs to be done?
+
+## Reason
+
+Why is this maintenance needed?
+
+## Scope
+
+What files/areas are affected?
+```
+
+### Documentation Template
+
+```markdown
+---
+name: Documentation
+about: Documentation improvements or additions
+title: ''
+labels: documentation
+---
+
+## What needs documenting?
+
+Describe what's missing or needs improvement.
+
+## Location
+
+Where should this documentation live?
+
+## Audience
+
+Who is this documentation for?
+```
+
+### Question Template
+
+```markdown
+---
+name: Question
+about: Ask a question that needs discussion
+title: ''
+labels: question
+---
+
+## Question
+
+What do you need clarification on?
+
+## Context
+
+What led to this question?
+
+## Options Considered
+
+Any approaches you've thought about?
+```
+
+### Experiment Template
+
+```markdown
+---
+name: Experiment
+about: Exploratory work, spike, or proof of concept
+title: 'Experiment: '
+labels: experiment
+---
+
+## Hypothesis
+
+What are you trying to learn or prove?
+
+## Approach
+
+How will you test this?
+
+## Success Criteria
+
+How will you know if the experiment succeeded?
+
+## Time Box
+
+Expected duration (max 90 days per standards).
 ```
 
 ---

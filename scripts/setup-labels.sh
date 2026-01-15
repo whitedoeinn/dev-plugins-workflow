@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-echo -e "${YELLOW}Setting up GitHub labels for idea/feature workflow...${NC}"
+echo -e "${YELLOW}Setting up GitHub labels for issue management...${NC}"
 echo ""
 
 # Check gh auth
@@ -17,9 +17,22 @@ if ! gh auth status >/dev/null 2>&1; then
   exit 1
 fi
 
+# Type labels (required - one per issue)
+echo "Creating type labels..."
+gh label create "bug" --color "d73a4a" --description "Something isn't working correctly" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} bug" || echo "  - bug (exists)"
+gh label create "feature" --color "0075ca" --description "New functionality" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} feature" || echo "  - feature (exists)"
+gh label create "enhancement" --color "a2eeef" --description "Improvement to existing functionality" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} enhancement" || echo "  - enhancement (exists)"
+gh label create "documentation" --color "0075ca" --description "Documentation only" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} documentation" || echo "  - documentation (exists)"
+gh label create "question" --color "d876e3" --description "Needs discussion or clarification" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} question" || echo "  - question (exists)"
+gh label create "experiment" --color "fbca04" --description "Exploratory work, spike, POC" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} experiment" || echo "  - experiment (exists)"
+gh label create "idea" --color "c5def5" --description "Captured idea, not yet shaped" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} idea" || echo "  - idea (exists)"
+gh label create "chore" --color "bfdadc" --description "Maintenance, cleanup, dependencies" --force 2>/dev/null && echo -e "  ${GREEN}✓${NC} chore" || echo "  - chore (exists)"
+
+echo ""
+
 # Status labels (lifecycle)
 echo "Creating status labels..."
-gh label create "status:idea" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:idea" || echo "  - status:idea (exists)"
+gh label create "status:needs-shaping" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-shaping" || echo "  - status:needs-shaping (exists)"
 gh label create "status:needs-design" --color "FBCA04" --description "Problem clear, solution unclear" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-design" || echo "  - status:needs-design (exists)"
 gh label create "status:needs-research" --color "FBCA04" --description "Needs technical investigation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-research" || echo "  - status:needs-research (exists)"
 gh label create "status:ready" --color "0E8A16" --description "Ready for implementation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:ready" || echo "  - status:ready (exists)"
@@ -45,6 +58,7 @@ echo ""
 echo -e "${GREEN}Labels setup complete!${NC}"
 echo ""
 echo "Label scheme:"
-echo "  status:*    - Lifecycle state (idea → ready → in-progress)"
+echo "  Type labels - What the issue IS (bug, feature, idea, chore, etc.)"
+echo "  status:*    - Lifecycle state (needs-shaping → ready → in-progress)"
 echo "  needs:*     - Blockers (info, decision, discussion)"
 echo "  appetite:*  - Time budget (small, medium, big)"

@@ -108,7 +108,8 @@ mkdir -p docs/product/ideas
 ```bash
 gh issue create \
   --title "Idea: {title}" \
-  --label "status:idea" \
+  --label "idea" \
+  --label "status:needs-shaping" \
   --body "$(cat <<'EOF'
 ## Problem
 
@@ -136,9 +137,10 @@ EOF
 )"
 ```
 
-If `status:idea` label doesn't exist, create it:
+If labels don't exist, create them:
 ```bash
-gh label create "status:idea" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null || true
+gh label create "idea" --color "c5def5" --description "Captured idea, not yet shaped" 2>/dev/null || true
+gh label create "status:needs-shaping" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null || true
 ```
 
 ### Step 4: Output
@@ -151,7 +153,7 @@ Title: {title}
 Appetite: {appetite}
 
 ✓ Created: docs/product/ideas/{slug}.md
-✓ Issue: #{issue-number} (status:idea)
+✓ Issue: #{issue-number} (idea, status:needs-shaping)
 
 Next steps:
 • Shape the idea when ready: research feasibility, define approach
@@ -176,7 +178,7 @@ The workflow will:
 2. Pre-populate interview answers from the idea
 3. Run full research → plan → work → review → compound workflow
 4. Move the file from `docs/product/ideas/` to `docs/product/planning/features/`
-5. Update the GitHub issue labels: `status:idea` → `status:in-progress`
+5. Update the GitHub issue status: `status:needs-shaping` → `status:in-progress`
 
 ---
 

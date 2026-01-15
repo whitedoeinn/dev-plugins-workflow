@@ -119,7 +119,7 @@ Use `--idea` mode to quickly capture ideas without implementing them:
 
 **Creates:**
 - Idea file: `docs/product/ideas/{slug}.md`
-- Draft issue: GitHub issue with `status:idea` label
+- Draft issue: GitHub issue with `idea` type label and `status:needs-shaping`
 
 **Lifecycle:**
 ```
