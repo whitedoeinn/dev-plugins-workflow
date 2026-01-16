@@ -528,7 +528,7 @@ cmd_create_project() {
   echo "  4) Experiment/Spike      (90-day lifecycle)"
   echo ""
   prompt "Select [1-4]:"
-  read -r project_type_num
+  read -r project_type_num < /dev/tty
 
   local project_type domain_name repo_name description
 
@@ -556,15 +556,17 @@ cmd_create_project() {
       echo "  $i) Other - Custom domain"
       echo ""
       prompt "Select:"
-      read -r domain_num
+      read -r domain_num < /dev/tty
 
-      local domains
-      mapfile -t domains < <(config_get_array "plugin_domains")
+      local domains=()
+      while IFS= read -r line; do
+        domains+=("$line")
+      done < <(config_get_array "plugin_domains")
       if [[ "$domain_num" -le "${#domains[@]}" ]]; then
         domain_name="${domains[$((domain_num-1))]}"
       else
         prompt "Enter custom domain:"
-        read -r domain_name
+        read -r domain_name < /dev/tty
       fi
 
       repo_name="dev-plugins-${domain_name}"
@@ -580,15 +582,17 @@ cmd_create_project() {
       echo "  $i) Other - Custom domain"
       echo ""
       prompt "Select:"
-      read -r domain_num
+      read -r domain_num < /dev/tty
 
-      local domains
-      mapfile -t domains < <(config_get_array "business_domains")
+      local domains=()
+      while IFS= read -r line; do
+        domains+=("$line")
+      done < <(config_get_array "business_domains")
       if [[ "$domain_num" -le "${#domains[@]}" ]]; then
         domain_name="${domains[$((domain_num-1))]}"
       else
         prompt "Enter custom domain:"
-        read -r domain_name
+        read -r domain_name < /dev/tty
       fi
 
       repo_name="${domain_name}-ops"
@@ -596,12 +600,12 @@ cmd_create_project() {
 
     standalone)
       prompt "Project name (lowercase-with-hyphens):"
-      read -r repo_name
+      read -r repo_name < /dev/tty
       ;;
 
     experiment)
       prompt "Experiment name (will be prefixed with 'experiment-'):"
-      read -r domain_name
+      read -r domain_name < /dev/tty
       repo_name="experiment-${domain_name}"
       ;;
   esac
@@ -609,7 +613,7 @@ cmd_create_project() {
   # Description
   echo ""
   prompt "One-line description for the repository:"
-  read -r description
+  read -r description < /dev/tty
 
   # Phase 2: Name Proposal
   echo ""
@@ -637,7 +641,7 @@ cmd_create_project() {
   echo ""
 
   prompt "Accept this name? [Y/n/m]odify:"
-  read -r accept_name
+  read -r accept_name < /dev/tty
 
   case "${accept_name,,}" in
     n|no)
@@ -646,7 +650,7 @@ cmd_create_project() {
       ;;
     m|modify)
       prompt "Enter your preferred name:"
-      read -r custom_name
+      read -r custom_name < /dev/tty
       # Phase 3: Validation
       validate_name "$custom_name" "$project_type"
       repo_name="$custom_name"
@@ -664,7 +668,7 @@ cmd_create_project() {
   if [[ -d "$project_path" ]]; then
     error "Directory already exists: $project_path"
     prompt "Overwrite? [y/N]:"
-    read -r overwrite
+    read -r overwrite < /dev/tty
     if [[ "${overwrite,,}" != "y" ]]; then
       exit 1
     fi
@@ -712,7 +716,7 @@ cmd_create_project() {
   echo ""
 
   prompt "Open in Claude Code? [Y/n]:"
-  read -r open_claude
+  read -r open_claude < /dev/tty
   if [[ "${open_claude,,}" != "n" ]]; then
     cd "$project_path"
     claude
@@ -779,7 +783,7 @@ validate_name() {
     echo "  5) Other - Custom explanation"
     echo ""
     prompt "Select:"
-    read -r reason_num
+    read -r reason_num < /dev/tty
 
     local reason_text
     case "$reason_num" in
@@ -789,7 +793,7 @@ validate_name() {
       4) reason_text="Standard should change" ;;
       5)
         prompt "Please explain:"
-        read -r reason_text
+        read -r reason_text < /dev/tty
         ;;
     esac
 
