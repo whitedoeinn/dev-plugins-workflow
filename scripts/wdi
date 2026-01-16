@@ -206,6 +206,14 @@ cmd_install() {
   # Collect manual steps needed
   local manual_steps=()
 
+  # Check git config
+  local git_name git_email
+  git_name=$(git config --global user.name 2>/dev/null || echo "")
+  git_email=$(git config --global user.email 2>/dev/null || echo "")
+  if [[ -z "$git_name" ]] || [[ -z "$git_email" ]]; then
+    manual_steps+=("Configure git: git config --global user.name \"Your Name\" && git config --global user.email \"your@email.com\"")
+  fi
+
   # Check gh auth
   if command -v gh &>/dev/null; then
     if ! gh auth status &>/dev/null; then
@@ -356,6 +364,8 @@ cmd_doctor() {
     git_email=$(git config --global user.email 2>/dev/null || echo "")
     if [[ -z "$git_name" ]] || [[ -z "$git_email" ]]; then
       warn "git user.name or user.email not configured"
+      echo "  Run: git config --global user.name \"Your Name\""
+      echo "  Run: git config --global user.email \"your@email.com\""
     fi
   else
     error "git not found"
