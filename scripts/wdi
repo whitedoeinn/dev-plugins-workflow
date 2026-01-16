@@ -16,6 +16,9 @@
 #   update          Update wdi CLI to latest version
 #   help            Show this help
 #   version         Show version
+#
+# Environment Variables:
+#   WDI_DEBUG=1     Enable debug output for troubleshooting
 
 set -e
 
@@ -54,6 +57,12 @@ error() {
 
 prompt() {
   echo -e "${BLUE}?${NC} $1"
+}
+
+debug() {
+  if [[ "${WDI_DEBUG:-}" == "1" ]]; then
+    echo -e "${YELLOW}[DEBUG]${NC} $1" >&2
+  fi
 }
 
 # Check if a command exists
@@ -133,6 +142,7 @@ config_get_array() {
 # ============================================================================
 
 cmd_install() {
+  debug "cmd_install() called"
   echo ""
   echo -e "${CYAN}Installing wdi CLI...${NC}"
   echo ""
@@ -141,17 +151,22 @@ cmd_install() {
   local script_source
   if [[ -t 0 ]]; then
     # Not piped, use the script itself
+    debug "Running from file: $0"
     script_source="$0"
   else
     # Piped from curl, save stdin to temp file
+    debug "Running from pipe (curl), saving to temp file"
     script_source=$(mktemp)
     cat > "$script_source"
+    debug "Temp file: $script_source"
   fi
 
   # Create bin directory
+  debug "Creating directory: ${HOME}/.local/bin"
   mkdir -p "${HOME}/.local/bin"
 
   # Copy script to bin
+  debug "Copying $script_source to $WDI_BIN"
   cp "$script_source" "$WDI_BIN"
   chmod +x "$WDI_BIN"
   success "Installed to $WDI_BIN"
@@ -212,10 +227,12 @@ cmd_install() {
 # ============================================================================
 
 cmd_config() {
+  debug "cmd_config() called"
   echo ""
   echo -e "${CYAN}WDI Configuration${NC}"
   echo ""
 
+  debug "Creating config directory: $WDI_HOME"
   mkdir -p "$WDI_HOME"
 
   # GitHub org
@@ -275,11 +292,13 @@ EOF
 # ============================================================================
 
 cmd_doctor() {
+  debug "cmd_doctor() called with args: $*"
   local auto_fix=true
   case "$1" in
     --check-only) auto_fix=false ;;
     --auto-fix) auto_fix=true ;;
   esac
+  debug "auto_fix=$auto_fix"
 
   local has_issues=false
 
@@ -429,25 +448,34 @@ install_package() {
 # ============================================================================
 
 cmd_create_project() {
+  debug "cmd_create_project() called"
+
   # Check and auto-install prerequisites
   echo ""
   info "Checking prerequisites..."
+  debug "Calling cmd_doctor --auto-fix"
   if ! cmd_doctor --auto-fix; then
     echo ""
     error "Prerequisites not met. Please fix the issues above and try again."
+    debug "cmd_doctor failed, exiting"
     exit 1
   fi
+  debug "cmd_doctor passed"
 
   # Check config exists
+  debug "Checking for config file: $WDI_CONFIG"
   if [[ ! -f "$WDI_CONFIG" ]]; then
     echo ""
     warn "No configuration found. Running 'wdi config' first..."
+    debug "Config not found, calling cmd_config"
     cmd_config
   fi
 
   local github_org project_dir
   github_org=$(config_get "github_org" "")
   project_dir=$(config_get "project_dir" "$PWD")
+  debug "github_org=$github_org"
+  debug "project_dir=$project_dir"
 
   if [[ -z "$github_org" ]]; then
     error "GitHub organization not configured. Run 'wdi config'."
@@ -1094,8 +1122,15 @@ cmd_version() {
 # ============================================================================
 
 main() {
+  debug "main() called with args: $*"
+  debug "WDI_HOME=$WDI_HOME"
+  debug "WDI_CONFIG=$WDI_CONFIG"
+  debug "WDI_BIN=$WDI_BIN"
+
   local command="${1:-help}"
   shift || true
+
+  debug "Executing command: $command"
 
   case "$command" in
     install) cmd_install "$@" ;;
