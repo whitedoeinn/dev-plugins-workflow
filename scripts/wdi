@@ -65,6 +65,15 @@ debug() {
   fi
 }
 
+# Read user input - uses /dev/tty if available (for curl pipe), otherwise stdin (for CI)
+read_input() {
+  if [[ -e /dev/tty ]]; then
+    read -r "$@" < /dev/tty
+  else
+    read -r "$@"
+  fi
+}
+
 # Check if a command exists
 has_command() {
   command -v "$1" >/dev/null 2>&1
@@ -255,14 +264,14 @@ cmd_config() {
   local current_org
   current_org=$(config_get "github_org" "")
   prompt "GitHub organization name${current_org:+ [$current_org]}:"
-  read -r github_org < /dev/tty
+  read_input github_org
   github_org="${github_org:-$current_org}"
 
   # Project directory
   local current_dir
   current_dir=$(config_get "project_dir" "$HOME/vscode-projects")
   prompt "Default project location [$current_dir]:"
-  read -r project_dir < /dev/tty
+  read_input project_dir
   project_dir="${project_dir:-$current_dir}"
   # Expand ~ to $HOME
   project_dir="${project_dir/#\~/$HOME}"
@@ -272,7 +281,7 @@ cmd_config() {
   current_domains=$(config_get_array "business_domains" | tr '\n' ',' | sed 's/,$//')
   current_domains="${current_domains:-marketing, operations, finance, guest-services}"
   prompt "Business domains for repos (comma-separated) [$current_domains]:"
-  read -r business_domains < /dev/tty
+  read_input business_domains
   business_domains="${business_domains:-$current_domains}"
 
   # Plugin domains
@@ -280,7 +289,7 @@ cmd_config() {
   current_plugin_domains=$(config_get_array "plugin_domains" | tr '\n' ',' | sed 's/,$//')
   current_plugin_domains="${current_plugin_domains:-workflow, frontend, backend, analytics, data}"
   prompt "Plugin domains (comma-separated) [$current_plugin_domains]:"
-  read -r plugin_domains < /dev/tty
+  read_input plugin_domains
   plugin_domains="${plugin_domains:-$current_plugin_domains}"
 
   # Convert comma-separated to JSON arrays
@@ -360,13 +369,13 @@ cmd_doctor() {
         echo ""
         if [[ -z "$git_name" ]]; then
           prompt "Enter your name for git commits:"
-          read -r git_name < /dev/tty
+          read_input git_name
           git config --global user.name "$git_name"
           success "Set git user.name to '$git_name'"
         fi
         if [[ -z "$git_email" ]]; then
           prompt "Enter your email for git commits:"
-          read -r git_email < /dev/tty
+          read_input git_email
           git config --global user.email "$git_email"
           success "Set git user.email to '$git_email'"
         fi
@@ -528,7 +537,7 @@ cmd_create_project() {
   echo "  4) Experiment/Spike      (90-day lifecycle)"
   echo ""
   prompt "Select [1-4]:"
-  read -r project_type_num < /dev/tty
+  read_input project_type_num
 
   local project_type domain_name repo_name description
 
@@ -556,7 +565,7 @@ cmd_create_project() {
       echo "  $i) Other - Custom domain"
       echo ""
       prompt "Select:"
-      read -r domain_num < /dev/tty
+      read_input domain_num
 
       local domains=()
       while IFS= read -r line; do
@@ -566,7 +575,7 @@ cmd_create_project() {
         domain_name="${domains[$((domain_num-1))]}"
       else
         prompt "Enter custom domain:"
-        read -r domain_name < /dev/tty
+        read_input domain_name
       fi
 
       repo_name="dev-plugins-${domain_name}"
@@ -582,7 +591,7 @@ cmd_create_project() {
       echo "  $i) Other - Custom domain"
       echo ""
       prompt "Select:"
-      read -r domain_num < /dev/tty
+      read_input domain_num
 
       local domains=()
       while IFS= read -r line; do
@@ -592,7 +601,7 @@ cmd_create_project() {
         domain_name="${domains[$((domain_num-1))]}"
       else
         prompt "Enter custom domain:"
-        read -r domain_name < /dev/tty
+        read_input domain_name
       fi
 
       repo_name="${domain_name}-ops"
@@ -600,12 +609,12 @@ cmd_create_project() {
 
     standalone)
       prompt "Project name (lowercase-with-hyphens):"
-      read -r repo_name < /dev/tty
+      read_input repo_name
       ;;
 
     experiment)
       prompt "Experiment name (will be prefixed with 'experiment-'):"
-      read -r domain_name < /dev/tty
+      read_input domain_name
       repo_name="experiment-${domain_name}"
       ;;
   esac
@@ -613,7 +622,7 @@ cmd_create_project() {
   # Description
   echo ""
   prompt "One-line description for the repository:"
-  read -r description < /dev/tty
+  read_input description
 
   # Phase 2: Name Proposal
   echo ""
@@ -641,7 +650,7 @@ cmd_create_project() {
   echo ""
 
   prompt "Accept this name? [Y/n/m]odify:"
-  read -r accept_name < /dev/tty
+  read_input accept_name
 
   case "${accept_name,,}" in
     n|no)
@@ -650,7 +659,7 @@ cmd_create_project() {
       ;;
     m|modify)
       prompt "Enter your preferred name:"
-      read -r custom_name < /dev/tty
+      read_input custom_name
       # Phase 3: Validation
       validate_name "$custom_name" "$project_type"
       repo_name="$custom_name"
@@ -668,7 +677,7 @@ cmd_create_project() {
   if [[ -d "$project_path" ]]; then
     error "Directory already exists: $project_path"
     prompt "Overwrite? [y/N]:"
-    read -r overwrite < /dev/tty
+    read_input overwrite
     if [[ "${overwrite,,}" != "y" ]]; then
       exit 1
     fi
@@ -716,7 +725,7 @@ cmd_create_project() {
   echo ""
 
   prompt "Open in Claude Code? [Y/n]:"
-  read -r open_claude < /dev/tty
+  read_input open_claude
   if [[ "${open_claude,,}" != "n" ]]; then
     cd "$project_path"
     claude
@@ -783,7 +792,7 @@ validate_name() {
     echo "  5) Other - Custom explanation"
     echo ""
     prompt "Select:"
-    read -r reason_num < /dev/tty
+    read_input reason_num
 
     local reason_text
     case "$reason_num" in
@@ -793,7 +802,7 @@ validate_name() {
       4) reason_text="Standard should change" ;;
       5)
         prompt "Please explain:"
-        read -r reason_text < /dev/tty
+        read_input reason_text
         ;;
     esac
 
