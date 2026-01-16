@@ -147,34 +147,22 @@ cmd_install() {
   echo -e "${CYAN}Installing wdi CLI...${NC}"
   echo ""
 
-  # Get the script source (either piped or file path)
-  local script_source
-  if [[ -t 0 ]]; then
-    # Not piped, use the script itself
-    debug "Running from file: $0"
-    script_source="$0"
-  else
-    # Piped from curl, save stdin to temp file
-    debug "Running from pipe (curl), saving to temp file"
-    script_source=$(mktemp)
-    cat > "$script_source"
-    debug "Temp file: $script_source"
-  fi
-
   # Create bin directory
   debug "Creating directory: ${HOME}/.local/bin"
   mkdir -p "${HOME}/.local/bin"
 
-  # Copy script to bin
-  debug "Copying $script_source to $WDI_BIN"
-  cp "$script_source" "$WDI_BIN"
-  chmod +x "$WDI_BIN"
-  success "Installed to $WDI_BIN"
+  # Download fresh copy from GitHub (stdin is consumed by bash when piped)
+  local install_url="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi"
+  debug "Downloading from: $install_url"
 
-  # Clean up temp file if used
-  if [[ ! -t 0 ]]; then
-    rm -f "$script_source"
+  if ! curl -sSL "$install_url" -o "$WDI_BIN"; then
+    error "Failed to download wdi script"
+    exit 1
   fi
+
+  chmod +x "$WDI_BIN"
+  debug "Installed to $WDI_BIN"
+  success "Installed to $WDI_BIN"
 
   # Add to PATH if needed
   local shell_rc
