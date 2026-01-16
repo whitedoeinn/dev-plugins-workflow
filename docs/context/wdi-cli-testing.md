@@ -40,7 +40,7 @@ docker run -it --rm \
 
 # Inside container:
 apt update && apt install -y curl git sudo
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/feature/test-wdi-cli/scripts/wdi | bash -s install
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/feature/test-wdi-cli/scripts/wdi | bash -s install
 echo "$GITHUB_TOKEN" | gh auth login --with-token
 wdi create_project
 ```

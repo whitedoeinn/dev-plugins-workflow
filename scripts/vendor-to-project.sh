@@ -171,7 +171,7 @@ cat > "$TARGET/scripts/update-plugins.sh" << 'UPDATEEOF'
 set -e
 
 # Configure source location (modify if needed)
-WDI_SOURCE="${WDI_SOURCE:-$HOME/vscode-projects/dev-plugins-workflows}"
+WDI_SOURCE="${WDI_SOURCE:-$HOME/vscode-projects/dev-plugins-workflow}"
 
 if [ ! -d "$WDI_SOURCE" ]; then
     echo "Error: wdi source not found at $WDI_SOURCE"

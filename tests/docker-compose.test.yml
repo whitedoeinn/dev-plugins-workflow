@@ -1,0 +1,89 @@
+# Docker Compose for E2E testing
+# Orchestrates multi-container test scenarios
+
+services:
+  # Base test environment - runs unit tests
+  unit-tests:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.test
+    command: bats --recursive /plugin/tests/unit/
+    volumes:
+      - ../:/plugin:ro
+    environment:
+      - BATS_LIB_PATH=/usr/local/lib
+
+  # Integration tests - command/skill parsing
+  integration-tests:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.test
+    command: /plugin/tests/integration/run-integration.sh
+    volumes:
+      - ../:/plugin:ro
+    environment:
+      - BATS_LIB_PATH=/usr/local/lib
+    depends_on:
+      unit-tests:
+        condition: service_completed_successfully
+
+  # Fresh environment for E2E - simulates new user
+  fresh-env:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.fresh-env
+    command: /e2e/scenarios/fresh-install.sh
+    volumes:
+      - ./e2e/scenarios:/e2e/scenarios:ro
+    environment:
+      - GH_TOKEN=${GH_TOKEN:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - TEST_ORG=${TEST_ORG:-wdi-test}
+    depends_on:
+      unit-tests:
+        condition: service_completed_successfully
+
+  # E2E scenario runner
+  e2e-runner:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.test
+    command: /plugin/tests/e2e/run-e2e.sh
+    volumes:
+      - ../:/plugin:ro
+      - ./e2e/scenarios:/e2e/scenarios:ro
+    environment:
+      - GH_TOKEN=${GH_TOKEN:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - TEST_ORG=${TEST_ORG:-wdi-test}
+    profiles:
+      - e2e
+
+  # Plugin dev environment for sync tests
+  plugin-dev:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.test
+    command: sleep infinity
+    volumes:
+      - ../:/plugin
+    environment:
+      - GH_TOKEN=${GH_TOKEN:-}
+    profiles:
+      - sync-test
+
+  # Consumer project for sync tests
+  consumer-project:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile.fresh-env
+    command: /e2e/scenarios/plugin-sync.sh
+    volumes:
+      - ./e2e/scenarios:/e2e/scenarios:ro
+    environment:
+      - GH_TOKEN=${GH_TOKEN:-}
+      - TEST_ORG=${TEST_ORG:-wdi-test}
+    depends_on:
+      - plugin-dev
+    profiles:
+      - sync-test

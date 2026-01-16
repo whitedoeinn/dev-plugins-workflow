@@ -304,7 +304,7 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 
 - [Claude Code Plugin Documentation](https://docs.anthropic.com/claude-code/plugins)
 - [Compound Engineering Plugin](https://github.com/EveryInc/compound-engineering-plugin)
-- [WDI Plugin Repository](https://github.com/whitedoeinn/dev-plugins)
+- [WDI Plugin Repository](https://github.com/whitedoeinn/dev-plugins-workflow)
 
 ---
 

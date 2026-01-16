@@ -153,4 +153,4 @@ See [docs/architecture.md](docs/architecture.md) for how the plugin system works
 
 ## Questions?
 
-Open an issue on [GitHub](https://github.com/whitedoeinn/dev-plugins-workflows/issues).
+Open an issue on [GitHub](https://github.com/whitedoeinn/dev-plugins-workflow/issues).

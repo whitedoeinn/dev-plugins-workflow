@@ -45,7 +45,7 @@ else
     echo ""
     echo "Missing required plugins: ${MISSING[*]}"
     echo "   Run: ./install.sh (from wdi plugin directory)"
-    echo "   Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash"
+    echo "   Or:  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash"
     echo ""
   fi
 fi

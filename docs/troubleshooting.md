@@ -9,7 +9,7 @@
 **Solution:**
 ```bash
 cd your-project
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
 Then start a new Claude Code session.
@@ -136,7 +136,7 @@ Follow the prompts to authenticate with GitHub.
 **Solution:**
 ```bash
 # Start Claude Code with plugin loaded from source
-claude --plugin-dir /path/to/dev-plugins-workflows
+claude --plugin-dir /path/to/dev-plugins-workflow
 ```
 
 **Important notes:**
@@ -176,7 +176,7 @@ cat ~/.claude/plugins/known_marketplaces.json
 ## Getting Help
 
 If you're still having issues:
-1. Check the [GitHub Issues](https://github.com/whitedoeinn/dev-plugins-workflows/issues)
+1. Check the [GitHub Issues](https://github.com/whitedoeinn/dev-plugins-workflow/issues)
 2. Open a new issue with:
    - Your OS and Claude Code version
    - The exact error message

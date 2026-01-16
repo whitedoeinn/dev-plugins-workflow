@@ -124,7 +124,7 @@ echo ""
 
 # Step 3: Add wdi marketplace
 echo -e "${YELLOW}Step 3: Adding wdi marketplace...${NC}"
-if claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins 2>/dev/null; then
+if claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow 2>/dev/null; then
   echo -e "${GREEN}Marketplace added${NC}"
 else
   echo -e "${YELLOW}Marketplace already exists (continuing)${NC}"

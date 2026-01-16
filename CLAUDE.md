@@ -116,7 +116,7 @@ The `wdi` CLI runs **before** Claude Code starts, solving the problem of creatin
 
 ```bash
 # Install globally
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins/main/scripts/wdi | bash -s install
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 
 # Commands
 wdi create_project   # Interactive project creation with standards compliance

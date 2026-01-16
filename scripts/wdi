@@ -3,7 +3,7 @@
 # wdi - White Doe Inn CLI for standards-aware project bootstrapping
 #
 # Installation:
-#   curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/scripts/wdi | bash -s install
+#   curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 #
 # Usage:
 #   wdi <command> [options]
@@ -635,7 +635,7 @@ cmd_create_project() {
     ./install.sh >/dev/null 2>&1 || true
   else
     # Download and run install.sh for non-plugin projects
-    curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/install.sh | bash -s project >/dev/null 2>&1 || true
+    curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash -s project >/dev/null 2>&1 || true
   fi
   success "Installed wdi plugin"
 
@@ -859,7 +859,7 @@ claude plugin marketplace add https://github.com/EveryInc/compound-engineering-p
 claude plugin install compound-engineering --scope project 2>/dev/null || true
 
 # Install wdi dependency
-claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflows 2>/dev/null || true
+claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow 2>/dev/null || true
 claude plugin install wdi --scope project 2>/dev/null || true
 
 echo "Installation complete!"
@@ -1043,7 +1043,7 @@ EOF
 cmd_update() {
   echo ""
   info "Updating wdi CLI..."
-  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/scripts/wdi | bash -s install
+  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 }
 
 # ============================================================================
@@ -1073,7 +1073,7 @@ ${YELLOW}Examples:${NC}
   wdi config                            # Reconfigure settings
 
 ${YELLOW}Installation:${NC}
-  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/scripts/wdi | bash -s install
+  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 
 EOF
 }
