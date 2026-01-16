@@ -47,10 +47,10 @@ dev-plugins/
 ├── hooks/                           # Claude Code hooks
 │   └── hooks.json                   # SessionStart hook config
 ├── scripts/                         # Helper scripts
-│   ├── wdi                          # Global CLI for project bootstrapping
 │   ├── vendor-to-project.sh         # Vendor plugin to target project
 │   ├── check-deps.sh                # Dependency and standards checker
 │   ├── validate-env.sh              # Environment validation
+│   ├── run-tests.sh                 # Run unit + integration tests
 │   └── ...
 ├── env-baseline.json                # Environment baseline definition
 ├── docs/
@@ -110,17 +110,17 @@ This plugin requires the `compound-engineering` plugin (external dependency):
 
 **Installation:** compound-engineering is installed globally via marketplace, not vendored.
 
-## WDI CLI (Pre-Claude-Code)
+## WDI CLI (Deprecated)
 
-The `wdi` CLI runs **before** Claude Code starts, solving the problem of creating directories without knowing naming standards.
+> **Note:** The wdi CLI is deprecated. Claude Code can create directories and projects directly - just describe what you want. The CLI remains available but is no longer actively maintained.
 
 ```bash
-# Install globally
+# Legacy install (deprecated)
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 
-# Commands
-wdi create_project   # Interactive project creation with standards compliance
-wdi doctor           # Check/install dependencies (git, gh, jq, claude)
+# Commands (deprecated)
+wdi create_project   # Use Claude directly instead
+wdi doctor           # Check/install dependencies
 wdi config           # Configure org, domains, project location
 wdi update           # Update CLI to latest version
 ```
@@ -203,6 +203,20 @@ Skills work similarly but auto-invoke based on context. When you say "commit the
 1. **Edit command files** in `/commands/*.md` or skill files in `/skills/*/SKILL.md`
 2. **Test locally** - Changes take effect immediately in this project
 3. **Push to GitHub** - Other projects can then update via `./scripts/update-plugins.sh`
+
+### Testing
+
+Run tests before pushing:
+
+```bash
+./scripts/run-tests.sh
+```
+
+Tests include:
+- **Unit tests** (BATS) - Test individual script functions
+- **Integration tests** - Validate plugin structure and command parsing
+
+CI runs these automatically on every push/PR. No Docker or E2E infrastructure needed - keep it simple.
 
 ### Testing Hooks
 

@@ -26,12 +26,12 @@ log() {
 
 success() {
   echo -e "${GREEN}[PASS]${NC} $1"
-  ((PASSED++))
+  ((PASSED++)) || true
 }
 
 fail() {
   echo -e "${RED}[FAIL]${NC} $1"
-  ((FAILED++))
+  ((FAILED++)) || true
 }
 
 # ============================================================================
@@ -60,9 +60,11 @@ test_command_files() {
       continue
     fi
 
-    # Check file starts with a heading
-    if ! head -1 "$cmd_file" | grep -q "^#"; then
-      fail "Command file doesn't start with heading: $cmd_name"
+    # Check file starts with a heading or YAML frontmatter
+    local first_line
+    first_line=$(head -1 "$cmd_file")
+    if [[ "$first_line" != "---" ]] && ! echo "$first_line" | grep -q "^#"; then
+      fail "Command file doesn't start with heading or frontmatter: $cmd_name"
       continue
     fi
 
@@ -110,9 +112,11 @@ test_skill_files() {
       continue
     fi
 
-    # Check file starts with a heading
-    if ! head -1 "$skill_file" | grep -q "^#"; then
-      fail "SKILL.md doesn't start with heading: $skill_name"
+    # Check file starts with a heading or YAML frontmatter
+    local first_line
+    first_line=$(head -1 "$skill_file")
+    if [[ "$first_line" != "---" ]] && ! echo "$first_line" | grep -q "^#"; then
+      fail "SKILL.md doesn't start with heading or frontmatter: $skill_name"
       continue
     fi
 
@@ -172,25 +176,20 @@ test_hooks_json() {
     return
   fi
 
-  # Check it has hooks array
+  # Check it has hooks object
   if ! jq -e '.hooks' "$hooks_json" &>/dev/null; then
-    fail "hooks.json missing 'hooks' array"
+    fail "hooks.json missing 'hooks' object"
     return
   fi
 
   success "hooks.json is valid"
 
-  # Validate each hook has required fields
-  local hook_count
-  hook_count=$(jq '.hooks | length' "$hooks_json")
+  # List hook event types (SessionStart, etc.)
+  local hook_events
+  hook_events=$(jq -r '.hooks | keys[]' "$hooks_json" 2>/dev/null || echo "")
 
-  for ((i=0; i<hook_count; i++)); do
-    local hook_type
-    hook_type=$(jq -r ".hooks[$i].type // empty" "$hooks_json")
-
-    if [[ -n "$hook_type" ]]; then
-      success "Hook $i has type: $hook_type"
-    fi
+  for event in $hook_events; do
+    success "Hook event defined: $event"
   done
 }
 
