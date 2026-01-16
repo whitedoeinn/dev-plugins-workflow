@@ -1144,6 +1144,12 @@ ${YELLOW}Examples:${NC}
 ${YELLOW}Installation:${NC}
   curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 
+${YELLOW}Troubleshooting:${NC}
+  If wdi is broken, reinstall with the curl command above.
+
+${YELLOW}Debug Mode:${NC}
+  WDI_DEBUG=1 wdi <command>
+
 EOF
 }
 
