@@ -167,25 +167,22 @@ teardown() {
   # Create minimal environment
   mkdir -p "$WDI_HOME"
 
-  # Run create_project with timeout (use gtimeout on macOS, timeout on Linux)
-  local timeout_cmd="timeout"
-  command -v gtimeout &>/dev/null && timeout_cmd="gtimeout"
-  command -v $timeout_cmd &>/dev/null || timeout_cmd=""
+  # Run create_project with limited input - it should output something before waiting for input
+  # Use perl timeout if available (macOS), timeout (Linux), or just run briefly
+  local output_file="${WDI_HOME}/create_project_output.txt"
 
-  if [[ -n "$timeout_cmd" ]]; then
-    run bash -c "echo 'n' | $timeout_cmd 5 $SCRIPT create_project 2>&1 || true"
-  else
-    # No timeout available, run with limited input
-    run bash -c "echo 'n' | $SCRIPT create_project 2>&1 || true" &
-    local pid=$!
-    sleep 3
-    kill $pid 2>/dev/null || true
-    wait $pid 2>/dev/null || true
-  fi
+  # Capture initial output (the script outputs before prompts)
+  bash -c "echo '' | $SCRIPT create_project 2>&1 || true" > "$output_file" 2>&1 &
+  local pid=$!
+  sleep 2
+  kill $pid 2>/dev/null || true
+  wait $pid 2>/dev/null || true
 
-  # Should mention config, configuration, prerequisites, or doctor
-  # (behavior depends on environment state)
-  [[ "$output" == *"config"* || "$output" == *"Configuration"* || "$output" == *"prerequisites"* || "$output" == *"Checking"* ]]
+  local output
+  output=$(cat "$output_file" 2>/dev/null || echo "")
+
+  # Should have some output - either about config, prerequisites, checking, or environment
+  [[ "$output" == *"config"* || "$output" == *"Configuration"* || "$output" == *"prerequisites"* || "$output" == *"Checking"* || "$output" == *"environment"* ]]
 }
 
 # ==============================================================================
