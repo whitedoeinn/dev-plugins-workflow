@@ -184,8 +184,8 @@ get_admin_contact() {
 
   echo ""
   echo "Admin contact: $name"
-  [[ -n "$email" ]] && echo "Email: $email"
-  [[ -n "$note" ]] && echo "Note: $note"
+  [[ -n "$email" ]] && echo "Email: $email" || true
+  [[ -n "$note" ]] && echo "Note: $note" || true
 }
 
 # Main validation
