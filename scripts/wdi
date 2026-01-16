@@ -193,7 +193,7 @@ cmd_install() {
   echo ""
 
   # Run doctor (need to call via the installed path since we might not be in PATH yet)
-  "$WDI_BIN" doctor
+  "$WDI_BIN" doctor || true
 
   # Check if config exists, if not run config
   if [[ ! -f "$WDI_CONFIG" ]]; then
@@ -203,10 +203,38 @@ cmd_install() {
     "$WDI_BIN" config
   fi
 
+  # Collect manual steps needed
+  local manual_steps=()
+
+  # Check gh auth
+  if command -v gh &>/dev/null; then
+    if ! gh auth status &>/dev/null; then
+      manual_steps+=("Run 'gh auth login' to authenticate with GitHub")
+    fi
+  fi
+
+  # Check claude
+  if ! command -v claude &>/dev/null; then
+    manual_steps+=("Install Claude Code from https://claude.ai/download")
+  fi
+
+  # Show summary
   echo ""
+  echo "========================================"
   echo -e "${GREEN}Installation complete!${NC}"
+  echo "========================================"
   echo ""
-  echo "Run 'wdi create_project' to create a new project."
+
+  if [[ ${#manual_steps[@]} -gt 0 ]]; then
+    echo -e "${YELLOW}Manual steps required:${NC}"
+    echo ""
+    for i in "${!manual_steps[@]}"; do
+      echo "  $((i+1)). ${manual_steps[$i]}"
+    done
+    echo ""
+  fi
+
+  echo "Then run 'wdi create_project' to create a new project."
   echo ""
 }
 
