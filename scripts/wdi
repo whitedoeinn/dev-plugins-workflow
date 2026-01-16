@@ -275,10 +275,11 @@ EOF
 # ============================================================================
 
 cmd_doctor() {
-  local check_only=false
-  if [[ "$1" == "--check-only" ]]; then
-    check_only=true
-  fi
+  local auto_fix=true
+  case "$1" in
+    --check-only) auto_fix=false ;;
+    --auto-fix) auto_fix=true ;;
+  esac
 
   local has_issues=false
 
@@ -324,7 +325,7 @@ cmd_doctor() {
   else
     error "git not found"
     has_issues=true
-    if [[ "$check_only" == false ]] && [[ -n "$PKG_MANAGER" ]]; then
+    if [[ "$auto_fix" == true ]] && [[ -n "$PKG_MANAGER" ]]; then
       info "Installing git..."
       install_package git
     fi
@@ -342,7 +343,7 @@ cmd_doctor() {
       success "gh $gh_version (authenticated as $gh_user)"
     else
       warn "gh $gh_version (not authenticated)"
-      if [[ "$check_only" == false ]]; then
+      if [[ "$auto_fix" == true ]]; then
         info "Run 'gh auth login' to authenticate"
       fi
       has_issues=true
@@ -350,7 +351,7 @@ cmd_doctor() {
   else
     error "gh (GitHub CLI) not found"
     has_issues=true
-    if [[ "$check_only" == false ]] && [[ -n "$PKG_MANAGER" ]]; then
+    if [[ "$auto_fix" == true ]] && [[ -n "$PKG_MANAGER" ]]; then
       info "Installing gh..."
       install_package gh
     fi
@@ -364,7 +365,7 @@ cmd_doctor() {
   else
     error "jq not found"
     has_issues=true
-    if [[ "$check_only" == false ]] && [[ -n "$PKG_MANAGER" ]]; then
+    if [[ "$auto_fix" == true ]] && [[ -n "$PKG_MANAGER" ]]; then
       info "Installing jq..."
       install_package jq
     fi
@@ -428,10 +429,12 @@ install_package() {
 # ============================================================================
 
 cmd_create_project() {
-  # Check prerequisites first
-  if ! cmd_doctor --check-only >/dev/null 2>&1; then
+  # Check and auto-install prerequisites
+  echo ""
+  info "Checking prerequisites..."
+  if ! cmd_doctor --auto-fix; then
     echo ""
-    error "Prerequisites not met. Run 'wdi doctor' to fix issues."
+    error "Prerequisites not met. Please fix the issues above and try again."
     exit 1
   fi
 

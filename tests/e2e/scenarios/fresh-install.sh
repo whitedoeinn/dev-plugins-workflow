@@ -71,17 +71,10 @@ success "Environment is fresh (no wdi installed)"
 
 log "Test 1: Installing wdi CLI..."
 
-# Use local copy if available, otherwise would curl from GitHub
-if [[ -f "/plugin/scripts/wdi" ]]; then
-  # Local development mode
-  log "Using local wdi script"
-  cp /plugin/scripts/wdi /tmp/wdi
-  chmod +x /tmp/wdi
-  bash /tmp/wdi install
-else
-  # Would use: curl -sSL https://raw.githubusercontent.com/.../wdi | bash -s install
-  fail "No wdi script available for installation"
-fi
+# Install from GitHub production URL (tests real-world install path)
+INSTALL_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi"
+log "Installing from: $INSTALL_URL"
+curl -sSL "$INSTALL_URL" | bash -s install
 
 # Verify installation
 if [[ -f "${HOME}/.local/bin/wdi" ]]; then

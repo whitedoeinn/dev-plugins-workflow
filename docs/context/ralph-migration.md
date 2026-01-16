@@ -1,7 +1,7 @@
 # Enhanced-Ralph Migration Context
 
 **Source Project:** `/Users/davidroberts/vscode-projects/google-ads`
-**Target Project:** This plugin (dev-plugins-workflows)
+**Target Project:** This plugin (dev-plugins-workflow)
 **Created:** 2026-01-12
 
 ## Overview

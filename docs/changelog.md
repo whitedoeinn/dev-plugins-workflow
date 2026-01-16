@@ -12,6 +12,9 @@ All notable changes documented here.
 ### Added
 - **CI drift detection** - GitHub Actions now validates documentation drift and dependency map on every push. Catches stale file references before merge
 
+### Changed
+- **Repository migrated to `whitedoeinn/dev-plugins-workflow`** - Moved from `wdi-dave-roberts/dev-plugins-workflows` (plural) to `whitedoeinn/dev-plugins-workflow` (singular) as the public repo. E2E tests now curl from GitHub production URL instead of using local volume mounts
+
 ---
 
 ## 2026-01-13
@@ -103,7 +106,7 @@ Install: `curl -sSL .../scripts/wdi | bash -s install`
 
 ### Changed
 - **Plugin renamed** from `claude-workflows` to `wdi-workflows` - `wdi-` prefix prevents conflicts with third-party plugins
-- **Repository renamed** from `wdi-workflows` to `dev-plugins-workflows` - follows `dev-plugins-*` pattern for Claude Code plugins
+- **Repository renamed** from `wdi-workflows` to `dev-plugins-workflows` - follows `dev-plugins-*` pattern for Claude Code plugins *(Later migrated to singular `dev-plugins-workflow` in `whitedoeinn` org - see 2026-01-15)*
 - **Branch validation on commit** - catches non-standard branch names before they pollute git history
 - **Pre-flight checks on feature** - validates repo setup before starting work, preventing wasted effort
 

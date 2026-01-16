@@ -111,7 +111,7 @@ business-ops/
 |------|-----|--------|
 | `wdi-content` | `marketing-ops` | Pending - Rename, restructure as mono-repo |
 | `wdi-workflows` plugin | `wdi` plugin | Complete - Renamed in v1.0.0 |
-| `wdi-workflows` repo | `dev-plugins-workflows` | Complete |
+| `wdi-workflows` repo | `dev-plugins-workflow` | Complete |
 | Marketing Dashboard (local) | `marketing-ops/packages/dashboard` | Pending - Move into mono-repo |
 
 ---

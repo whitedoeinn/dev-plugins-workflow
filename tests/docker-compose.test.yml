@@ -1,5 +1,9 @@
 # Docker Compose for E2E testing
 # Orchestrates multi-container test scenarios
+#
+# Architecture:
+# - Unit/integration tests: Use local volume mounts (fast feedback)
+# - E2E tests: Curl from GitHub (tests real-world install path)
 
 services:
   # Base test environment - runs unit tests
@@ -27,14 +31,15 @@ services:
       unit-tests:
         condition: service_completed_successfully
 
-  # Fresh environment for E2E - simulates new user
+  # Fresh environment for E2E - simulates new user installing from GitHub
+  # No volume mounts - tests real curl install from production URL
   fresh-env:
     build:
       context: ..
       dockerfile: tests/Dockerfile.fresh-env
     command: /e2e/scenarios/fresh-install.sh
     volumes:
-      - ./e2e/scenarios:/e2e/scenarios:ro
+      - ./e2e/scenarios:/e2e/scenarios:ro  # Only scenario scripts, not plugin
     environment:
       - GH_TOKEN=${GH_TOKEN:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
@@ -43,15 +48,14 @@ services:
       unit-tests:
         condition: service_completed_successfully
 
-  # E2E scenario runner
+  # E2E scenario runner - curls from GitHub, no plugin volume
   e2e-runner:
     build:
       context: ..
-      dockerfile: tests/Dockerfile.test
-    command: /plugin/tests/e2e/run-e2e.sh
+      dockerfile: tests/Dockerfile.fresh-env
+    command: /e2e/scenarios/create-project.sh
     volumes:
-      - ../:/plugin:ro
-      - ./e2e/scenarios:/e2e/scenarios:ro
+      - ./e2e/scenarios:/e2e/scenarios:ro  # Only scenario scripts, not plugin
     environment:
       - GH_TOKEN=${GH_TOKEN:-}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
@@ -59,7 +63,7 @@ services:
     profiles:
       - e2e
 
-  # Plugin dev environment for sync tests
+  # Plugin dev environment for sync tests (needs local mount for dev)
   plugin-dev:
     build:
       context: ..

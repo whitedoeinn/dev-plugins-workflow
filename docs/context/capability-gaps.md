@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Document any useful enhancements from the google-ads repo that are missing from dev-plugins-workflows. These are capabilities that exist in the source project's versions of commands/skills that may not be present in the plugin's versions.
+Document any useful enhancements from the google-ads repo that are missing from dev-plugins-workflow. These are capabilities that exist in the source project's versions of commands/skills that may not be present in the plugin's versions.
 
 ## Areas to Compare
 

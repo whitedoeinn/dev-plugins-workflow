@@ -85,12 +85,12 @@ mkdir -p "${TEST_WORKSPACE}/projects"
 
 success "Test environment configured"
 
-# Add wdi to PATH
-if [[ -f "/plugin/scripts/wdi" ]]; then
-  export PATH="/plugin/scripts:$PATH"
-elif [[ -f "${HOME}/.local/bin/wdi" ]]; then
-  export PATH="${HOME}/.local/bin:$PATH"
+# Install wdi from GitHub if not present
+if ! command -v wdi &> /dev/null; then
+  log "Installing wdi from GitHub..."
+  curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/wdi | bash -s install
 fi
+export PATH="${HOME}/.local/bin:$PATH"
 
 # ============================================================================
 # Test Functions
@@ -265,29 +265,32 @@ EOF
 test_name_validation() {
   log "Testing name validation rules..."
 
-  # Test lowercase validation (checking script contains the check)
-  if [[ -f "/plugin/scripts/wdi" ]]; then
-    if grep -q "uppercase" /plugin/scripts/wdi || grep -q "lowercase" /plugin/scripts/wdi; then
+  # Get installed wdi script path
+  local wdi_path="${HOME}/.local/bin/wdi"
+
+  if [[ -f "$wdi_path" ]]; then
+    # Test lowercase validation (checking script contains the check)
+    if grep -q "uppercase" "$wdi_path" || grep -q "lowercase" "$wdi_path"; then
       success "Lowercase validation exists in script"
     else
       fail "No lowercase validation found"
     fi
 
     # Test underscore validation
-    if grep -q "underscore" /plugin/scripts/wdi; then
+    if grep -q "underscore" "$wdi_path"; then
       success "Underscore validation exists in script"
     else
       fail "No underscore validation found"
     fi
 
     # Test wdi- prefix check
-    if grep -q "wdi-" /plugin/scripts/wdi; then
+    if grep -q "wdi-" "$wdi_path"; then
       success "wdi- prefix check exists in script"
     else
       fail "No wdi- prefix check found"
     fi
   else
-    skip "Cannot test name validation without wdi script"
+    skip "Cannot test name validation without wdi script installed"
   fi
 }
 
