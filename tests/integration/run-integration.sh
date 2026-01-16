@@ -60,10 +60,22 @@ test_command_files() {
       continue
     fi
 
-    # Check file starts with a heading
-    if ! head -1 "$cmd_file" | grep -q "^#"; then
-      fail "Command file doesn't start with heading: $cmd_name"
+    # Check file starts with a heading or YAML frontmatter
+    # (YAML frontmatter starts with --- and is followed by content after closing ---)
+    local first_line
+    first_line=$(head -1 "$cmd_file")
+    if [[ "$first_line" != "#"* && "$first_line" != "---" ]]; then
+      fail "Command file doesn't start with heading or frontmatter: $cmd_name"
       continue
+    fi
+
+    # If frontmatter, verify there's a heading after it
+    if [[ "$first_line" == "---" ]]; then
+      # Find content after closing --- and check for heading
+      if ! awk '/^---$/{if(++c==2)p=1;next}p&&/^#/{found=1;exit}END{exit !found}' "$cmd_file"; then
+        fail "Command file missing heading after frontmatter: $cmd_name"
+        continue
+      fi
     fi
 
     # Check for required sections (at minimum should have some content)
@@ -110,10 +122,20 @@ test_skill_files() {
       continue
     fi
 
-    # Check file starts with a heading
-    if ! head -1 "$skill_file" | grep -q "^#"; then
-      fail "SKILL.md doesn't start with heading: $skill_name"
+    # Check file starts with a heading or YAML frontmatter
+    local first_line
+    first_line=$(head -1 "$skill_file")
+    if [[ "$first_line" != "#"* && "$first_line" != "---" ]]; then
+      fail "SKILL.md doesn't start with heading or frontmatter: $skill_name"
       continue
+    fi
+
+    # If frontmatter, verify it's valid (has closing ---)
+    if [[ "$first_line" == "---" ]]; then
+      if ! grep -n "^---$" "$skill_file" | sed -n '2p' | grep -q .; then
+        fail "SKILL.md has unclosed frontmatter: $skill_name"
+        continue
+      fi
     fi
 
     success "Skill file valid: $skill_name"
