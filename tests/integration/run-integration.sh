@@ -172,25 +172,20 @@ test_hooks_json() {
     return
   fi
 
-  # Check it has hooks array
+  # Check it has hooks object
   if ! jq -e '.hooks' "$hooks_json" &>/dev/null; then
-    fail "hooks.json missing 'hooks' array"
+    fail "hooks.json missing 'hooks' object"
     return
   fi
 
   success "hooks.json is valid"
 
-  # Validate each hook has required fields
-  local hook_count
-  hook_count=$(jq '.hooks | length' "$hooks_json")
+  # Validate hook structure (hooks is an object with event names as keys)
+  local event_names
+  event_names=$(jq -r '.hooks | keys[]' "$hooks_json" 2>/dev/null || echo "")
 
-  for ((i=0; i<hook_count; i++)); do
-    local hook_type
-    hook_type=$(jq -r ".hooks[$i].type // empty" "$hooks_json")
-
-    if [[ -n "$hook_type" ]]; then
-      success "Hook $i has type: $hook_type"
-    fi
+  for event_name in $event_names; do
+    success "Hook event defined: $event_name"
   done
 }
 
