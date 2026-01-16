@@ -83,7 +83,7 @@ dev-plugins/
 │   │   └── SKILL.md
 │   ├── workflow-auto-docs/
 │   │   └── SKILL.md
-│   └── config-sync/
+│   └── workflow-config-sync/
 │       └── SKILL.md
 ├── hooks/
 │   └── hooks.json
@@ -128,7 +128,7 @@ my-project/
 | Domain | Pattern | Example |
 |--------|---------|---------|
 | Workflows | `workflow-{name}/` | `workflow-commit/` |
-| Config | `config-{name}/` | `config-sync/` |
+| Workflows | `workflow-{name}/` | `workflow-config-sync/` |
 | Frontend | `frontend-{name}/` | `frontend-lint/` |
 
 ### Hooks
@@ -241,6 +241,7 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 1. **Rename commands:**
    - `feature.md` → `workflows-feature.md`
    - `setup.md` → `workflows-setup.md`
+   - etc. for all commands
 
 2. **Rename skills:**
    - `commit/` → `workflow-commit/`
@@ -248,7 +249,7 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 
 3. **Update plugin.json:**
    ```json
-   { "name": "wdi", "version": "1.0.0" }
+   { "name": "wdi", "version": "0.2.0" }
    ```
 
 4. **Update all documentation** referencing old command names
@@ -283,8 +284,8 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 ### Don't: Use Ambiguous Names
 
 ```
-✗ commands/setup.md       → which domain?
-✓ commands/workflows-setup.md  → clear ownership
+✗ setup.md       → which domain?
+✓ workflows-setup.md  → clear ownership
 ```
 
 ---

@@ -278,4 +278,4 @@ Keep this map updated when:
 
 - `knowledge/standards-dependency-map.md` - Dependency reference
 - `knowledge/standards-summary.md` - Quick reference for all standards
-- `commands/update-standard.md` - Command documentation
+- `commands/standards-update.md` - Command documentation

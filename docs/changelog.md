@@ -4,6 +4,16 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-15
+
+### Fixed
+- **Stale file references (v0.2.1)** - Fixed all references to old command/skill paths leftover from v1.0.0 rename. Updated `commands/feature.md` → `commands/workflows-feature.md`, `skills/commit/` → `skills/workflow-commit/`, etc. across 10 files
+
+### Added
+- **CI drift detection** - GitHub Actions now validates documentation drift and dependency map on every push. Catches stale file references before merge
+
+---
+
 ## 2026-01-13
 
 ### Breaking Changes

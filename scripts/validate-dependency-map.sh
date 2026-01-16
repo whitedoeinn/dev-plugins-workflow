@@ -53,7 +53,7 @@ for STANDARD in $STANDARDS; do
     | grep -v "$MAP_FILE" \
     | grep -v ".git" \
     | grep -v "docs/changelog.md" \
-    | grep -v "commands/update-standard.md" \
+    | grep -v "commands/standards-update.md" \
     | grep -v "docs/standards/STANDARDS-UPDATE-PROTOCOL.md" \
     | grep -v "^./README.md$" \
     | grep -v "^./CLAUDE.md$" \

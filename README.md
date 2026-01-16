@@ -2,7 +2,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 1.0.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.2.0 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -26,29 +26,30 @@ cd dev-plugins-workflows
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
-| `/wdi:feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
-| `/wdi:enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
-| `/wdi:milestone` | Create and manage milestones that group related features for delivery |
-| `/wdi:setup` | Set up and verify plugin dependencies |
+| `/wdi:workflows-feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
+| `/wdi:workflows-feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
+| `/wdi:workflows-feature --plan` | Stop after planning phase |
+| `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi:workflows-milestone` | Create and manage milestones that group related features for delivery |
+| `/wdi:workflows-setup` | Set up and verify plugin dependencies |
 
 ### Skills (Auto-Invoked)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
-| `auto-update-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
-| `sync-config` | "check my config" | Validate environment against baseline, auto-remediate drift |
+| `workflow-commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `workflow-auto-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
+| `workflow-config-sync` | "check my config" | Validate environment against baseline, auto-remediate drift |
 
 ### Standards Commands
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:new-repo` | Create a new repository following WDI naming and structure standards |
-| `/wdi:new-subproject` | Add a new subproject to a mono-repo following standards |
-| `/wdi:check-standards` | Validate current repository against WDI development standards |
-| `/wdi:update-standard` | Impact analysis and guided updates when changing development standards |
-| `/wdi:new-command` | Create a new command and update all dependent files |
+| `/wdi:standards-new-repo` | Create a new repository following WDI naming and structure standards |
+| `/wdi:standards-new-subproject` | Add a new subproject to a mono-repo following standards |
+| `/wdi:standards-check` | Validate current repository against WDI development standards |
+| `/wdi:standards-update` | Impact analysis and guided updates when changing development standards |
+| `/wdi:standards-new-command` | Create a new command and update all dependent files |
 
 ## Requirements
 
@@ -99,7 +100,7 @@ claude plugin update wdi --scope project
 
 ## Workflow Details
 
-### /wdi:feature
+### /wdi:workflows-feature
 
 Orchestrates the complete feature development cycle:
 
@@ -115,7 +116,7 @@ Flags:
 - `--idea` - Quick idea capture mode (minimal structure, no implementation)
 - `--skip-research` - Skip research agents
 
-### commit skill
+### workflow-commit skill
 
 Smart commit with quality gates. **Auto-invoked** when you say "commit these changes" or similar.
 
@@ -228,11 +229,11 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/ma
 \`\`\`
 
 Available commands:
-- `/wdi:feature` - Full feature workflow
-- `/wdi:check-standards` - Validate against WDI standards
+- `/wdi:workflows-feature` - Full feature workflow
+- `/wdi:standards-check` - Validate against WDI standards
 
 Skills (auto-invoked):
-- `commit` - Say "commit these changes" for smart commit with review
+- `workflow-commit` - Say "commit these changes" for smart commit with review
 
 To update: `./install.sh update`
 ```

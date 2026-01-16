@@ -64,7 +64,7 @@ Impact Analysis: BRANCH-NAMING.md
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Files that enforce this standard (must update logic):
-  - skills/commit/SKILL.md - Branch validation step
+  - skills/workflow-commit/SKILL.md - Branch validation step
   - commands/check-standards.md - Branch name check
 
 Files that reference this standard (may need update):
@@ -117,7 +117,7 @@ The script outputs structured data:
 STANDARD: BRANCH-NAMING
 
 ENFORCED_BY:
-  skills/commit/SKILL.md (branch validation step)
+  skills/workflow-commit/SKILL.md (branch validation step)
   commands/check-standards.md (branch name check)
 
 REFERENCED_BY:
@@ -286,7 +286,7 @@ This is a high-impact change. Consider:
 ```
 /wdi:update-standard --yes COMMIT-STANDARDS
 
-→ Updating skills/commit/SKILL.md... done
+→ Updating skills/workflow-commit/SKILL.md... done
 → Updating commands/check-standards.md... done
 → Updating knowledge/standards-summary.md... done
 

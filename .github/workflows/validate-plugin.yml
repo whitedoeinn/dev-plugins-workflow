@@ -70,3 +70,26 @@ jobs:
             done
           fi
           echo "Hook references valid"
+
+      - name: Check documentation drift
+        run: |
+          echo "Checking for documentation drift..."
+          chmod +x scripts/check-docs-drift.sh
+          if ! ./scripts/check-docs-drift.sh --verbose; then
+            echo ""
+            echo "ERROR: Documentation drift detected!"
+            echo "Run 'update the docs' skill or manually sync CLAUDE.md and README.md"
+            exit 1
+          fi
+          echo "No documentation drift detected"
+
+      - name: Validate dependency map
+        run: |
+          echo "Validating standards dependency map..."
+          chmod +x scripts/validate-dependency-map.sh
+          if ! ./scripts/validate-dependency-map.sh; then
+            echo ""
+            echo "ERROR: Dependency map has issues!"
+            echo "Run '/wdi:standards-update --analyze' to identify and fix"
+            exit 1
+          fi

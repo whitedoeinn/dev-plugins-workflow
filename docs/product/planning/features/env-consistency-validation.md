@@ -56,7 +56,7 @@ File: `scripts/check-deps.sh`
 - Format user-friendly output
 
 ### 4. Create Sync Config Skill
-File: `skills/sync-config/SKILL.md`
+File: `skills/workflow-config-sync/SKILL.md`
 - Manual trigger: "check my config", "sync config", "validate environment"
 - Runs full validation
 - Shows detailed diff output

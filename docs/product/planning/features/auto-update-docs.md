@@ -45,7 +45,7 @@ The gap was identified when the `wdi` CLI was added - no skill existed to prompt
    - Outputs machine-readable DRIFT lines for skill to parse
    - Supports `--verbose` for detailed output
 
-2. Created `skills/auto-update-docs/SKILL.md`
+2. Created `skills/workflow-auto-docs/SKILL.md`
    - Triggers on "update the docs", "sync documentation", etc.
    - Supports `--check` (dry run) and `--all` (no prompts) flags
    - Step-by-step workflow for detecting and fixing drift
@@ -57,7 +57,7 @@ The gap was identified when the `wdi` CLI was added - no skill existed to prompt
 
 | File | Change |
 |------|--------|
-| `skills/auto-update-docs/SKILL.md` | Created - skill definition with workflow |
+| `skills/workflow-auto-docs/SKILL.md` | Created - skill definition with workflow |
 | `scripts/check-docs-drift.sh` | Created - drift detection helper script |
 | `CLAUDE.md` | Added skill to Skills table and directory tree |
 | `README.md` | Added skill to Skills table |

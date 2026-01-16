@@ -15,7 +15,7 @@ Quick reference for which files depend on each standard. Used by:
 ### Meta Files (Reference ALL Standards)
 
 These files reference all standards by design and don't need updating for individual standard changes:
-- `commands/update-standard.md` - The update command itself
+- `commands/standards-update.md` - The update command itself
 - `docs/standards/STANDARDS-UPDATE-PROTOCOL.md` - Protocol documentation
 - `knowledge/standards-dependency-map.md` - This file
 - `README.md` - Standards index table (update only when adding/removing standards)
@@ -26,8 +26,8 @@ These files reference all standards by design and don't need updating for indivi
 ## REPO-STANDARDS.md
 
 **Enforced by:**
-- commands/check-standards.md (repository name validation)
-- commands/new-repo.md (naming proposal logic)
+- commands/standards-check.md (repository name validation)
+- commands/standards-new-repo.md (naming proposal logic)
 - scripts/check-deps.sh (deprecation warning for wdi- prefix)
 
 **Referenced by:**
@@ -42,8 +42,8 @@ These files reference all standards by design and don't need updating for indivi
 ## BRANCH-NAMING.md
 
 **Enforced by:**
-- skills/commit/SKILL.md (branch validation step)
-- commands/check-standards.md (branch name check)
+- skills/workflow-commit/SKILL.md (branch validation step)
+- commands/standards-check.md (branch name check)
 
 **Referenced by:**
 - knowledge/standards-summary.md (branch naming quick reference)
@@ -55,8 +55,8 @@ These files reference all standards by design and don't need updating for indivi
 ## COMMIT-STANDARDS.md
 
 **Enforced by:**
-- skills/commit/SKILL.md (message generation and format)
-- commands/check-standards.md (commit format validation)
+- skills/workflow-commit/SKILL.md (message generation and format)
+- commands/standards-check.md (commit format validation)
 
 **Referenced by:**
 - knowledge/standards-summary.md (commit message quick reference)
@@ -68,10 +68,10 @@ These files reference all standards by design and don't need updating for indivi
 ## PROJECT-STRUCTURE.md
 
 **Enforced by:**
-- commands/feature.md (directory creation, docs/product layout)
-- commands/check-standards.md (structure validation)
-- commands/new-repo.md (structure templates)
-- commands/new-subproject.md (package structure)
+- commands/workflows-feature.md (directory creation, docs/product layout)
+- commands/standards-check.md (structure validation)
+- commands/standards-new-repo.md (structure templates)
+- commands/standards-new-subproject.md (package structure)
 
 **Referenced by:**
 - knowledge/standards-summary.md (project structure quick reference)
@@ -84,8 +84,8 @@ These files reference all standards by design and don't need updating for indivi
 ## FILE-NAMING.md
 
 **Enforced by:**
-- commands/new-subproject.md (package naming conventions)
-- commands/check-standards.md (file name checks)
+- commands/standards-new-subproject.md (package naming conventions)
+- commands/standards-check.md (file name checks)
 
 **Referenced by:**
 - knowledge/standards-summary.md (file naming quick reference)
@@ -97,9 +97,9 @@ These files reference all standards by design and don't need updating for indivi
 ## CLAUDE-CODE-STANDARDS.md
 
 **Enforced by:**
-- commands/check-standards.md (plugin validation)
-- commands/setup.md (dependency and naming check)
-- commands/new-command.md (command naming convention enforcement)
+- commands/standards-check.md (plugin validation)
+- commands/workflows-setup.md (dependency and naming check)
+- commands/standards-new-command.md (command naming convention enforcement)
 - install.sh (CLAUDE.md template with command listings)
 
 **Referenced by:**
@@ -116,7 +116,7 @@ These files reference all standards by design and don't need updating for indivi
 ## ISSUE-STANDARDS.md
 
 **Enforced by:**
-- commands/feature.md (issue creation format)
+- commands/workflows-feature.md (issue creation format)
 
 **Referenced by:**
 - .github/ISSUE_TEMPLATE/bug_report.md (follows template)

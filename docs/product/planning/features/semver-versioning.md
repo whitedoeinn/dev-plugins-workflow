@@ -77,7 +77,7 @@ Per semver spec, `0.x.x` is for initial development where breaking changes are e
 | `.claude-plugin/marketplace.json` | Synced version |
 | `scripts/bump-version.sh` | Created - version bump script |
 | `scripts/sync-plugin.sh` | Deleted - replaced by commit skill |
-| `skills/commit/SKILL.md` | Added version bump and git tag steps |
+| `skills/workflow-commit/SKILL.md` | Added version bump and git tag steps |
 | `CLAUDE.md` | Updated version, documented policy |
 | `CONTRIBUTING.md` | Updated push workflow |
 
