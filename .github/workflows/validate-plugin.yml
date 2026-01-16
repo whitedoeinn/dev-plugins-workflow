@@ -45,8 +45,6 @@ jobs:
           scripts=(
             "install.sh"
             "scripts/check-deps.sh"
-            "scripts/pre-tool-standards-check.sh"
-            "scripts/test-hooks.sh"
           )
           for script in "${scripts[@]}"; do
             if [ -f "$script" ]; then
@@ -72,6 +70,3 @@ jobs:
             done
           fi
           echo "Hook references valid"
-
-      - name: Run hook script unit tests
-        run: ./scripts/test-hooks.sh

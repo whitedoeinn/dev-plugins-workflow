@@ -2,7 +2,6 @@
 
 Quick reference for which files depend on each standard. Used by:
 - `/wdi:update-standard` command
-- `scripts/pre-tool-standards-check.sh` hook
 - `scripts/validate-dependency-map.sh` validation
 
 ---

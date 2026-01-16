@@ -100,7 +100,6 @@ dev-plugins/
 
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
 > The skill ensures changelog updates, runs tests, and performs simplicity review.
-> A PreToolUse hook will warn if you try to run `git commit` directly.
 
 ## Dependencies
 

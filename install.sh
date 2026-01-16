@@ -66,17 +66,7 @@ Hooks require special handling:
    claude --plugin-dir .
    ```
 
-2. Test hook behavior (e.g., try running `git commit` directly)
-
-3. Restart Claude Code after modifying:
-   - hooks/hooks.json
-   - scripts/pre-tool-standards-check.sh
-
-### Unit Testing Hook Scripts
-Run without needing a Claude Code session:
-```bash
-./scripts/test-hooks.sh
-```
+2. Restart Claude Code after modifying hooks/hooks.json
 
 ### CI Validation
 GitHub Actions validates on every PR:

@@ -84,7 +84,6 @@ cp "$WDI_ROOT/env-baseline.json" "$TARGET/.claude-plugin/" 2>/dev/null || true
 mkdir -p "$TARGET/.claude-plugin/scripts"
 cp "$WDI_ROOT/scripts/check-deps.sh" "$TARGET/.claude-plugin/scripts/" 2>/dev/null || true
 cp "$WDI_ROOT/scripts/validate-env.sh" "$TARGET/.claude-plugin/scripts/" 2>/dev/null || true
-cp "$WDI_ROOT/scripts/pre-tool-standards-check.sh" "$TARGET/.claude-plugin/scripts/" 2>/dev/null || true
 chmod +x "$TARGET/.claude-plugin/scripts/"*.sh 2>/dev/null || true
 
 # Clear required_plugins from vendored env-baseline.json
