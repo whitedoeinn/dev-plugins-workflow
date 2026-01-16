@@ -67,8 +67,9 @@ debug() {
 
 # Read user input - uses /dev/tty if available (for curl pipe), otherwise stdin (for CI)
 read_input() {
-  if [[ -e /dev/tty ]]; then
-    read -r "$@" < /dev/tty
+  # Try /dev/tty first (needed when stdin is a pipe), fall back to stdin for CI
+  if read -r "$@" < /dev/tty 2>/dev/null; then
+    return 0
   else
     read -r "$@"
   fi
