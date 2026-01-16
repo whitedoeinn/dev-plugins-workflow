@@ -255,14 +255,14 @@ cmd_config() {
   local current_org
   current_org=$(config_get "github_org" "")
   prompt "GitHub organization name${current_org:+ [$current_org]}:"
-  read -r github_org
+  read -r github_org < /dev/tty
   github_org="${github_org:-$current_org}"
 
   # Project directory
   local current_dir
   current_dir=$(config_get "project_dir" "$HOME/vscode-projects")
   prompt "Default project location [$current_dir]:"
-  read -r project_dir
+  read -r project_dir < /dev/tty
   project_dir="${project_dir:-$current_dir}"
   # Expand ~ to $HOME
   project_dir="${project_dir/#\~/$HOME}"
@@ -272,7 +272,7 @@ cmd_config() {
   current_domains=$(config_get_array "business_domains" | tr '\n' ',' | sed 's/,$//')
   current_domains="${current_domains:-marketing, operations, finance, guest-services}"
   prompt "Business domains for repos (comma-separated) [$current_domains]:"
-  read -r business_domains
+  read -r business_domains < /dev/tty
   business_domains="${business_domains:-$current_domains}"
 
   # Plugin domains
@@ -280,7 +280,7 @@ cmd_config() {
   current_plugin_domains=$(config_get_array "plugin_domains" | tr '\n' ',' | sed 's/,$//')
   current_plugin_domains="${current_plugin_domains:-workflow, frontend, backend, analytics, data}"
   prompt "Plugin domains (comma-separated) [$current_plugin_domains]:"
-  read -r plugin_domains
+  read -r plugin_domains < /dev/tty
   plugin_domains="${plugin_domains:-$current_plugin_domains}"
 
   # Convert comma-separated to JSON arrays
@@ -360,13 +360,13 @@ cmd_doctor() {
         echo ""
         if [[ -z "$git_name" ]]; then
           prompt "Enter your name for git commits:"
-          read -r git_name
+          read -r git_name < /dev/tty
           git config --global user.name "$git_name"
           success "Set git user.name to '$git_name'"
         fi
         if [[ -z "$git_email" ]]; then
           prompt "Enter your email for git commits:"
-          read -r git_email
+          read -r git_email < /dev/tty
           git config --global user.email "$git_email"
           success "Set git user.email to '$git_email'"
         fi
