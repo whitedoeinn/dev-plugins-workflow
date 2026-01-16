@@ -1,5 +1,5 @@
 ---
-name: auto-update-docs
+name: workflow-auto-docs
 description: This skill should be used when updating documentation to match code changes. Triggers on "update the docs", "sync documentation", "update CLAUDE.md", "docs are out of date", or when finishing a feature that added commands/skills.
 ---
 
@@ -14,8 +14,14 @@ can become stale. This skill:
 </objective>
 
 <quick_start>
-When the user wants to sync documentation:
+When invoked, output this banner first:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔧 workflow-auto-docs activated
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
+Then:
 1. Run `./scripts/check-docs-drift.sh --verbose`
 2. If exit code 0: Tell user "Documentation is up to date"
 3. If drift found: Show findings and offer to fix

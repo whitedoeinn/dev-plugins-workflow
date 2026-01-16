@@ -1,5 +1,5 @@
 ---
-name: commit
+name: workflow-commit
 description: This skill should be used when committing code changes to git. It applies when the user asks to commit, push changes, save work, or mentions finishing work that needs to be committed. Triggers on phrases like "commit these changes", "commit this", "push this", "let's commit", "ready to commit", "save these changes", or any request involving git commit operations. Provides quality-gated commits with tests, simplicity review, and automatic changelog updates.
 ---
 
@@ -15,8 +15,14 @@ This ensures consistent code quality and documentation across all commits.
 </objective>
 
 <quick_start>
-When the user wants to commit:
+When invoked, output this banner first:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔧 workflow-commit activated
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
+Then:
 1. Run `git status --short` to check for changes
 2. If no changes: Tell user "Nothing to commit"
 3. If changes exist: Proceed with the full workflow below

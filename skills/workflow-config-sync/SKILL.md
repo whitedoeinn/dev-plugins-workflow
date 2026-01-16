@@ -1,6 +1,22 @@
-# sync-config
+---
+name: workflow-config-sync
+description: This skill validates environment configuration against baseline. Triggers on "check my config", "sync config", "validate environment", "check environment", or "is my environment set up correctly". Provides environment validation and auto-remediation for plugin dependencies and CLI tools.
+---
+
+# workflow-config-sync
 
 Validate environment consistency and remediate drift.
+
+<quick_start>
+When invoked, output this banner first:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🔧 workflow-config-sync activated
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Then run `./scripts/validate-env.sh` and interpret results.
+</quick_start>
 
 ## Triggers
 

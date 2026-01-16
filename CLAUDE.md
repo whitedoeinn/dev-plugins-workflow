@@ -10,6 +10,23 @@ This is the source repository for the `wdi` Claude Code plugin. It provides:
 
 **Architecture:** See `docs/standards/PLUGIN-ARCHITECTURE.md` for the one-plugin policy and naming conventions.
 
+## Shell Functions
+
+### `ip` - Improve Prompt
+
+When the user's message starts with `ip ` followed by text, immediately run the `ip` shell function via Bash, passing the text exactly as provided (preserving any quotes):
+
+```bash
+ip "user's text here"
+```
+
+**Example:** If user says `ip "write a blog post about AI"`, run:
+```bash
+ip "write a blog post about AI"
+```
+
+The function pipes input through `fabric-ai --pattern improve_prompt`, streams output, and copies the result to clipboard.
+
 ## Structure
 
 ```
@@ -46,7 +63,7 @@ dev-plugins/
 ├── skills/                          # Auto-invoked skills
 │   ├── workflow-commit/             # Smart commit (say "commit these changes")
 │   ├── workflow-auto-docs/          # Doc sync (say "update the docs")
-│   └── config-sync/                 # Environment validation (say "check my config")
+│   └── workflow-config-sync/        # Environment validation (say "check my config")
 └── install.sh                       # Bootstrap installation script
 ```
 
@@ -79,7 +96,7 @@ dev-plugins/
 |-------|---------|-------------|
 | `workflow-commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
 | `workflow-auto-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
-| `config-sync` | "check my config" | Validate environment and auto-remediate drift |
+| `workflow-config-sync` | "check my config" | Validate environment and auto-remediate drift |
 
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
 > The skill ensures changelog updates, runs tests, and performs simplicity review.
@@ -214,9 +231,9 @@ claude --plugin-dir .
 
 ## Version
 
-Current version: 1.0.0 (see `.claude-plugin/plugin.json`)
+Current version: 0.2.0 (see `.claude-plugin/plugin.json`)
 
-This is a major version representing the architecture change from `wdi-workflows` to `wdi`.
+This version includes the architecture change from `wdi-workflows` to `wdi` and fixes skill registration.
 
 ### Versioning Policy
 
