@@ -6,8 +6,18 @@ All notable changes documented here.
 
 ## 2026-01-16
 
+### Added
+- **Project scanner script** - `scripts/check-wdi-projects.sh` scans all projects in a directory and shows plugin installation status (compound-engineering, wdi, CLAUDE.md). Helps identify projects needing plugin updates
+
 ### Changed
-- **Simplified testing infrastructure** - Removed Docker-based E2E testing in favor of local BATS tests. CI now runs in ~15 seconds instead of 10+ minutes with Docker. Documentation updated to reflect the streamlined approach
+- **Simplified testing infrastructure** - Removed Docker-based E2E testing in favor of local BATS tests. CI now runs in ~15 seconds instead of 10+ minutes with Docker. Removed ~1,500 lines of orchestration code
+- **Marketplace naming clarified** - Renamed marketplace from `wdi-local` to `wdi-marketplace` for remote installs. Local development uses `wdi-local` pointing to source, team members use `wdi-marketplace` from GitHub
+
+### Fixed
+- **Explicit marketplace names in install.sh** - Now uses `wdi@wdi-marketplace` to avoid ambiguity when multiple marketplaces are configured
+
+### Deprecated
+- **wdi CLI** - The pre-Claude-Code CLI (`wdi create_project`, `wdi doctor`) is deprecated. Claude can create directories directly. Multiple CLI fixes were made today but the CLI itself is no longer recommended
 
 ---
 
