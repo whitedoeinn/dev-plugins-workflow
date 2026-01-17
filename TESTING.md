@@ -4,25 +4,22 @@ This document describes the testing infrastructure for the wdi plugin.
 
 ## Overview
 
-The testing infrastructure consists of three layers:
-
 | Layer | Framework | Purpose | When to Run |
 |-------|-----------|---------|-------------|
 | **Unit** | BATS | Test individual scripts in isolation | Every change |
-| **Integration** | Shell scripts | Test command/skill parsing and structure | Every PR |
-| **E2E** | Docker containers | Test full workflows in realistic environments | Nightly / Manual |
+| **Integration** | Shell scripts | Test plugin structure and file validation | Every PR |
 
 ## Quick Start
 
 ```bash
-# Run all tests locally
-./scripts/run-tests.sh all --local
+# Run all tests
+./scripts/run-tests.sh
 
 # Run unit tests only
-./scripts/run-tests.sh unit --local
+./scripts/run-tests.sh unit
 
-# Run tests in Docker (recommended for consistency)
-./scripts/run-tests.sh docker
+# Run integration tests only
+./scripts/run-tests.sh integration
 ```
 
 ## Directory Structure
@@ -31,65 +28,39 @@ The testing infrastructure consists of three layers:
 tests/
 ├── unit/                        # BATS unit tests
 │   ├── validate-env.bats       # Tests for validate-env.sh
-│   ├── check-docs-drift.bats   # Tests for check-docs-drift.sh
-│   └── wdi-cli.bats            # Tests for wdi CLI
+│   └── check-docs-drift.bats   # Tests for check-docs-drift.sh
 ├── integration/                 # Integration tests
-│   └── run-integration.sh      # Command/skill parsing tests
-├── e2e/                        # End-to-end tests
-│   ├── run-e2e.sh              # E2E orchestrator
-│   └── scenarios/              # Test scenarios
-│       ├── fresh-install.sh    # New user installation
-│       └── create-project.sh   # Project creation workflow
-├── fixtures/                   # Test data (shared with test/fixtures)
-├── test_helper.bash            # Common test utilities
-├── Dockerfile.test             # Full test environment
-├── Dockerfile.fresh-env        # Clean environment for E2E
-└── docker-compose.test.yml     # Multi-container orchestration
+│   └── run-integration.sh      # Plugin structure validation
+├── fixtures/                   # Test data
+└── test_helper.bash            # Common test utilities
 ```
 
 ## Running Tests
 
 ### Local Development
 
-For quick iteration during development:
-
 ```bash
+# Run all tests
+./scripts/run-tests.sh
+
 # Run specific unit test file
 bats tests/unit/validate-env.bats
 
 # Run with verbose output
-bats --verbose-run tests/unit/
+./scripts/run-tests.sh --verbose unit
 
 # Filter tests by name
-./scripts/run-tests.sh unit --local --filter "baseline"
-```
-
-### Docker (Recommended)
-
-For consistent, reproducible results:
-
-```bash
-# Build and run all tests
-./scripts/run-tests.sh docker
-
-# Run just unit tests in Docker
-docker build -t wdi-test -f tests/Dockerfile.test .
-docker run --rm wdi-test
-
-# Run E2E tests
-./scripts/run-tests.sh e2e
+./scripts/run-tests.sh --filter "baseline" unit
 ```
 
 ### CI Pipeline
 
-Tests run automatically via GitHub Actions:
+Tests run automatically via GitHub Actions on every push and PR:
 
 | Trigger | Tests Run |
 |---------|-----------|
 | Push to any branch | Unit + Integration |
-| Pull Request | Unit + Integration + Matrix |
-| Manual dispatch | Unit + Integration + E2E |
-| Nightly (scheduled) | Full E2E suite |
+| Pull Request | Unit + Integration |
 
 ## Writing Tests
 
@@ -145,34 +116,6 @@ test_new_feature() {
 test_new_feature
 ```
 
-### E2E Scenarios
-
-Create new scenarios in `tests/e2e/scenarios/`:
-
-```bash
-#!/usr/bin/env bash
-# E2E Scenario: Description
-
-set -euo pipefail
-
-# Colors and helpers
-source /plugin/tests/e2e/helpers.sh 2>/dev/null || true
-
-log() { echo -e "\033[0;36m[SCENARIO]\033[0m $1"; }
-success() { echo -e "\033[0;32m[PASS]\033[0m $1"; }
-fail() { echo -e "\033[0;31m[FAIL]\033[0m $1"; exit 1; }
-
-# Test implementation
-log "Running my scenario..."
-
-# Verify outcomes
-if [[ -f expected_file ]]; then
-  success "File was created"
-else
-  fail "File was not created"
-fi
-```
-
 ## Test Helpers
 
 The `tests/test_helper.bash` provides common utilities:
@@ -190,27 +133,7 @@ The `tests/test_helper.bash` provides common utilities:
 
 | Variable | Purpose |
 |----------|---------|
-| `BATS_LIB_PATH` | Location of BATS helper libraries |
-| `GH_TOKEN` | GitHub token for E2E tests |
-| `TEST_ORG` | GitHub org for E2E tests (default: wdi-test) |
-| `ANTHROPIC_API_KEY` | For Claude-based tests (optional) |
-
-## Docker Images
-
-### Dockerfile.test
-
-Full test environment with all dependencies:
-- Ubuntu 22.04
-- git, jq, gh
-- BATS + helper libraries
-- Non-root test user
-
-### Dockerfile.fresh-env
-
-Minimal environment for fresh install testing:
-- Ubuntu 22.04
-- Only git and curl
-- Simulates new user experience
+| `BATS_LIB_PATH` | Location of BATS helper libraries (auto-detected on macOS) |
 
 ## Troubleshooting
 
@@ -222,36 +145,20 @@ brew install bats-core
 
 # Ubuntu
 sudo apt install bats
-
-# Manual
-git clone https://github.com/bats-core/bats-core.git
-cd bats-core && sudo ./install.sh /usr/local
 ```
 
 ### BATS libraries not found
 
 ```bash
-# Install to /usr/local/lib
+# macOS
+brew tap bats-core/bats-core
+brew install bats-support bats-assert bats-file
+
+# Ubuntu/manual
 sudo git clone https://github.com/bats-core/bats-support.git /usr/local/lib/bats-support
 sudo git clone https://github.com/bats-core/bats-assert.git /usr/local/lib/bats-assert
 sudo git clone https://github.com/bats-core/bats-file.git /usr/local/lib/bats-file
 ```
-
-### Docker tests failing
-
-```bash
-# Rebuild images
-docker compose -f tests/docker-compose.test.yml build --no-cache
-
-# Clean up
-./scripts/run-tests.sh clean
-```
-
-### Tests pass locally but fail in CI
-
-1. Check you're using the same versions of tools
-2. Run in Docker locally: `./scripts/run-tests.sh docker`
-3. Check for environment-specific assumptions
 
 ## Best Practices
 
@@ -267,6 +174,5 @@ docker compose -f tests/docker-compose.test.yml build --no-cache
 When adding a new script to `scripts/`:
 
 1. Create corresponding test file: `tests/unit/new-script.bats`
-2. Add integration checks to `run-integration.sh`
-3. Consider if E2E coverage is needed
-4. Update this document if needed
+2. Add integration checks to `run-integration.sh` if needed
+3. Update this document if the testing approach changes

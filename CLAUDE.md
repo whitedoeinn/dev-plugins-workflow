@@ -244,7 +244,7 @@ claude --plugin-dir .
 
 ## Version
 
-Current version: 0.2.0 (see `.claude-plugin/plugin.json`)
+Current version: 0.2.1 (see `.claude-plugin/plugin.json`)
 
 This version includes the architecture change from `wdi-workflows` to `wdi` and fixes skill registration.
 

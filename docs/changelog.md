@@ -4,6 +4,13 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-16
+
+### Changed
+- **Simplified testing infrastructure** - Removed Docker-based E2E testing in favor of local BATS tests. CI now runs in ~15 seconds instead of 10+ minutes with Docker. Documentation updated to reflect the streamlined approach
+
+---
+
 ## 2026-01-15
 
 ### Fixed
