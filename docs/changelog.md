@@ -4,6 +4,13 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-17
+
+### Fixed
+- **Repo name references** - Corrected two files still using plural `dev-plugins-workflows` after migration to singular `dev-plugins-workflow` in whitedoeinn org
+
+---
+
 ## 2026-01-16
 
 ### Added

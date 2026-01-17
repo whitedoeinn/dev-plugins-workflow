@@ -807,7 +807,7 @@ validate_name() {
       local github_org
       github_org=$(config_get "github_org" "")
       gh issue create \
-        --repo "${github_org}/dev-plugins-workflows" \
+        --repo "${github_org}/dev-plugins-workflow" \
         --title "Consider naming standard update: $name" \
         --body "## Naming Exception Detected
 
