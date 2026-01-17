@@ -6,8 +6,14 @@ All notable changes documented here.
 
 ## 2026-01-17
 
+### Added
+- **Idea captures** - Added plugin version pinning (#19) and auto-capture context (#20) ideas with originating context
+
 ### Fixed
 - **Repo name references** - Corrected two files still using plural `dev-plugins-workflows` after migration to singular `dev-plugins-workflow` in whitedoeinn org
+
+### Removed
+- **Stale docs/context/** - Deleted migration planning docs (ralph-migration.md, capability-gaps.md, feature-planning-capability.md) - work complete, remaining gaps tracked in #22
 
 ---
 
