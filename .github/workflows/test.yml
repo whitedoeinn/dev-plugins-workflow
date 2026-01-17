@@ -1,4 +1,7 @@
 name: Tests
+# Runs on every push to main/feature branches and PRs to main
+# - Unit tests: BATS tests in tests/unit/ (script behavior)
+# - Integration tests: Structure validation in tests/integration/ (plugin integrity)
 
 on:
   push:

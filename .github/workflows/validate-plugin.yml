@@ -1,4 +1,12 @@
 name: Validate Plugin
+# Runs on every push to main
+# Validates plugin structure, JSON syntax, and documentation consistency:
+# - JSON syntax: plugin.json, marketplace.json, hooks.json must be valid
+# - Required files: plugin.json, install.sh, CLAUDE.md must exist
+# - Script permissions: install.sh, check-deps.sh must be executable
+# - Hook references: Scripts referenced in hooks.json must exist
+# - Documentation drift: Commands/skills must be documented in CLAUDE.md and README.md
+# - Dependency map: Standards references must be valid
 
 on:
   push:
@@ -71,6 +79,8 @@ jobs:
           fi
           echo "Hook references valid"
 
+      # Ensures every command and skill is documented in both CLAUDE.md and README.md,
+      # versions are aligned, and no docs reference deleted files
       - name: Check documentation drift
         run: |
           echo "Checking for documentation drift..."

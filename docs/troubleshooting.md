@@ -145,6 +145,50 @@ claude --plugin-dir /path/to/dev-plugins-workflow
 
 ---
 
+## CI/CD Failures
+
+### "Documentation drift detected" (validate-plugin.yml)
+
+The workflow checks that:
+- Every command in `commands/*.md` is listed in CLAUDE.md AND README.md
+- Every skill in `skills/*/SKILL.md` is listed in CLAUDE.md AND README.md
+- Version in `plugin.json` matches CLAUDE.md
+- No docs reference commands/skills that were deleted
+
+**To diagnose:**
+```bash
+./scripts/check-docs-drift.sh --verbose
+```
+
+**To fix:**
+- Say "update the docs" to run `workflow-auto-docs` skill (auto-adds missing entries)
+- Or manually add missing commands/skills to the tables in CLAUDE.md and README.md
+- For version mismatch: update "Current version:" line in CLAUDE.md
+
+---
+
+### "Tests failed" (test.yml)
+
+Runs BATS unit tests (`tests/unit/`) and integration tests (`tests/integration/`).
+
+**To diagnose:**
+```bash
+./scripts/run-tests.sh
+```
+
+**To fix:** Read test output, fix the failing script, re-run locally before pushing.
+
+---
+
+### Adding a New Workflow
+
+1. Create `.github/workflows/{name}.yml`
+2. Add header comment explaining what it checks and when it runs
+3. Add inline comments for non-obvious steps
+4. Update this section if it has failure modes users should know about
+
+---
+
 ## Debugging
 
 ### Check installed plugins

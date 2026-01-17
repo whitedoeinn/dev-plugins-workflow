@@ -1,5 +1,8 @@
 # WDI Workflows
 
+![Tests](https://github.com/whitedoeinn/dev-plugins-workflow/actions/workflows/test.yml/badge.svg)
+![Plugin Validation](https://github.com/whitedoeinn/dev-plugins-workflow/actions/workflows/validate-plugin.yml/badge.svg)
+
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
 **Version:** 0.2.1 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
