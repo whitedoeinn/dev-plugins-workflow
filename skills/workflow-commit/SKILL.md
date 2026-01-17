@@ -110,11 +110,24 @@ Analyze the proposed commit message per `docs/standards/COMMIT-STANDARDS.md`:
 
 | Signal | Action |
 |--------|--------|
-| Message starts with `docs:`, `chore:`, `test:`, `style:` | No bump |
+| Message starts with `docs:`, `chore:`, `test:`, `style:`, `refactor:` | No bump |
 | Message starts with `fix:`, `perf:` | Auto-bump patch |
-| Message starts with `feat:`, `refactor:` | Prompt |
+| Message starts with `feat:` | Prompt |
 | Message body contains `BREAKING CHANGE:` | Prompt |
 | Staged files in `commands/`, `skills/`, `hooks/` | Prompt |
+
+### Choosing the Right Type
+
+| If the change... | Use | Bump |
+|------------------|-----|------|
+| Adds new capability for users | `feat:` | Prompt (minor/patch) |
+| Fixes broken functionality | `fix:` | Patch |
+| Restructures code without changing behavior | `refactor:` | None |
+| Fixes typos, config paths, internal references | `chore:` | None |
+| Updates documentation only | `docs:` | None |
+| Improves performance | `perf:` | Patch |
+
+**Key distinction:** `fix:` means something was **broken for users**. Internal cleanup (typos in configs, stale references) is `chore:`.
 
 ### Auto-bump (no prompt)
 
@@ -125,7 +138,7 @@ Version: 0.1.0 → 0.1.1 (patch for fix)
 
 ### Prompt when needed
 
-For features, refactors, or core file changes:
+For features or core file changes:
 ```
 Version bump for feature commit.
 Current: 0.1.0

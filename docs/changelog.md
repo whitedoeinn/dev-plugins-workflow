@@ -9,6 +9,9 @@ All notable changes documented here.
 ### Added
 - **Idea captures** - Added plugin version pinning (#19) and auto-capture context (#20) ideas with originating context
 
+### Changed
+- **Commit skill type guidance** - Added "Choosing the Right Type" table clarifying fix vs chore. Moved `refactor:` from "Prompt" to "No bump" since it's internal restructuring
+
 ### Fixed
 - **Repo name references** - Corrected two files still using plural `dev-plugins-workflows` after migration to singular `dev-plugins-workflow` in whitedoeinn org
 
