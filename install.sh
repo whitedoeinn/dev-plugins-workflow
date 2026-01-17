@@ -12,8 +12,8 @@ SCOPE="${1:-project}"
 # Handle update flag
 if [ "$1" = "update" ]; then
   echo -e "${YELLOW}Updating plugins...${NC}"
-  claude plugin update compound-engineering --scope project
-  claude plugin update wdi --scope project
+  claude plugin update compound-engineering@every-marketplace --scope project
+  claude plugin update wdi@wdi-marketplace --scope project
   echo -e "${GREEN}Update complete!${NC}"
   exit 0
 fi
@@ -133,7 +133,7 @@ echo ""
 
 # Step 4: Install wdi
 echo -e "${YELLOW}Step 4: Installing wdi...${NC}"
-if claude plugin install wdi --scope "$SCOPE"; then
+if claude plugin install wdi@wdi-marketplace --scope "$SCOPE"; then
   echo -e "${GREEN}wdi installed${NC}"
 else
   echo -e "${YELLOW}wdi may already be installed${NC}"
