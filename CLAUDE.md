@@ -73,7 +73,7 @@ dev-plugins/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflows-feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
+| `/wdi:workflows-feature` | Full feature workflow (interview → pre-flight → plan → work → review → compound) |
 | `/wdi:workflows-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
 | `/wdi:workflows-feature --plan` | Stop after planning phase |
 | `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
@@ -104,11 +104,14 @@ dev-plugins/
 ## Dependencies
 
 This plugin requires the `compound-engineering` plugin (external dependency):
-- Research agents (repo-research-analyst, git-history-analyzer, etc.)
-- Review agents (code-simplicity-reviewer, security-sentinel, etc.)
-- Workflow skills (plan, work, review, compound)
+- `/workflows:plan` - Creates implementation plans (includes research agents)
+- `/workflows:work` - Implements plans step-by-step with todo tracking
+- `/workflows:review` - Runs 12+ review agents in parallel, creates prioritized todos
+- `/workflows:compound` - Documents learnings in `docs/solutions/`
 
 **Installation:** compound-engineering is installed globally via marketplace, not vendored.
+
+**Note:** wdi delegates to compound-engineering for all heavy lifting. wdi provides context gathering (interview), validation (pre-flight), GitHub issue integration, and workflow orchestration.
 
 ## WDI CLI (Deprecated)
 
@@ -146,24 +149,25 @@ Comments are only parsed during promotion if they start with a recognized prefix
 
 | Prefix | Maps to | Example |
 |--------|---------|---------|
-| `Decision:` | Research Summary | "Decision: Use YAML frontmatter" |
-| `Test:` | Done When task | "Test: Verify API returns 200" |
+| `Decision:` | Research context | "Decision: Use YAML frontmatter" |
+| `Test:` | Acceptance criteria | "Test: Verify API returns 200" |
 | `Blocked:` | Dependencies | "Blocked: Waiting on #45" |
 
 **Conflict detection:** If two `Decision:` comments contradict each other, promotion halts and requires human resolution.
 
-**Current Lifecycle:**
+### Promotion as Onramp
+
+`--promote` is an **onramp** to the full workflow, not a bypass. The idea content pre-populates context, but all phases still run:
+
 ```
-Capture (issue) → Shape (comments) → Promote (creates spec) → Build → Commit
+Promote → Interview (pre-filled) → Pre-flight → Plan → Work → Review → Compound
 ```
 
 | Status | Location | Next Step |
 |--------|----------|-----------|
 | Idea | GitHub Issue | Shape via comments |
-| Feature | Issue + `docs/product/planning/features/` | Build |
+| Feature | Full workflow with pre-populated context | All phases run |
 | Complete | Merged to main | - |
-
-**Commit quality gates:** Tests, simplicity review, auto-docs, changelog (see commit skill).
 
 **Promote an idea to a feature:**
 ```bash
@@ -265,7 +269,9 @@ claude --plugin-dir .
 
 Current version: 0.3.0 (see `.claude-plugin/plugin.json`)
 
-This version adds idea promotion workflow (#30) with prescriptive comment prefixes and two-layer conflict detection.
+Recent changes:
+- **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
+- **#30:** Added idea promotion workflow with prescriptive comment prefixes and conflict detection
 
 ### Versioning Policy
 

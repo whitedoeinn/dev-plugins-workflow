@@ -6,6 +6,10 @@ All notable changes documented here.
 
 ## 2026-01-17
 
+### Changed
+- **Aligned wdi with compound-engineering (#40)** - wdi now properly delegates to compound-engineering workflows. Removed duplicate research phase (now in /workflows:plan). Review phase delegates to /workflows:review and creates GitHub issues from findings (P1=blocking). Compound phase runs first to capture learnings before merge. --promote is now an onramp that runs full workflow with pre-populated context
+- **Assessment phase deferred (#41)** - Complexity assessment captured as idea issue for future consideration after learning compound-engineering defaults
+
 ### Added
 - **Idea promotion workflow (#30)** - Ideas now live entirely in GitHub Issues. `--idea` creates an issue with `idea` label, shaped via prefixed comments (Decision:, Test:, Blocked:), then `--promote #N` converts to feature spec with comment parsing and conflict detection
 - **Two-layer conflict detection** - Semantic conflicts detected at promotion (contradicting Decision: comments halt promotion). Implementation conflicts detected during work phase (same file modified with different intent)

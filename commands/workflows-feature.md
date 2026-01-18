@@ -27,8 +27,10 @@ Full feature development workflow using an interview-driven approach to tailor r
 
 ### Full Workflow (default)
 ```
-Interview → Pre-flight → Research → Plan → Work → Review → Compound
+Interview → Pre-flight → Plan → Work → Review → Compound
 ```
+
+**Note:** Research is now included within `/workflows:plan` (compound-engineering runs research agents automatically).
 
 Each phase pauses for approval unless `--yes` is passed.
 
@@ -161,7 +163,7 @@ Next steps:
 
 ## Promotion Mode (`--promote #123`)
 
-When `--promote #{issue-number}` is passed, convert an idea to a feature.
+Promotion is an **onramp** to the standard workflow, not a shortcut around it. The idea content pre-populates workflow context, but all phases still run.
 
 ### Step 1: Fetch Issue Content
 
@@ -179,9 +181,9 @@ Comments are only processed if they start with a recognized prefix. Comments wit
 
 | Prefix | Maps to | Example |
 |--------|---------|---------|
-| `Decision:` | Research Summary | "Decision: Use YAML frontmatter for metadata" |
-| `Test:` | Done When task | "Test: Verify /api/users returns 200" |
-| `Blocked:` | Dependencies (Blocked by) | "Blocked: Waiting on #45 to merge" |
+| `Decision:` | Research context | "Decision: Use YAML frontmatter for metadata" |
+| `Test:` | Acceptance criteria | "Test: Verify /api/users returns 200" |
+| `Blocked:` | Dependencies | "Blocked: Waiting on #45 to merge" |
 
 #### Parsing Rules
 
@@ -225,63 +227,50 @@ If no conflicts, display what will be incorporated:
 Parsed Shaping Comments
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Decisions (→ Research Summary):
+Decisions (→ Research context):
   • Use YAML frontmatter for metadata
 
-Tests (→ Done When):
+Tests (→ Acceptance criteria):
   • Verify /api/users returns 200
 
-Constraints (→ Context):
-  • Must work without network
+Blocked by:
+  • Waiting on #45 to merge
 
 Ignored (no prefix): 2 comments
 
 Continue? (y)es, (a)bort:
 ```
 
-### Step 3: Run Feature Interview (Pre-populated)
+### Step 3: Pre-populate Workflow Context
 
-Run the standard feature interview (Phase 1: Interview) with pre-populated answers from the idea:
-- Feature Type: Pre-select based on idea content
-- Research Preference: Ask user
-- Feature Description: From idea's Problem + Rough Solution
+Create context that will pre-fill interview answers:
+- **Feature Type:** Infer from idea content (problem description, appetite)
+- **Feature Description:** From Problem + Rough Solution sections
+- **Research context:** From `Decision:` comments (passed to `/workflows:plan`)
+- **Acceptance criteria:** From `Test:` comments (added to Done When)
+- **Dependencies:** From `Blocked:` comments
 
-Interview gathers remaining details:
-- Target subproject (if mono-repo)
-- Complexity assessment
-- Dependencies (user specifies what this blocks/is blocked by)
+### Step 4: Run Standard Workflow (Pre-populated)
 
-### Step 4: Create Feature Spec
+Continue to **Phase 1: Interview** with pre-populated values. The user confirms or adjusts pre-filled answers.
 
-After interview completes:
-1. Generate slug from issue title (remove "Idea: " prefix)
-2. Create spec using template at `docs/templates/feature.md`
-3. Save to `docs/product/planning/features/{slug}.md`
-4. Populate from interview results + idea content + parsed comments:
-   - Problem → Problem section (from idea)
-   - Open Questions → Research Requirements
-   - `Decision:` → Research Summary / Notes
-   - `Test:` → Done When tasks (add to appropriate phase)
-   - `Doc:` → Files table
-   - `Constraint:` → Context section
-   - `Blocked:` → Dependencies (Blocked by)
-   - `Risk:` → Notes section
-   - Interview answers → Context, Done When, Dependencies
+The full workflow runs with no phases skipped:
+- **Phase 1: Interview** - Pre-filled from idea, user confirms
+- **Phase 2: Pre-flight** - Validates repository state
+- **Phase 3: Plan** - `/workflows:plan` runs research and creates plan
+- **Phase 4: Work** - `/workflows:work` implements the plan
+- **Phase 5: Review** - `/workflows:review` runs all review agents
+- **Phase 6: Compound** - `/workflows:compound` captures learnings, then merge
 
-Create directories if needed:
-```bash
-mkdir -p docs/product/planning/features
-```
+### Step 5: Update Original Issue (After Workflow Completes)
 
-### Step 5: Update Issue Body
-
-Replace idea content with feature summary:
+After Phase 6 completes, update the idea issue:
 
 ```bash
 gh issue edit {issue-number} --body "$(cat <<'EOF'
 ## Summary
 
-{brief description from interview}
+{brief description}
 
 ## Spec
 
@@ -290,40 +279,30 @@ gh issue edit {issue-number} --body "$(cat <<'EOF'
 ## Status
 
 - **Promoted:** {date}
-- **Complexity:** {from interview}
-- **Target:** {from interview}
+- **Completed:** {date}
 
 ---
 
-*Promoted from idea via `/wdi:feature --promote`*
+*Promoted from idea and completed via `/wdi:feature --promote`*
 EOF
 )"
 ```
 
-### Step 6: Update Issue Labels
-
+Update labels:
 ```bash
 gh issue edit {issue-number} \
   --remove-label "idea" \
   --remove-label "status:needs-shaping" \
-  --add-label "feature" \
-  --add-label "status:ready"
+  --add-label "feature"
 ```
 
-### Step 7: Continue to Work Phase
-
-After promotion, continue the feature workflow:
-- Skip Phase 1 (Interview) - already done in Step 3
-- Skip Phase 2 (Pre-flight) - assume passed
-- Run Phase 3 (Research) - if interview specified "Full Research"
-- Skip Phase 4 (Plan) - spec already created in Step 4
-- Continue Phase 5 (Work) and beyond
+**Key change:** Nothing is skipped. The idea content is INPUT to the workflow, not a bypass.
 
 ---
 
 ## Phase 1: Interview
 
-Use `AskUserQuestion` to gather context. Complexity and target subproject are assessed by Claude after research, not asked upfront.
+Use `AskUserQuestion` to gather context.
 
 #### Question 1: Feature Type
 
@@ -339,19 +318,7 @@ What type of work is this?
 | **Refactor** | Restructuring code without changing behavior |
 | **Experiment** | Exploratory work, spike, or proof of concept |
 
-#### Question 2: Research Preference
-
-```
-How much research should we do?
-```
-
-| Option | Description |
-|--------|-------------|
-| **Full Research** | Run all relevant agents (recommended for unfamiliar areas) |
-| **Light Research** | Quick codebase scan only |
-| **Skip Research** | Go straight to planning (you know the codebase well) |
-
-#### Question 3: Feature Description
+#### Question 2: Feature Description
 
 ```
 Briefly describe the feature or work:
@@ -404,147 +371,9 @@ fi
 
 ---
 
-## Phase 3: Research (Adaptive)
+## Phase 3: Plan (Delegated)
 
-Research depth determined by user preference. Complexity and target subproject are assessed after research.
-
-### Agent Selection by Feature Type
-
-| Feature Type | Full Research Agents | Light Research |
-|--------------|---------------------|----------------|
-| New Feature | repo-analyst, framework-docs, best-practices, git-history | repo-analyst |
-| Enhancement | repo-analyst, git-history | repo-analyst |
-| Bug Fix | repo-analyst, git-history | repo-analyst |
-| Refactor | repo-analyst, git-history, best-practices | repo-analyst |
-| Experiment | repo-analyst, best-practices | repo-analyst |
-
-### Research Preference Effect
-
-| Preference | Effect |
-|------------|--------|
-| Full Research | Use all agents from matrix above |
-| Light Research | repo-analyst only |
-| Skip Research | Skip to Phase 3.5 (Assessment) |
-
-### Run Research Agents
-
-Run selected agents in parallel using Task tool:
-
-```
-subagent_type='compound-engineering:research:repo-research-analyst'
-subagent_type='compound-engineering:research:git-history-analyzer'
-subagent_type='compound-engineering:research:framework-docs-researcher'
-subagent_type='compound-engineering:research:best-practices-researcher'
-```
-
-Prompt each agent with:
-- Feature description from interview (or from provided spec file)
-- Feature type context
-
-Ask for:
-- Relevant existing patterns
-- Files that will need modification
-- Constraints or considerations
-- Recommended approaches
-
-### Synthesize Research
-
-Combine agent outputs into a research summary:
-- Key findings
-- Existing patterns to follow
-- Files to modify
-- Constraints identified
-
----
-
-## Phase 3.5: Assessment (Claude Suggests, User Confirms)
-
-After research, Claude assesses complexity and target subproject based on findings.
-
-### Complexity Assessment
-
-Analyze the feature and research findings to determine complexity:
-
-| Signal | Simple | Moderate | Complex |
-|--------|--------|----------|---------|
-| Files affected | 1-2 | 3-10 | 10+ |
-| New abstractions | None | 1-2 | New patterns/systems |
-| External deps | None | Existing only | New dependencies |
-| Architectural impact | None | Local | System-wide |
-| Existing patterns | Clear match | Partial match | Greenfield |
-
-**Complexity determines:**
-- Planning depth (Phase 4)
-- Review agents (Phase 6)
-- Merge strategy (Phase 7)
-
-### Target Subproject (Mono-repos Only)
-
-If `IS_MONOREPO=true`, suggest target subproject based on:
-- Feature description keywords
-- Files identified in research
-- Existing subproject purposes
-
-**Present selectable list:**
-
-```
-Which subproject does this affect?
-
-Based on the feature description and research, this appears to
-affect: packages/api-ga4
-  • Feature mentions "GA4 reporting"
-  • Related files found in packages/api-ga4/src/
-
-Existing subprojects:
-  [1] api-ga4 (Recommended)
-  [2] api-mailchimp
-  [3] dashboard
-  [4] lib-auth
-  [5] New Subproject (create first)
-  [6] Repo-Level (root scripts, docs, CI)
-
-Select option or press Enter to accept recommendation:
-```
-
-**If "New Subproject" selected:**
-
-```
-Creating new subproject first...
-```
-
-Invoke `/wdi:new-subproject` workflow, then continue with the new subproject as target.
-
-### Pause (unless --yes)
-
-```
-Assessment Complete
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Feature Type: {type}
-Complexity: {assessed-complexity}
-Target: {subproject or "repo-level"}
-
-Agents run: [list agents]
-
-Key findings:
-• [finding 1]
-• [finding 2]
-
-Continue to planning? (y)es, (a)bort:
-```
-
----
-
-## Phase 4: Plan
-
-### Planning Depth by Complexity
-
-| Complexity | Planning Approach |
-|------------|-------------------|
-| Simple | Quick bullet-point plan, minimal overhead |
-| Moderate | Structured plan with acceptance criteria |
-| Complex | Detailed plan with architecture diagrams, risk assessment |
-| Unknown | Start with exploration tasks, then refine |
+**Note:** Research is handled by `/workflows:plan` - it automatically runs research agents (repo-research-analyst, best-practices-researcher, framework-docs-researcher) as part of planning.
 
 ### Invoke Planning Workflow
 
@@ -554,7 +383,7 @@ Use Skill tool:
 /compound-engineering:workflows:plan
 ```
 
-Pass research context and interview answers.
+Pass interview answers (feature type, description).
 
 ### Generate Implementation Plan
 
@@ -627,7 +456,7 @@ If `--plan`, stop here.
 
 ---
 
-## Phase 5: Work
+## Phase 4: Work (Delegated)
 
 ### Create Feature Branch
 
@@ -653,7 +482,7 @@ Use Skill tool:
 /compound-engineering:workflows:work
 ```
 
-Pass the implementation plan from Phase 4.
+Pass the implementation plan from Phase 3.
 
 ### Execute Implementation
 
@@ -730,46 +559,64 @@ Ready for review? (y)es, (c)ontinue working, (a)bort:
 
 ---
 
-## Phase 6: Review (Adaptive)
+## Phase 5: Review (Delegated)
 
-Review agents selected based on feature type and complexity.
+Delegate to `/workflows:review` which runs 12+ agents in parallel, creates todos with priorities, and offers E2E testing.
 
-### Agent Selection Matrix
+### Step 1: Invoke Review Workflow
 
-| Feature Type | Complexity | Review Agents |
-|--------------|------------|---------------|
-| New Feature | Complex | simplicity, architecture, security, performance |
-| New Feature | Moderate | simplicity, architecture |
-| New Feature | Simple | simplicity |
-| Enhancement | Any | simplicity, architecture |
-| Bug Fix | Any | simplicity, security |
-| Refactor | Any | simplicity, architecture, performance |
-| Experiment | Any | simplicity only (light review) |
+Use Skill tool:
 
-### Run Review Agents
-
-| Agent | Focus |
-|-------|-------|
-| `code-simplicity-reviewer` | YAGNI, over-engineering, unnecessary abstraction |
-| `architecture-strategist` | Design patterns, consistency with codebase |
-| `security-sentinel` | Security vulnerabilities, input validation |
-| `performance-oracle` | Performance issues, inefficient patterns |
-
-### Present Findings
-
-For each finding:
 ```
-[Agent]: {issue description}
-
-File: {file}:{line}
-Severity: {low|medium|high}
-
-(f)ix, (a)cknowledge, (s)kip:
+/compound-engineering:workflows:review
 ```
 
-- **fix**: Apply suggested fix
-- **acknowledge**: Note the issue but continue
-- **skip**: Ignore this finding
+The review workflow:
+- Runs 12+ agents in parallel (architecture, security, performance, simplicity, data integrity, etc.)
+- Creates todos in `todos/` directory with P1/P2/P3 priorities
+- Offers E2E testing
+
+### Step 2: Convert Findings to GitHub Issues
+
+After review completes, convert todos to GitHub issues for tracking:
+
+**P1 (Critical) → Blocking Issue:**
+```bash
+gh issue create \
+  --title "BLOCKS #{feature-issue}: {finding-title}" \
+  --label "p1-critical" \
+  --body "$(cat <<'EOF'
+{finding-content}
+
+---
+Blocks: #{feature-issue}
+Created by: /wdi:feature review phase
+EOF
+)"
+```
+
+**P2/P3 → Related Issue:**
+```bash
+gh issue create \
+  --title "Review: {finding-title}" \
+  --label "p2-important" \
+  --body "$(cat <<'EOF'
+{finding-content}
+
+---
+Related to: #{feature-issue}
+Created by: /wdi:feature review phase
+EOF
+)"
+```
+
+Add comment to feature issue listing created review issues.
+
+### Step 3: Gate on P1
+
+If any P1 issues created:
+- **BLOCK** proceeding to Phase 6 (Compound)
+- List P1 issues that must be resolved
 
 ### Pause (unless --yes)
 
@@ -777,45 +624,25 @@ Severity: {low|medium|high}
 Review Phase Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Findings: {count} total
-  ✓ Fixed: {fixed}
-  ○ Acknowledged: {acknowledged}
-  - Skipped: {skipped}
+Created issues from review findings:
+  🔴 P1 (Blocking): #41, #42 - MUST resolve before merge
+  🟡 P2 (Important): #43, #44
+  🔵 P3 (Nice-to-have): #45
 
-Merge and compound? (y)es, (r)eview again, (a)bort:
+Continue to compound phase? (y)es, (f)ix P1s, (a)bort:
 ```
+
+If P1 issues exist and user selects (y)es, warn again and require explicit confirmation.
 
 ---
 
-## Phase 7: Compound
+## Phase 6: Compound and Complete
 
-### Merge Strategy by Complexity
+**Important:** Run compound FIRST (while on feature branch) to capture learnings while context is fresh, then merge.
 
-| Complexity | Strategy |
-|------------|----------|
-| Simple | Direct merge to main |
-| Moderate | Direct merge with detailed message |
-| Complex | Create PR for record-keeping |
+### Step 1: Document Learnings (FIRST)
 
-**Direct merge:**
-```bash
-git checkout main
-git pull
-git merge --no-ff {branch} -m "Merge {branch}"
-```
-
-**Create PR:**
-```bash
-gh pr create --title "{type}: {feature-name}" --body "{plan-summary}"
-```
-
-### Update Changelog
-
-Use the commit skill (say "commit these changes --yes"):
-
-The commit skill automatically updates `docs/changelog.md` with the feature entry.
-
-### Invoke Compound Workflow
+While still on feature branch, invoke compound workflow:
 
 Use Skill tool:
 
@@ -823,16 +650,25 @@ Use Skill tool:
 /compound-engineering:workflows:compound
 ```
 
-### Document Learnings
+This runs 6 parallel subagents to extract and document learnings in `docs/solutions/`.
 
-Capture what was learned:
-- Patterns that worked well
-- Things to do differently
-- New conventions to adopt
+### Step 2: Merge to Main
 
-**For Complex features:** Update `CLAUDE.md` with new patterns if significant.
+Direct merge (PR-based review tracked in Issue #33):
 
-### Update Feature Spec
+```bash
+git checkout main
+git pull
+git merge --no-ff {branch} -m "Merge {branch}"
+```
+
+### Step 3: Commit and Changelog
+
+Say "commit these changes --yes":
+
+The commit skill automatically updates `docs/changelog.md` with the feature entry.
+
+### Step 4: Update Feature Spec
 
 Mark the feature specification as complete:
 
@@ -852,16 +688,14 @@ Mark the feature specification as complete:
 - [x] Criterion 2
 ```
 
-Include the spec update in the final commit before pushing.
-
-### Cleanup
+### Step 5: Cleanup
 
 ```bash
 git branch -d {branch}
 git push origin --delete {branch}  # if pushed
 ```
 
-### Close Issue
+### Step 6: Close Issue
 
 ```bash
 gh issue close {issue-number} --comment "Completed in {commit-sha}"
@@ -874,19 +708,14 @@ Feature Complete
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Feature Type: {type}
-Complexity: {complexity}
-Target: {package}
 
-✓ Issue #{issue-number} closed
+✓ Learnings documented (docs/solutions/)
 ✓ Merged to main
+✓ Issue #{issue-number} closed
 ✓ Changelog updated
 ✓ Feature spec marked complete
-✓ Learnings documented
 
-Research agents used: {list}
-Review agents used: {list}
-
-Learnings:
+Learnings captured:
 • {learning 1}
 • {learning 2}
 ```
@@ -895,16 +724,13 @@ Learnings:
 
 ## Examples
 
-### New complex feature (full workflow)
+### New feature (full workflow)
 
 ```
 /wdi:feature
 
 ? What type of work is this?
   → New Feature
-
-? How much research should we do?
-  → Full Research
 
 ? Briefly describe the feature:
   → "Add real-time analytics dashboard with live updating charts"
@@ -914,39 +740,18 @@ Pre-flight: ✓ All checks passed
   Mono-repo detected: packages/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-→ Research Phase
-  Running: repo-analyst, framework-docs, best-practices, git-history
+→ Plan Phase (delegated to /workflows:plan)
+  Running research agents...
+  • repo-research-analyst: Chart.js in packages/dashboard
+  • best-practices-researcher: WebSocket patterns
+  • framework-docs-researcher: Chart.js streaming plugin
 
-  Key findings:
-  • Existing Chart.js integration in packages/dashboard
-  • WebSocket support available via existing lib-ws
-  • Similar pattern in guest-portal for live updates
-
-→ Assessment Phase
-  Complexity: Complex (10+ files, new WebSocket patterns)
-
-  Target subproject: packages/dashboard
-    • Feature mentions "dashboard"
-    • Chart.js already integrated there
-
-  Existing subprojects:
-    [1] dashboard (Recommended)
-    [2] api-ga4
-    [3] lib-ws
-    [4] New Subproject
-    [5] Repo-Level
-
-  ? Select [1]: ↵
-
-  Continue to planning? [y]
-
-→ Plan Phase
   Created: Issue #23 "New Feature: Real-time analytics dashboard"
   Plan: docs/product/planning/features/realtime-analytics.md
 
   Continue to work? [y]
 
-→ Work Phase
+→ Work Phase (delegated to /workflows:work)
   Branch: feature/realtime-analytics
   ✓ Created WebSocket connection hook
   ✓ Built LiveChart component
@@ -955,22 +760,21 @@ Pre-flight: ✓ All checks passed
 
   Ready for review? [y]
 
-→ Review Phase
-  simplicity-reviewer: ✓ Clean
-  architecture-strategist: ✓ Follows existing patterns
-  security-sentinel: ✓ WebSocket auth validated
-  performance-oracle: 1 suggestion (debounce updates)
+→ Review Phase (delegated to /workflows:review)
+  Running 12+ agents in parallel...
 
-  (f)ix performance suggestion? [y]
+  Created issues from findings:
+    🟡 P2: #45 - Consider debouncing updates
 
-  Merge and compound? [y]
+  Continue to compound? [y]
 
-→ Compound Phase
+→ Compound Phase (delegated to /workflows:compound)
+  ✓ Learnings documented (docs/solutions/realtime-analytics.md)
   ✓ Merged to main
   ✓ Issue #23 closed
   ✓ Changelog updated
 
-  Learnings:
+  Learnings captured:
   • lib-ws handles reconnection automatically
   • Chart.js streaming plugin simplifies live updates
 
@@ -985,21 +789,10 @@ Pre-flight: ✓ All checks passed
 ? What type of work is this?
   → Bug Fix
 
-? How much research should we do?
-  → Light Research
-
 ? Briefly describe the feature:
   → "Fix navigation links not highlighting on mobile"
 
-→ Research Phase
-  Running: repo-analyst only
-  Found: Navigation in src/components/Nav.tsx
-
-→ Assessment Phase
-  Complexity: Simple (1 file, CSS fix)
-  Target: Repo-Level (standalone repo)
-
-  Continue to planning? [y]
+→ Pre-flight: ✓ All checks passed
 
 → Plan Phase
   Created: Issue #24 "Bug Fix: Mobile nav highlighting"
@@ -1010,11 +803,11 @@ Pre-flight: ✓ All checks passed
   Tests: ✓ passing
 
 → Review Phase
-  simplicity-reviewer: ✓ Clean
-  security-sentinel: ✓ No issues
+  No P1/P2/P3 findings
 
 → Compound Phase
-  ✓ Merged, closed, documented
+  ✓ Learnings documented
+  ✓ Merged, closed, updated
 
 ✓ Bug fix complete
 ```
@@ -1027,81 +820,20 @@ Pre-flight: ✓ All checks passed
 ? What type of work is this?
   → Enhancement
 
-? How much research should we do?
-  → Full Research
-
   (Description extracted from spec: "Add dark mode support across all pages")
 
-→ Research Phase
-  Running: repo-analyst, framework-docs, best-practices, git-history
-
-  Key findings:
+→ Plan Phase
+  Running research agents...
   • DaisyUI supports data-theme attribute
   • 15 pages need theme-aware styling
   • LocalStorage can persist preference
 
-→ Assessment Phase
-  Complexity: Moderate (15 files, existing pattern in DaisyUI)
-  Target: Repo-Level (affects multiple areas)
-
-  Continue to planning? [y]
-
-→ Plan Phase
   Updated: docs/product/planning/features/dark-mode.md
   Created: Issue #25 "Enhancement: Dark mode support"
 
   Continue to work? [y]
 
 ...
-```
-
-### New subproject creation during workflow
-
-```
-/wdi:feature
-
-? What type of work is this?
-  → New Feature
-
-? How much research should we do?
-  → Light Research
-
-? Briefly describe the feature:
-  → "Add Stripe payment processing integration"
-
-→ Research Phase
-  Running: repo-analyst only
-  No existing Stripe integration found.
-
-→ Assessment Phase
-  Complexity: Moderate (new integration, existing patterns for APIs)
-
-  Target subproject: (no clear match)
-    • Feature requires new API wrapper
-
-  Existing subprojects:
-    [1] api-ga4
-    [2] api-mailchimp
-    [3] dashboard
-    [4] New Subproject (Recommended)
-    [5] Repo-Level
-
-  ? Select [4]: ↵
-
-  Creating new subproject first...
-  → Running /wdi:new-subproject
-
-  ? What type of subproject is this?
-    → API Wrapper
-  ? Which external service?
-    → stripe
-
-  ✓ Created: packages/api-stripe/
-
-  Continuing with target: packages/api-stripe
-
-→ Plan Phase
-  ...
 ```
 
 ### Experiment with minimal overhead
@@ -1112,20 +844,14 @@ Pre-flight: ✓ All checks passed
 ? What type of work is this?
   → Experiment
 
-? How much research should we do?
-  → Skip Research
-
 ? Briefly describe the feature:
   → "Test GraphQL subscriptions for live data"
 
-→ Assessment Phase (skip research)
-  Complexity: Simple (experiment)
-  Target: Repo-Level
-
-→ Light planning (experiment)
-→ Branch: experiment/graphql-subscriptions
-→ Light review (simplicity only)
-→ Merged to main
+→ Plan Phase
+→ Work Phase
+  Branch: experiment/graphql-subscriptions
+→ Review Phase
+→ Compound Phase
 
 ✓ Experiment complete
 
@@ -1137,14 +863,14 @@ if not promoted to permanent feature.
 
 ## Notes
 
-- Interview answers determine agent selection and planning depth
-- Complex work gets more research and review agents
-- Simple work uses minimal overhead
-- Experiments get light treatment (exploratory by nature)
+- All phases delegate to compound-engineering workflows (`/workflows:plan`, `/workflows:work`, `/workflows:review`, `/workflows:compound`)
+- Research is included in `/workflows:plan` - no separate research phase
 - Use `--yes` for experienced users who know the codebase
 - All phases can be aborted without side effects (except created branches/issues)
-- Requires compound-engineering plugin for research and review agents
+- Requires compound-engineering plugin for planning, work, review, and compound workflows
 - Requires `gh` CLI authenticated for issue creation
 - Feature specs use template from `docs/templates/feature.md`
 - Feature specs saved to `docs/product/planning/features/`
+- Review findings are converted to GitHub issues (P1=blocking, P2/P3=related)
+- Learnings are captured via `/workflows:compound` BEFORE merge
 - See PROJECT-STRUCTURE.md for full product documentation layout
