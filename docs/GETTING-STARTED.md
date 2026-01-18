@@ -2,13 +2,39 @@
 
 This guide gets you productive in 15 minutes. It explains what commands to use, when, and why we built things this way.
 
+**Required for all whitedoeinn projects.** This plugin standardizes how we build features, manage issues, and maintain code quality.
+
 ## Prerequisites
 
-- Claude Code CLI installed
+- Claude Code CLI installed (`claude --version`)
 - `gh` CLI authenticated (`gh auth login`)
-- This plugin installed (`./install.sh`)
 
-Verify with: `claude --version` and `gh auth status`
+## Installation
+
+Install via marketplace (run inside Claude Code):
+
+```
+/plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow
+/plugin install wdi
+```
+
+This also installs `compound-engineering` as a dependency.
+
+### Verify Installation
+
+```
+/wdi:workflows-setup
+```
+
+This checks that all dependencies are configured correctly.
+
+### Update to Latest Version
+
+```
+/plugin update wdi
+```
+
+Run this periodically to get new features and fixes.
 
 ---
 
