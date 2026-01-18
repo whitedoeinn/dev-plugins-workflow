@@ -152,23 +152,25 @@ Comments are only parsed during promotion if they start with a recognized prefix
 
 **Conflict detection:** If two `Decision:` comments contradict each other, promotion halts and requires human resolution.
 
-**Lifecycle:**
+**Current Lifecycle:**
 ```
-Capture (issue) → Shape (comments) → Promote (creates spec) → Build → Review
+Capture (issue) → Shape (comments) → Promote (creates spec) → Build → Commit
 ```
 
 | Status | Location | Next Step |
 |--------|----------|-----------|
 | Idea | GitHub Issue | Shape via comments |
 | Feature | Issue + `docs/product/planning/features/` | Build |
-| Review | PR | Merge or iterate |
+| Complete | Merged to main | - |
+
+**Commit quality gates:** Tests, simplicity review, auto-docs, changelog (see commit skill).
 
 **Promote an idea to a feature:**
 ```bash
 /wdi:workflows-feature --promote #123
 ```
 
-> **Note:** The Review phase workflow is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33).
+> **Planned:** PR-based Review phase is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33). Currently all commits go directly to main with quality gates.
 
 ## Environment Validation
 
