@@ -5,7 +5,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.2.1 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.3.1 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -32,7 +32,6 @@ cd dev-plugins-workflow
 | `/wdi:workflows-feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
 | `/wdi:workflows-feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
 | `/wdi:workflows-feature --plan` | Stop after planning phase |
-| `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflows-milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi:workflows-setup` | Set up and verify plugin dependencies |
 
@@ -109,9 +108,11 @@ Orchestrates the complete feature development cycle:
 
 1. **Research** - Smart-selects research agents based on feature context
 2. **Plan** - Creates GitHub Issue + local plan file with requirements
-3. **Work** - Feature branch, implementation, tests
-4. **Review** - Multi-agent code review (simplicity, architecture, security, performance)
-5. **Compound** - Merge, changelog, document learnings
+3. **Work** - Implementation and tests (on main)
+4. **Review** - Multi-agent code review (architecture, security, performance)
+5. **Compound** - Changelog, document learnings
+
+**Note:** The workflow commits directly to main with quality gates. Feature branches are not used by design ([#44](https://github.com/whitedoeinn/dev-plugins-workflow/issues/44)). Individuals may use feature branches manually for their own purposes.
 
 Flags:
 - `--yes` / `-y` - Auto-continue through phases
@@ -214,7 +215,7 @@ Quick reference: [knowledge/standards-summary.md](knowledge/standards-summary.md
 - **Commands:** Use `/wdi:*` prefix with domain-prefixed names (e.g., `/wdi:workflows-feature`)
 - **Mono-repos:** Cluster by domain (`marketing-ops`, `business-ops`)
 - **Plugins:** Standalone repos (`dev-plugins-*`)
-- **Branches:** `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/`
+- **Branches:** Workflow uses main; if using branches manually: `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/`
 
 ## Team Onboarding
 
@@ -234,7 +235,7 @@ Available commands:
 - `/wdi:standards-check` - Validate against WDI standards
 
 Skills (auto-invoked):
-- `workflow-commit` - Say "commit these changes" for smart commit with review
+- `workflow-commit` - Say "commit these changes" for smart commit with tests and changelog
 
 To update: `./install.sh update`
 ```

@@ -11,14 +11,13 @@ This guide gets you productive in 15 minutes. It explains what commands to use, 
 
 ## Installation
 
-Install via marketplace (run inside Claude Code):
+Run in your project directory:
 
-```
-/plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow
-/plugin install wdi
+```bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
-This also installs `compound-engineering` as a dependency.
+This installs both `wdi` and `compound-engineering` plugins.
 
 ### Verify Installation
 
@@ -30,8 +29,8 @@ This checks that all dependencies are configured correctly.
 
 ### Update to Latest Version
 
-```
-/plugin update wdi
+```bash
+./install.sh update
 ```
 
 Run this periodically to get new features and fixes.
