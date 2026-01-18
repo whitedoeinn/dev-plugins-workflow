@@ -250,7 +250,7 @@ Issues Found & Resolved:
 • [ui] Missing aria-label on chart - fixed
 • [database] Missing index on user_id - added
 
-Ready to commit - say "commit these changes"
+Ready to commit - say "commit these changes --skip-tests"
 ```
 
 ## Flags
@@ -391,7 +391,7 @@ Features completed: 3/3
 Dependency order used: A → B → C
 Status: Complete
 
-Ready to commit - say "commit these changes"
+Ready to commit - say "commit these changes --skip-tests"
 ```
 
 **Stopped early (failure):**
@@ -438,7 +438,7 @@ Tasks completed: 5/5
 Quality gates passed: 4
 Issues auto-fixed: 2
 
-Ready to commit - say "commit these changes"
+Ready to commit - say "commit these changes --skip-tests"
 ```
 
 ### Fast Mode (Skip Gates)
@@ -454,7 +454,7 @@ Skipping quality gates (--skip-gates)
 [ralph-loop executes normally]
 
 Tasks completed: 2/2
-Ready to commit - say "commit these changes"
+Ready to commit - say "commit these changes --skip-tests"
 ```
 
 ### Strict Mode
@@ -514,7 +514,7 @@ Milestone Execution Summary
 Features completed: 3/3
 Status: Complete
 
-Ready to commit - say "commit these changes"
+Ready to commit - say "commit these changes --skip-tests"
 ```
 
 ## Error Handling

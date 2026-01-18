@@ -4,6 +4,21 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-18
+
+### Added
+- **Developer onboarding guide** - `docs/GETTING-STARTED.md` with mental model, command decision tree, design decisions, and walkthrough
+- **Auto-docs documentation** - `docs/auto-docs.md` explaining capability, usage, and customization
+
+### Changed
+- **Workflow commits skip tests** - Workflows now use `--skip-tests` when committing since tests already ran during work phase. Reduces token waste when ralph is mass-producing features
+- **Branch strategy deferred** - Moved BRANCH-NAMING.md to drafts/, work directly on main with quality gates (#44)
+
+### Removed
+- **Redundant commit skill steps** - Removed simplicity review (runs in workflow) and branch validation (we use main). Commit skill now focused on tests, auto-docs, changelog
+
+---
+
 ## 2026-01-17
 
 ### Changed

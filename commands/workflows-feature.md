@@ -640,7 +640,7 @@ This runs 6 parallel subagents to extract and document learnings in `docs/soluti
 
 ### Step 2: Commit and Changelog
 
-Say "commit these changes --yes":
+Say "commit these changes --skip-tests --yes":
 
 The commit skill automatically updates `docs/changelog.md` with the feature entry.
 
