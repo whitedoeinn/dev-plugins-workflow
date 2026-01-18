@@ -84,7 +84,7 @@ wdi (orchestration layer)
 └── GitHub integration (issues, labels, cleanup)
 ```
 
-**Note:** Feature branches deferred to #31. Currently all work happens on main with quality gates.
+**Note:** Feature branches deferred to #44. Currently all work happens on main with quality gates.
 
 ## Files Modified
 
@@ -145,7 +145,8 @@ Can compound-engineering do this?
 | #40 | Main alignment work (this solution) |
 | #41 | Deferred: Complexity assessment (learn defaults first) |
 | #33 | Idea: PR-based review phase (not yet implemented) |
-| #31 | Ralph improvements (branch strategy question added) |
+| #31 | Ralph improvements (GitHub issue sync) |
+| #44 | Branch strategy evaluation (deferred) |
 | #30 | Idea promotion workflow (foundation for this work) |
 
 ## Key Lesson
@@ -170,11 +171,11 @@ The wdi alignment reduced code by 264 lines while gaining capabilities (12+ revi
 
 ## Post-Implementation Correction
 
-**Error discovered:** The original implementation included feature branch workflow (create branch, merge to main) despite #31 explicitly deferring feature branches.
+**Error discovered:** The original implementation included feature branch workflow (create branch, merge to main) despite our decision to defer feature branches.
 
 **How it happened:**
 1. The plan included feature branch language
-2. Implementation followed the plan without cross-referencing #31
+2. Implementation followed the plan without cross-referencing prior decisions
 3. Compound documented what was implemented (including the error)
 4. Manual review of compound output caught the inconsistency
 
@@ -182,7 +183,7 @@ The wdi alignment reduced code by 264 lines while gaining capabilities (12+ revi
 - Removed "Create Feature Branch" section from Phase 4
 - Removed merge commands from Phase 6
 - Updated examples to remove branch references
-- Added notes that branches are deferred to #31
+- Added notes that branches are deferred (now tracked in #44)
 
 **Meta-lesson:** When implementing a plan, cross-reference prior decisions (especially deferred work tracked in issues). The plan may contain assumptions that contradict earlier decisions.
 

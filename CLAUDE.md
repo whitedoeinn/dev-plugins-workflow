@@ -94,12 +94,12 @@ dev-plugins/
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `workflow-commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `workflow-commit` | "commit these changes" | Smart commit with tests, auto-docs, and changelog |
 | `workflow-auto-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
 | `workflow-config-sync` | "check my config" | Validate environment and auto-remediate drift |
 
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
-> The skill ensures changelog updates, runs tests, and performs simplicity review.
+> The skill ensures tests pass, documentation stays in sync, and changelog is updated.
 
 ## Dependencies
 
@@ -267,7 +267,7 @@ claude --plugin-dir .
 
 ## Version
 
-Current version: 0.3.0 (see `.claude-plugin/plugin.json`)
+Current version: 0.3.1 (see `.claude-plugin/plugin.json`)
 
 Recent changes:
 - **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)

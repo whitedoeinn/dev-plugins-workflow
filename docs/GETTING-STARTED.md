@@ -91,7 +91,7 @@ See: [#30](https://github.com/whitedoeinn/dev-plugins-workflow/issues/30)
 ### Why work directly on main?
 
 We currently commit directly to main with quality gates instead of using feature branches. This works because:
-- Quality gates (tests, simplicity review) protect main
+- Quality gates (tests, auto-docs, changelog) protect main
 - Simpler workflow with less overhead
 - Appropriate for current team scale
 
@@ -140,7 +140,7 @@ Claude will ask:
 | Pre-flight | Checks repo status | Wait |
 | Research | Scans codebase | Wait |
 | Plan | Creates issue + spec | Review, approve |
-| Work | Creates branch, implements | Watch (or help) |
+| Work | Implements changes | Watch (or help) |
 | Review | Runs quality gates | Fix or acknowledge |
 | Compound | Merges, updates changelog | Confirm |
 
@@ -175,21 +175,6 @@ Restart Claude Code after plugin installation. Commands load on startup.
 ### "gh not authenticated"
 
 Run `gh auth login` and follow prompts.
-
-### Simplicity review fails
-
-The review found over-engineering. Options:
-- Fix the issues (recommended)
-- `commit these changes --skip-review` (escape hatch)
-
-### Stuck on wrong branch
-
-The workflow expects to create its own branch from main. If you're on a different branch:
-```bash
-git checkout main
-git pull
-```
-Then restart the workflow.
 
 ---
 
@@ -230,4 +215,4 @@ Then restart the workflow.
 
 ---
 
-*This guide covers wdi v0.3.0. For compound-engineering capabilities, see their documentation.*
+*This guide covers wdi v0.3.1. For compound-engineering capabilities, see their documentation.*

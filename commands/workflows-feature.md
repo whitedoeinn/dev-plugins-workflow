@@ -458,7 +458,7 @@ If `--plan`, stop here.
 
 ## Phase 4: Work (Delegated)
 
-**Note:** Feature branches are deferred to #31 (Ralph improvements). Currently work happens on main with quality gates.
+**Note:** Feature branches are deferred to #44. Currently work happens on main with quality gates.
 
 ### Invoke Work Workflow
 

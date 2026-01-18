@@ -40,7 +40,7 @@ cd dev-plugins-workflow
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `workflow-commit` | "commit these changes" | Smart commit with tests, simplicity review, and changelog |
+| `workflow-commit` | "commit these changes" | Smart commit with tests, auto-docs, and changelog |
 | `workflow-auto-docs` | "update the docs" | Detect and fix documentation drift when commands/skills change |
 | `workflow-config-sync` | "check my config" | Validate environment against baseline, auto-remediate drift |
 
@@ -125,7 +125,7 @@ Smart commit with quality gates. **Auto-invoked** when you say "commit these cha
 
 1. Stage changes (interactive or all)
 2. Run tests (pytest, npm test based on file types)
-3. Simplicity review (catches over-engineering)
+3. Auto-update documentation (if commands/skills changed)
 4. Generate commit message
 5. Update changelog (`docs/changelog.md`)
 6. Push
@@ -133,7 +133,6 @@ Smart commit with quality gates. **Auto-invoked** when you say "commit these cha
 Flags (pass to Claude when requesting commit):
 - `--yes` - Auto-accept defaults
 - `--summary` - Generate fun changelog summary
-- `--skip-review` - Skip simplicity review
 - `--skip-tests` - Skip tests
 
 ## Cross-Platform Support
@@ -191,7 +190,6 @@ Common issues and solutions are documented in [docs/troubleshooting.md](docs/tro
 Quick fixes:
 - **"Unknown skill: commit"** → Plugin not installed. Run `install.sh`
 - **Commands not found** → Restart Claude Code after installation
-- **Simplicity review fails** → Use `--skip-review` or fix the issues
 - **"Environment cannot be auto-fixed"** → Follow the remediation steps shown, then say "check my config"
 - **"gh not authenticated"** → Run `gh auth login` to authenticate GitHub CLI
 

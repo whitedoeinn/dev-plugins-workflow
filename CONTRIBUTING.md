@@ -109,7 +109,7 @@ Say: "commit these changes"
 
 The commit skill will:
 1. Run tests (if applicable)
-2. Perform simplicity review (for large changes)
+2. Auto-update documentation (if commands/skills changed)
 3. Bump version based on commit type (`feat:` → prompt, `fix:` → auto patch)
 4. Update changelog
 5. Create git tag

@@ -72,19 +72,6 @@ bash install.sh
 
 ---
 
-### commit skill fails at simplicity review
-
-**Cause:** The `compound-engineering` plugin's review agent found issues.
-
-**Solution:**
-- Review the issues shown
-- Fix them or use `--skip-review` flag when committing:
-  ```
-  commit these changes --skip-review
-  ```
-
----
-
 ### commit skill fails at tests
 
 **Cause:** Tests are failing in your project.

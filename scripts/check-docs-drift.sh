@@ -124,6 +124,7 @@ is_excluded_ref() {
 
   # Exclude obvious example patterns
   [[ "$ref_file" == *"my-command"* ]] && return 0
+  [[ "$ref_file" == *"my-new-command"* ]] && return 0
   [[ "$ref_file" == *"example-"* ]] && return 0
 
   return 1
