@@ -43,9 +43,6 @@ What do you have right now?
 ├─► Existing idea issue to promote
 │   └─► /wdi:workflows-feature --promote #123
 │
-├─► Existing feature spec to execute
-│   └─► /wdi:workflows-enhanced-ralph feature-name
-│
 ├─► Tiny fix, no tracking needed
 │   └─► Just ask Claude, then "commit these changes"
 │
@@ -118,18 +115,6 @@ This plugin automatically keeps documentation in sync with code. When you add or
 2. **Manual** - Say "update the docs" to run drift detection
 
 For details on how it works and how to customize, see [docs/auto-docs.md](auto-docs.md).
-
-### Why enhanced-ralph for execution?
-
-`/wdi:workflows-feature` handles the full lifecycle. But sometimes you already have a spec and just want to execute it.
-
-**enhanced-ralph** is the execution engine:
-- Reads feature spec
-- Detects task types (UI, database, security, etc.)
-- Applies appropriate quality gates per task
-- Tracks progress via checkboxes
-
-Use it when you have a spec but skipped the planning workflow.
 
 ---
 
@@ -206,12 +191,6 @@ git pull
 ```
 Then restart the workflow.
 
-### Feature spec not found
-
-enhanced-ralph looks in `docs/product/planning/features/`. Verify:
-- File exists at that path
-- Filename matches what you passed (without `.md`)
-
 ---
 
 ## Quick Reference
@@ -222,7 +201,6 @@ enhanced-ralph looks in `docs/product/planning/features/`. Verify:
 | Full workflow | `/wdi:workflows-feature` |
 | Plan only | `/wdi:workflows-feature --plan` |
 | Promote idea | `/wdi:workflows-feature --promote #123` |
-| Execute spec | `/wdi:workflows-enhanced-ralph feature-name` |
 | Commit changes | "commit these changes" |
 | Check standards | `/wdi:standards-check` |
 | New repo | `/wdi:standards-new-repo` |
