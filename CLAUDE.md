@@ -168,6 +168,8 @@ Capture (issue) → Shape (comments) → Promote (creates spec) → Build → Re
 /wdi:workflows-feature --promote #123
 ```
 
+> **Note:** The Review phase workflow is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33).
+
 ## Environment Validation
 
 On every session start, the plugin validates your environment against `env-baseline.json`:
