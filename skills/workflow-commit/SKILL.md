@@ -1,17 +1,18 @@
 ---
 name: workflow-commit
-description: This skill should be used when committing code changes to git. It applies when the user asks to commit, push changes, save work, or mentions finishing work that needs to be committed. Triggers on phrases like "commit these changes", "commit this", "push this", "let's commit", "ready to commit", "save these changes", or any request involving git commit operations. Provides quality-gated commits with tests, simplicity review, and automatic changelog updates.
+description: This skill should be used when committing code changes to git. It applies when the user asks to commit, push changes, save work, or mentions finishing work that needs to be committed. Triggers on phrases like "commit these changes", "commit this", "push this", "let's commit", "ready to commit", "save these changes", or any request involving git commit operations. Provides quality-gated commits with tests and automatic changelog updates.
 ---
 
 <objective>
 Smart commit workflow that enforces quality gates before every commit:
 - Runs tests automatically
-- Performs simplicity review on large changes
 - Generates meaningful commit messages
 - Updates changelog automatically
-- Handles branch merging to main
 
 This ensures consistent code quality and documentation across all commits.
+
+Note: Simplicity review runs during the workflow review phase, not at commit time.
+We work directly on main (branching strategy is being evaluated in #44).
 </objective>
 
 <quick_start>
@@ -32,9 +33,8 @@ Then:
 <flags>
 | Flag | Description |
 |------|-------------|
-| `--yes` | Skip prompts, auto-accept defaults. Aborts on test/review failures. |
+| `--yes` | Skip prompts, auto-accept defaults. Aborts on test failures. |
 | `--summary` | Generate fun changelog summary after commit |
-| `--skip-review` | Skip simplicity review |
 | `--skip-tests` | Skip tests |
 </flags>
 
@@ -49,24 +49,7 @@ git status --short
 - Unstaged changes: Ask "(a)dd all, (s)elect files, (c)ontinue with staged, (q)uit"
 - Optional: "Review diffs? [y/n]" → show file picker
 
-## Step 2: Validate Branch Name
-
-Check branch follows naming standards (see `docs/standards/BRANCH-NAMING.md`):
-
-```bash
-BRANCH=$(git branch --show-current)
-```
-
-**Valid prefixes:** `feature/`, `fix/`, `hotfix/`, `docs/`, `refactor/`, `chore/`, `experiment/`
-
-**Validation:**
-- If on `main`: Skip validation
-- If branch has underscores: Warn "Branch uses underscores. Standard is hyphens."
-- If branch has unknown prefix: Warn "Unknown branch prefix. See BRANCH-NAMING.md"
-
-With `--yes`: Warnings don't block, just display.
-
-## Step 3: Run Tests
+## Step 2: Run Tests
 
 Skip if --skip-tests. Detect and run:
 
@@ -77,18 +60,7 @@ Skip if --skip-tests. Detect and run:
 
 Fail = ABORT
 
-## Step 4: Simplicity Review
-
-Skip if --skip-review or <50 lines changed.
-
-Use Task tool: subagent_type='compound-engineering:review:code-simplicity-reviewer'
-
-Catches: unnecessary abstraction, scope creep, premature optimization, YAGNI.
-
-- Issues found: Ask "Fix before committing? [y/n]"
-- With --yes: Issues = ABORT
-
-## Step 4.5: Auto-Update Documentation
+## Step 3: Auto-Update Documentation
 
 Check if commands or skills were modified:
 
@@ -127,19 +99,15 @@ git diff --cached --name-only | grep -E "^(commands/|skills/)" && DOCS_NEEDED=tr
 
 **With --yes:** Auto-apply all documentation fixes without prompting.
 
-## Step 5: Generate Message
+## Step 4: Generate Message
 
 Analyze diff. Focus on "why" not "what". Keep concise.
 
-## Step 6: Detect Context
+## Step 5: Detect Context
 
-| Branch Pattern     | Prefix                                    |
-|--------------------|-------------------------------------------|
-| feature/FEAT-XXX-* | FEAT-XXX:                                 |
-| fix/NNN-*          | Fixes #NNN:                               |
-| main               | Ask: (f)eature, (i)ssue, (h)otfix, (n)one |
+Ask: (f)eature, (i)ssue fix, (h)otfix, (n)one — to determine commit prefix.
 
-## Step 6.5: Version Bump (if plugin repo)
+## Step 6: Version Bump (if plugin repo)
 
 Skip this step if `.claude-plugin/plugin.json` doesn't exist or has no `version` field.
 
@@ -205,7 +173,7 @@ The version change is included in the same commit.
 ```
 Proposed commit message:
 ───────────────────────────────────────
-FEAT-012: Add campaign filter dropdown
+feat: Add campaign filter dropdown
 
 Implement status and budget filters.
 
@@ -215,14 +183,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 (y)es, (e)dit, (a)bort:
 ```
 
-## Step 8: Branch Handling
-
-On feature/fix branch, ask: "Final commit? (merge to main) [y/n]"
-
-- Yes: Commit → checkout main → pull → merge --no-ff → continue
-- No: Commit → push → done
-
-## Step 9: Update Changelog
+## Step 8: Update Changelog
 
 File: docs/changelog.md
 
@@ -252,7 +213,7 @@ Rules:
 - Good: "Fixed skills not auto-invoking - directory wasn't registered"
 - Bad: "Added skills entry to plugin.json"
 
-## Step 10: Push
+## Step 9: Push
 
 ```bash
 git add docs/changelog.md
@@ -260,15 +221,9 @@ git commit --amend --no-edit
 git push
 ```
 
-If merged from branch:
-```bash
-git branch -d <branch>
-git push origin --delete <branch>
-```
+## Step 10: Git Tag (if version bumped)
 
-## Step 10.5: Git Tag (if version bumped)
-
-If a version bump was applied in Step 6.5, create and push a git tag:
+If a version bump was applied in Step 6, create and push a git tag:
 
 ```bash
 VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
@@ -295,13 +250,11 @@ Generates a fun summary with emojis and shoutouts.
 <success_criteria>
 A successful commit workflow:
 - Tests pass (or skipped with --skip-tests)
-- Simplicity review passes (or skipped)
 - Commit message is meaningful and approved
 - Version bumped appropriately (if plugin repo)
 - Changelog is updated with today's entry
 - Changes are pushed to remote
 - Git tag created (if version bumped)
-- Branch is cleaned up if merged to main
 </success_criteria>
 
 <notes>
@@ -309,6 +262,6 @@ A successful commit workflow:
 - Never force push
 - Aborts on merge conflicts
 - Creates docs/changelog.md if missing
-- Auto-updates CLAUDE.md and README.md when commands/skills are modified (Step 4.5)
-- **Requires:** compound-engineering plugin for simplicity review and --summary
+- Auto-updates CLAUDE.md and README.md when commands/skills are modified (Step 3)
+- **Requires:** compound-engineering plugin for --summary flag
 </notes>
