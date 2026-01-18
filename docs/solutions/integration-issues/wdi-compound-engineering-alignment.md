@@ -66,8 +66,8 @@ Review findings converted to GitHub issues:
 
 ### 4. Reordered Compound Phase to Run FIRST
 
-**Before:** Merge → Compound (lost context)
-**After:** Compound → Merge (capture learnings while on feature branch)
+**Before:** Commit → Compound (work feels "done", context fading)
+**After:** Compound → Commit (capture learnings while context is fresh)
 
 ## Architecture After Alignment
 
@@ -80,9 +80,11 @@ wdi (orchestration layer)
     ├── /workflows:work (implementation with todos)
     ├── /workflows:review (12+ agents, creates todos)
     └── /workflows:compound (captures learnings)
-└── Merge to main (AFTER learnings captured)
+└── Commit to main (AFTER learnings captured)
 └── GitHub integration (issues, labels, cleanup)
 ```
+
+**Note:** Feature branches deferred to #31. Currently all work happens on main with quality gates.
 
 ## Files Modified
 
@@ -142,7 +144,7 @@ Can compound-engineering do this?
 |-------|-------------|
 | #40 | Main alignment work (this solution) |
 | #41 | Deferred: Complexity assessment (learn defaults first) |
-| #33 | Planned: PR-based review phase |
+| #33 | Idea: PR-based review phase (not yet implemented) |
 | #31 | Ralph improvements (branch strategy question added) |
 | #30 | Idea promotion workflow (foundation for this work) |
 
@@ -163,3 +165,30 @@ The wdi alignment reduced code by 264 lines while gaining capabilities (12+ revi
 - `docs/standards/PLUGIN-ARCHITECTURE.md` - One-plugin policy and external dependencies
 - `docs/architecture.md` - System overview with delegation diagram
 - `CLAUDE.md` - Workflow documentation and promotion as onramp
+
+---
+
+## Post-Implementation Correction
+
+**Error discovered:** The original implementation included feature branch workflow (create branch, merge to main) despite #31 explicitly deferring feature branches.
+
+**How it happened:**
+1. The plan included feature branch language
+2. Implementation followed the plan without cross-referencing #31
+3. Compound documented what was implemented (including the error)
+4. Manual review of compound output caught the inconsistency
+
+**What was fixed:**
+- Removed "Create Feature Branch" section from Phase 4
+- Removed merge commands from Phase 6
+- Updated examples to remove branch references
+- Added notes that branches are deferred to #31
+
+**Meta-lesson:** When implementing a plan, cross-reference prior decisions (especially deferred work tracked in issues). The plan may contain assumptions that contradict earlier decisions.
+
+**Why this wasn't caught earlier:**
+- We implemented directly from a plan, not via `/wdi:workflows-feature`
+- The Review phase (which runs 12+ agents) was skipped
+- Only the commit skill ran, which has lighter review
+
+**Process improvement:** For significant work, use the full feature workflow. The Review phase exists precisely to catch contradictions like this before merge.

@@ -458,21 +458,7 @@ If `--plan`, stop here.
 
 ## Phase 4: Work (Delegated)
 
-### Create Feature Branch
-
-Branch naming based on feature type:
-
-| Type | Branch Pattern |
-|------|----------------|
-| New Feature | `feature/{slug}` |
-| Enhancement | `feature/{slug}` |
-| Bug Fix | `fix/{issue-number}-{slug}` |
-| Refactor | `refactor/{slug}` |
-| Experiment | `experiment/{slug}` |
-
-```bash
-git checkout -b {branch-pattern}
-```
+**Note:** Feature branches are deferred to #31 (Ralph improvements). Currently work happens on main with quality gates.
 
 ### Invoke Work Workflow
 
@@ -529,7 +515,7 @@ Before implementing each task that modifies files:
 
 4. **After completing each phase of tasks**, review all changes against all decisions:
    ```bash
-   git diff main...HEAD
+   git diff HEAD~5..HEAD  # or appropriate range for this work
    ```
    Verify no contradictions exist before proceeding to next phase.
 
@@ -638,11 +624,11 @@ If P1 issues exist and user selects (y)es, warn again and require explicit confi
 
 ## Phase 6: Compound and Complete
 
-**Important:** Run compound FIRST (while on feature branch) to capture learnings while context is fresh, then merge.
+**Important:** Run compound FIRST to capture learnings while context is fresh, before the work feels "done."
 
 ### Step 1: Document Learnings (FIRST)
 
-While still on feature branch, invoke compound workflow:
+Invoke compound workflow before final commit:
 
 Use Skill tool:
 
@@ -652,23 +638,13 @@ Use Skill tool:
 
 This runs 6 parallel subagents to extract and document learnings in `docs/solutions/`.
 
-### Step 2: Merge to Main
-
-Direct merge (PR-based review tracked in Issue #33):
-
-```bash
-git checkout main
-git pull
-git merge --no-ff {branch} -m "Merge {branch}"
-```
-
-### Step 3: Commit and Changelog
+### Step 2: Commit and Changelog
 
 Say "commit these changes --yes":
 
 The commit skill automatically updates `docs/changelog.md` with the feature entry.
 
-### Step 4: Update Feature Spec
+### Step 3: Update Feature Spec
 
 Mark the feature specification as complete:
 
@@ -688,14 +664,7 @@ Mark the feature specification as complete:
 - [x] Criterion 2
 ```
 
-### Step 5: Cleanup
-
-```bash
-git branch -d {branch}
-git push origin --delete {branch}  # if pushed
-```
-
-### Step 6: Close Issue
+### Step 4: Close Issue
 
 ```bash
 gh issue close {issue-number} --comment "Completed in {commit-sha}"
@@ -710,7 +679,7 @@ Feature Complete
 Feature Type: {type}
 
 ✓ Learnings documented (docs/solutions/)
-✓ Merged to main
+✓ Committed to main
 ✓ Issue #{issue-number} closed
 ✓ Changelog updated
 ✓ Feature spec marked complete
@@ -752,7 +721,6 @@ Pre-flight: ✓ All checks passed
   Continue to work? [y]
 
 → Work Phase (delegated to /workflows:work)
-  Branch: feature/realtime-analytics
   ✓ Created WebSocket connection hook
   ✓ Built LiveChart component
   ✓ Integrated with existing dashboard
@@ -770,7 +738,6 @@ Pre-flight: ✓ All checks passed
 
 → Compound Phase (delegated to /workflows:compound)
   ✓ Learnings documented (docs/solutions/realtime-analytics.md)
-  ✓ Merged to main
   ✓ Issue #23 closed
   ✓ Changelog updated
 
@@ -798,7 +765,6 @@ Pre-flight: ✓ All checks passed
   Created: Issue #24 "Bug Fix: Mobile nav highlighting"
 
 → Work Phase
-  Branch: fix/24-mobile-nav
   ✓ Fixed CSS media query
   Tests: ✓ passing
 
@@ -807,7 +773,7 @@ Pre-flight: ✓ All checks passed
 
 → Compound Phase
   ✓ Learnings documented
-  ✓ Merged, closed, updated
+  ✓ Committed, closed, updated
 
 ✓ Bug fix complete
 ```

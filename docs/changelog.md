@@ -27,6 +27,7 @@ All notable changes documented here.
 - **Commit skill type guidance** - Added "Choosing the Right Type" table clarifying fix vs chore. Moved `refactor:` from "Prompt" to "No bump" since it's internal restructuring
 
 ### Fixed
+- **Feature branch references removed** - Alignment implementation incorrectly included feature branch workflow despite #31 deferring that decision. Caught during compound output review. Added Post-Implementation Correction to compound doc capturing the meta-lesson: cross-reference prior decisions when implementing plans
 - **Repo name references** - Corrected two files still using plural `dev-plugins-workflows` after migration to singular `dev-plugins-workflow` in whitedoeinn org
 
 ### Removed
