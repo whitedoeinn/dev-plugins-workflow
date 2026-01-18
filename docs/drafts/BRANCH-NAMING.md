@@ -1,5 +1,8 @@
 # Branch Naming Standards
 
+> **DRAFT:** This standard is not implemented. We currently work directly on main.
+> See [#44](https://github.com/whitedoeinn/dev-plugins-workflow/issues/44) for the decision on whether to adopt branching.
+
 **Organization:** whitedoeinn
 **Last Updated:** 2026-01-11
 

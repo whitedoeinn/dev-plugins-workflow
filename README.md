@@ -204,7 +204,7 @@ This plugin enforces WDI development standards. Key conventions:
 | Repository naming | [REPO-STANDARDS.md](docs/standards/REPO-STANDARDS.md) |
 | Project structure | [PROJECT-STRUCTURE.md](docs/standards/PROJECT-STRUCTURE.md) |
 | File naming | [FILE-NAMING.md](docs/standards/FILE-NAMING.md) |
-| Branch naming | [BRANCH-NAMING.md](docs/standards/BRANCH-NAMING.md) |
+| Branch naming | [BRANCH-NAMING.md](docs/drafts/BRANCH-NAMING.md) *(draft - not implemented)* |
 | Commit messages | [COMMIT-STANDARDS.md](docs/standards/COMMIT-STANDARDS.md) |
 | Claude Code plugins | [CLAUDE-CODE-STANDARDS.md](docs/standards/CLAUDE-CODE-STANDARDS.md) |
 
