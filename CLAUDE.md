@@ -74,7 +74,7 @@ dev-plugins/
 | Command | Description |
 |---------|-------------|
 | `/wdi:workflows-feature` | Full feature workflow (pre-flight → research → plan → work → review → compound) |
-| `/wdi:workflows-feature --idea` | Quick idea capture (creates idea file + draft issue, no implementation) |
+| `/wdi:workflows-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
 | `/wdi:workflows-feature --plan` | Stop after planning phase |
 | `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflows-milestone` | Create and execute milestone-based feature groupings |
@@ -133,24 +133,39 @@ Use `--idea` mode to quickly capture ideas without implementing them:
 /wdi:workflows-feature --idea
 ```
 
-**Creates:**
-- Idea file: `docs/product/ideas/{slug}.md`
-- Draft issue: GitHub issue with `idea` type label and `status:needs-shaping`
+**Creates:** GitHub issue with `idea` label and `status:needs-shaping`
+
+Ideas live entirely in GitHub Issues:
+- **Capture:** Issue body contains problem, appetite, rough solution, open questions
+- **Shape:** Add comments using prefixes (see below)
+- **Promote:** When ready, run `/wdi:workflows-feature --promote #123`
+
+### Shaping Comment Prefixes
+
+Comments are only parsed during promotion if they start with a recognized prefix. Comments without prefixes are for human discussion and are ignored.
+
+| Prefix | Maps to | Example |
+|--------|---------|---------|
+| `Decision:` | Research Summary | "Decision: Use YAML frontmatter" |
+| `Test:` | Done When task | "Test: Verify API returns 200" |
+| `Blocked:` | Dependencies | "Blocked: Waiting on #45" |
+
+**Conflict detection:** If two `Decision:` comments contradict each other, promotion halts and requires human resolution.
 
 **Lifecycle:**
 ```
-Capture → Shape → Plan → Build
+Capture (issue) → Shape (comments) → Promote (creates spec) → Build → Review
 ```
 
 | Status | Location | Next Step |
 |--------|----------|-----------|
-| Idea | `docs/product/ideas/` | Shape when ready |
-| Shaping | `docs/product/shaping/` | Research and design |
-| Planning | `docs/product/planning/features/` | Ready to build |
+| Idea | GitHub Issue | Shape via comments |
+| Feature | Issue + `docs/product/planning/features/` | Build |
+| Review | PR | Merge or iterate |
 
 **Promote an idea to a feature:**
 ```bash
-/wdi:workflows-feature @docs/product/ideas/{slug}.md
+/wdi:workflows-feature --promote #123
 ```
 
 ## Environment Validation
@@ -244,9 +259,9 @@ claude --plugin-dir .
 
 ## Version
 
-Current version: 0.2.2 (see `.claude-plugin/plugin.json`)
+Current version: 0.3.0 (see `.claude-plugin/plugin.json`)
 
-This version includes the architecture change from `wdi-workflows` to `wdi` and fixes skill registration.
+This version adds idea promotion workflow (#30) with prescriptive comment prefixes and two-layer conflict detection.
 
 ### Versioning Policy
 

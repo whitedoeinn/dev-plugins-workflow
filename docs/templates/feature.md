@@ -1,52 +1,75 @@
+---
+# YAML frontmatter for machine-readable metadata
+status: planning  # planning | in-progress | review | complete
+type: feature     # feature | enhancement | bug-fix | refactor | experiment
+complexity: moderate  # simple | moderate | complex
+issue: null       # GitHub issue number
+branch: null      # Git branch name
+created: null     # YYYY-MM-DD
+---
+
 # {Feature Title}
-
-**Status:** Planning | In Progress | Review | Complete
-**Created:** {YYYY-MM-DD}
-**Issue:** #{issue-number}
-**Branch:** {branch-name}
-**Milestone:** {MILE-XXX} (optional)
-
-## Context
-
-**Type:** New Feature | Enhancement | Bug Fix | Refactor | Experiment
-**Complexity:** Simple | Moderate | Complex
-**Target:** {package or repo-level}
 
 ## Problem
 
-What problem does this solve? Why is it needed?
+What problem does this solve? Include a specific scenario:
+
+> When [persona] tries to [action], they [pain point] because [reason].
+
+## Context
+
+**Target:** {package or repo-level}
+**Milestone:** {MILE-XXX} (optional)
+
+## Research Requirements
+
+What needs to be understood before implementation:
+
+- [ ] {Research topic 1} [research: {agent-hint}]
+- [ ] {Research topic 2}
 
 ## Done When
 
-Acceptance criteria as checkboxes:
+Tasks organized by phase. Each task includes:
+- Verification criteria in `(test: ...)`
+- Optional annotations: `[research: topic]`, `[review: type]`, `[skip-gates]`, `[strict]`
 
-- [ ] {Criterion 1} (test: {how to verify})
-- [ ] {Criterion 2} (test: {how to verify})
-- [ ] {Criterion 3} (test: {how to verify})
+### Phase 1: Foundation
+- [ ] {Task 1} (test: {verification}) [review: security]
+- [ ] {Task 2} (test: {verification})
 
-## Implementation Plan
+### Phase 2: Core Implementation
+- [ ] {Task 3} (test: {verification})
+- [ ] {Task 4} (test: {verification}) [research: external-api]
 
-1. {Step 1}
-2. {Step 2}
-3. {Step 3}
+### Phase 3: Polish
+- [ ] {Task 5} (test: {verification})
+
+## Exit Criteria
+
+Feature is complete when:
+- [ ] All "Done When" tasks checked
+- [ ] Tests pass (workflow detects and runs appropriate tests)
+- [ ] Documentation updated
+- [ ] PR merged or committed to main
 
 ## Files
 
 | File | Change |
 |------|--------|
-| `{path/to/file}` | {description of change} |
+| `{path/to/file}` | {description} |
 
 ## Dependencies
 
 **Blocked by:**
-- {Feature or milestone this depends on}
+- {Feature or issue this depends on}
 
 **Blocks:**
 - {Features that depend on this}
 
 ## Research Summary
 
-Key findings from research phase (if applicable):
+Key findings (populated during/after research phase):
 
 - {Finding 1}
 - {Finding 2}

@@ -13,6 +13,7 @@ Full feature development workflow using an interview-driven approach to tailor r
 | `--yes` | `-y` | Auto-continue through phases (no pauses) |
 | `--plan` | | Stop after planning phase |
 | `--idea` | | Quick idea capture mode (minimal structure, no implementation) |
+| `--promote` | | Promote an idea issue to a feature (e.g., `--promote #123`) |
 
 ### Aliases (backwards compatibility)
 
@@ -33,10 +34,10 @@ Each phase pauses for approval unless `--yes` is passed.
 
 ### Idea Mode (`--idea`)
 ```
-Quick Interview → Create Idea File → Create Draft Issue → Done
+Quick Interview → Create GitHub Issue → Done
 ```
 
-Use idea mode when you have an idea but aren't ready to implement. Creates a lightweight idea spec and draft GitHub issue for later triage.
+Use idea mode when you have an idea but aren't ready to implement. Creates a GitHub issue for later shaping and triage.
 
 ---
 
@@ -89,21 +90,7 @@ What questions need answers before this can be built?
 ```
 (Free text - captures unknowns)
 
-### Step 2: Create Idea File
-
-Create idea file from template:
-
-1. Read template from `docs/templates/idea.md`
-2. Generate slug from title (lowercase, hyphens)
-3. Fill in placeholders from interview
-4. Save to `docs/product/ideas/{slug}.md`
-
-Create directories if needed:
-```bash
-mkdir -p docs/product/ideas
-```
-
-### Step 3: Create Draft GitHub Issue
+### Step 2: Create GitHub Issue
 
 ```bash
 gh issue create \
@@ -129,8 +116,16 @@ gh issue create \
 
 ---
 
-**Spec:** `docs/product/ideas/{slug}.md`
 **Status:** Idea - not ready for implementation
+
+**Shaping:** Add comments to shape this idea. Use prefixes so they're captured when promoted:
+- `Decision:` - Shaping decisions (e.g., "Decision: Use YAML frontmatter")
+- `Test:` - Test requirements (e.g., "Test: Verify API returns 200")
+- `Blocked:` - Dependencies (e.g., "Blocked: Waiting on #45")
+
+Comments without prefixes are ignored (for human discussion only).
+
+When ready, promote with `/wdi:feature --promote #{issue-number}`
 
 *Captured by `/wdi:feature --idea`*
 EOF
@@ -143,7 +138,7 @@ gh label create "idea" --color "c5def5" --description "Captured idea, not yet sh
 gh label create "status:needs-shaping" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null || true
 ```
 
-### Step 4: Output
+### Step 3: Output
 
 ```
 Idea Captured
@@ -152,12 +147,11 @@ Idea Captured
 Title: {title}
 Appetite: {appetite}
 
-✓ Created: docs/product/ideas/{slug}.md
 ✓ Issue: #{issue-number} (idea, status:needs-shaping)
 
 Next steps:
-• Shape the idea when ready: research feasibility, define approach
-• Promote to feature: /wdi:feature @docs/product/ideas/{slug}.md
+• Shape the idea by adding comments to the issue
+• Promote to feature when ready: /wdi:feature --promote #{issue-number}
 • Or close the issue if the idea doesn't pan out
 ```
 
@@ -165,20 +159,165 @@ Next steps:
 
 ---
 
-## Promoting Ideas to Features
+## Promotion Mode (`--promote #123`)
 
-When an idea is ready for implementation, run the feature workflow with the idea file:
+When `--promote #{issue-number}` is passed, convert an idea to a feature.
+
+### Step 1: Fetch Issue Content
+
+```bash
+gh issue view {issue-number} --json title,body,labels,comments
+```
+
+Verify the issue has label `idea`. If not, warn and ask to confirm.
+
+### Step 2: Parse Actionable Comments
+
+Comments are only processed if they start with a recognized prefix. Comments without prefixes are for humans and are ignored.
+
+#### Recognized Prefixes
+
+| Prefix | Maps to | Example |
+|--------|---------|---------|
+| `Decision:` | Research Summary | "Decision: Use YAML frontmatter for metadata" |
+| `Test:` | Done When task | "Test: Verify /api/users returns 200" |
+| `Blocked:` | Dependencies (Blocked by) | "Blocked: Waiting on #45 to merge" |
+
+#### Parsing Rules
+
+1. Scan each comment for lines starting with a recognized prefix
+2. Extract the content after the prefix
+3. Ignore comments/lines without recognized prefixes (these are for humans)
+4. A single comment may contain multiple prefixes (one per line)
+
+#### Conflict Detection
+
+Before proceeding, check for conflicts:
+
+1. **Contradictory decisions** - Two `Decision:` items that contradict each other
+2. **Circular blocks** - `Blocked:` references that create dependency loops
+
+**If conflicts detected:**
 
 ```
-/wdi:feature @docs/product/ideas/{slug}.md
+⚠️  Conflict Detected - Cannot Proceed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The following comments appear to conflict:
+
+Comment 1 ({date}): Decision: Use approach A
+Comment 3 ({date}): Decision: Use approach B (contradicts A)
+
+Resolution required:
+• Edit or delete one of the conflicting comments
+• Then re-run: /wdi:feature --promote #{issue-number}
+
+Promotion halted.
 ```
 
-The workflow will:
-1. Read the idea file and extract problem/appetite/questions
-2. Pre-populate interview answers from the idea
-3. Run full research → plan → work → review → compound workflow
-4. Move the file from `docs/product/ideas/` to `docs/product/planning/features/`
-5. Update the GitHub issue status: `status:needs-shaping` → `status:in-progress`
+**Exit without proceeding if conflicts exist.**
+
+#### Present Parsed Items
+
+If no conflicts, display what will be incorporated:
+
+```
+Parsed Shaping Comments
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Decisions (→ Research Summary):
+  • Use YAML frontmatter for metadata
+
+Tests (→ Done When):
+  • Verify /api/users returns 200
+
+Constraints (→ Context):
+  • Must work without network
+
+Ignored (no prefix): 2 comments
+
+Continue? (y)es, (a)bort:
+```
+
+### Step 3: Run Feature Interview (Pre-populated)
+
+Run the standard feature interview (Phase 1: Interview) with pre-populated answers from the idea:
+- Feature Type: Pre-select based on idea content
+- Research Preference: Ask user
+- Feature Description: From idea's Problem + Rough Solution
+
+Interview gathers remaining details:
+- Target subproject (if mono-repo)
+- Complexity assessment
+- Dependencies (user specifies what this blocks/is blocked by)
+
+### Step 4: Create Feature Spec
+
+After interview completes:
+1. Generate slug from issue title (remove "Idea: " prefix)
+2. Create spec using template at `docs/templates/feature.md`
+3. Save to `docs/product/planning/features/{slug}.md`
+4. Populate from interview results + idea content + parsed comments:
+   - Problem → Problem section (from idea)
+   - Open Questions → Research Requirements
+   - `Decision:` → Research Summary / Notes
+   - `Test:` → Done When tasks (add to appropriate phase)
+   - `Doc:` → Files table
+   - `Constraint:` → Context section
+   - `Blocked:` → Dependencies (Blocked by)
+   - `Risk:` → Notes section
+   - Interview answers → Context, Done When, Dependencies
+
+Create directories if needed:
+```bash
+mkdir -p docs/product/planning/features
+```
+
+### Step 5: Update Issue Body
+
+Replace idea content with feature summary:
+
+```bash
+gh issue edit {issue-number} --body "$(cat <<'EOF'
+## Summary
+
+{brief description from interview}
+
+## Spec
+
+**File:** `docs/product/planning/features/{slug}.md`
+
+## Status
+
+- **Promoted:** {date}
+- **Complexity:** {from interview}
+- **Target:** {from interview}
+
+---
+
+*Promoted from idea via `/wdi:feature --promote`*
+EOF
+)"
+```
+
+### Step 6: Update Issue Labels
+
+```bash
+gh issue edit {issue-number} \
+  --remove-label "idea" \
+  --remove-label "status:needs-shaping" \
+  --add-label "feature" \
+  --add-label "status:ready"
+```
+
+### Step 7: Continue to Work Phase
+
+After promotion, continue the feature workflow:
+- Skip Phase 1 (Interview) - already done in Step 3
+- Skip Phase 2 (Pre-flight) - assume passed
+- Run Phase 3 (Research) - if interview specified "Full Research"
+- Skip Phase 4 (Plan) - spec already created in Step 4
+- Continue Phase 5 (Work) and beyond
 
 ---
 
@@ -520,9 +659,50 @@ Pass the implementation plan from Phase 4.
 
 For each implementation step:
 1. Add to TodoWrite as `in_progress`
-2. Implement the step
-3. Mark as `completed`
-4. Move to next step
+2. **Before implementing:** Run conflict check (see below)
+3. Implement the step
+4. Mark as `completed`
+5. Move to next step
+
+### Implementation Conflict Detection
+
+Before implementing each task that modifies files:
+
+1. Check what files have already been modified:
+   ```bash
+   git diff --name-only
+   ```
+
+2. If the current task would change a file already modified:
+   - Review the Research Summary decisions in the feature spec
+   - Identify which decision drove the previous change
+   - Verify the current task's changes don't contradict it
+
+3. **If conflict detected:**
+   ```
+   ⚠️  Implementation Conflict Detected
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+   File: config.yaml
+
+   Previous change (Task 2): Set format to JSON
+   Current task (Task 5): Set format to YAML
+
+   These changes contradict each other.
+
+   Resolution required:
+   • Review the decisions in Research Summary
+   • Determine which decision should take precedence
+   • Update the feature spec if needed
+
+   (r)esolve and continue, (a)bort:
+   ```
+
+4. **After completing each phase of tasks**, review all changes against all decisions:
+   ```bash
+   git diff main...HEAD
+   ```
+   Verify no contradictions exist before proceeding to next phase.
 
 ### Run Tests
 

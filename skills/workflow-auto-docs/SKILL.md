@@ -171,8 +171,8 @@ A successful documentation sync:
 <notes>
 - This skill updates CLAUDE.md and README.md only
 - It does NOT update install.sh (that requires manual changes to heredocs)
-- Run this skill after adding new commands or skills
-- The commit skill does NOT auto-invoke this skill - run it explicitly
+- The commit skill auto-invokes this when commands/skills are staged (Step 4.5)
+- Can also be run explicitly via "update the docs"
 - Drift detection script: `./scripts/check-docs-drift.sh`
 - Use `--verbose` flag on script for detailed output
 </notes>

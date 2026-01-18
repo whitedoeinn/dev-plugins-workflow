@@ -1,2 +1,5 @@
 .DS_Store
 .playwright-mcp/
+
+# Ephemeral working files (research, drafts, scratch)
+/temp/

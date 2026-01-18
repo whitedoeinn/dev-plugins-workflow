@@ -7,7 +7,17 @@ All notable changes documented here.
 ## 2026-01-17
 
 ### Added
+- **Idea promotion workflow (#30)** - Ideas now live entirely in GitHub Issues. `--idea` creates an issue with `idea` label, shaped via prefixed comments (Decision:, Test:, Blocked:), then `--promote #N` converts to feature spec with comment parsing and conflict detection
+- **Two-layer conflict detection** - Semantic conflicts detected at promotion (contradicting Decision: comments halt promotion). Implementation conflicts detected during work phase (same file modified with different intent)
+- **Auto-documentation in commit workflow** - Commit skill now auto-updates CLAUDE.md and README.md when commands or skills are modified (Step 4.5)
+- **Manual testing document** - Comprehensive test checklist for promotion workflow at `docs/testing/manual-test-issue-30-promotion-workflow.md`
 - **Idea captures** - Added plugin version pinning (#19) and auto-capture context (#20) ideas with originating context
+
+### Changed
+- **Feature template enhanced** - Added YAML frontmatter for machine-readable metadata (status, type, complexity, issue, branch, created). Organized tasks into phases. Prepares for Ralph improvements (#31)
+
+### Removed
+- **Legacy idea files** - Deleted `docs/templates/idea.md` and `docs/product/ideas/*.md`. Ideas now live in GitHub Issues only
 
 ### Changed
 - **Commit skill type guidance** - Added "Choosing the Right Type" table clarifying fix vs chore. Moved `refactor:` from "Prompt" to "No bump" since it's internal restructuring

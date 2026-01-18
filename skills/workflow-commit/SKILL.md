@@ -88,6 +88,45 @@ Catches: unnecessary abstraction, scope creep, premature optimization, YAGNI.
 - Issues found: Ask "Fix before committing? [y/n]"
 - With --yes: Issues = ABORT
 
+## Step 4.5: Auto-Update Documentation
+
+Check if commands or skills were modified:
+
+```bash
+git diff --cached --name-only | grep -E "^(commands/|skills/)" && DOCS_NEEDED=true
+```
+
+**If commands/skills staged:**
+
+1. Run drift detection:
+   ```bash
+   ./scripts/check-docs-drift.sh
+   ```
+
+2. If drift found (exit code non-zero):
+   ```
+   Documentation drift detected - updating automatically...
+   ```
+
+3. Invoke workflow-auto-docs logic:
+   - Parse drift output
+   - Update CLAUDE.md and README.md tables
+   - Stage the documentation changes:
+     ```bash
+     git add CLAUDE.md README.md
+     ```
+
+4. Show what was updated:
+   ```
+   Auto-updated documentation:
+     • Added --promote flag to CLAUDE.md commands table
+     • Updated version reference
+   ```
+
+**If no commands/skills changed:** Skip this step.
+
+**With --yes:** Auto-apply all documentation fixes without prompting.
+
 ## Step 5: Generate Message
 
 Analyze diff. Focus on "why" not "what". Keep concise.
@@ -270,5 +309,6 @@ A successful commit workflow:
 - Never force push
 - Aborts on merge conflicts
 - Creates docs/changelog.md if missing
+- Auto-updates CLAUDE.md and README.md when commands/skills are modified (Step 4.5)
 - **Requires:** compound-engineering plugin for simplicity review and --summary
 </notes>
