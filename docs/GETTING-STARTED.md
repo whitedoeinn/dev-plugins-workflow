@@ -29,50 +29,115 @@ This checks that all dependencies are configured correctly.
 
 ### Update to Latest Version
 
+Re-run the install script:
+
 ```bash
-./install.sh update
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
 Run this periodically to get new features and fixes.
 
 ---
 
-## The 30-Second Mental Model
+## How the Plugins Work Together
 
-```
-You have an idea
-       ↓
-Capture it → Shape it → Build it → Ship it
-   --idea      issues     workflow    commit
-```
+**Two plugins power this workflow:**
 
-**Two plugins work together:**
-- **compound-engineering** — The engine (research agents, review agents, workflow primitives)
-- **wdi** — The driver (orchestrates compound-engineering for our workflow)
+| Plugin | Role | What It Provides |
+|--------|------|------------------|
+| **compound-engineering** | The engine | Research agents, review agents, workflow primitives |
+| **wdi** | The driver | Orchestrates compound-engineering for our conventions |
 
 You interact with wdi commands. They call compound-engineering under the hood.
 
 ---
 
-## Which Command Do I Use?
+## The Full Feature Workflow
+
+`/wdi:workflows-feature` runs these phases:
 
 ```
-What do you have right now?
-│
-├─► Vague idea, not ready to build
-│   └─► /wdi:workflows-feature --idea
-│
-├─► Clear idea, ready to plan and build
-│   └─► /wdi:workflows-feature
-│
-├─► Existing idea issue to promote
-│   └─► /wdi:workflows-feature --promote #123
-│
-├─► Tiny fix, no tracking needed
-│   └─► Just ask Claude, then "commit these changes"
-│
-└─► Exploration, no implementation
-    └─► Just ask Claude questions
+Interview → Pre-flight → Plan → Work → Review → Compound
+    wdi         wdi       c-e    c-e     c-e       c-e
+```
+
+*c-e = compound-engineering (delegated)*
+
+### Phase Breakdown
+
+| Phase | What Happens | Powered By |
+|-------|--------------|------------|
+| **Interview** | Gathers feature type, description | wdi |
+| **Pre-flight** | Validates repo status, detects mono-repo structure | wdi |
+| **Plan** | Runs research agents, creates GitHub issue + feature spec | compound-engineering |
+| **Work** | Implements changes with todo tracking | compound-engineering |
+| **Review** | Runs 12+ review agents in parallel | compound-engineering |
+| **Compound** | Captures learnings, updates changelog | compound-engineering |
+
+Each phase pauses for your approval (unless you pass `--yes`).
+
+### Research Agents
+
+The Plan phase automatically runs research agents before creating the plan. These agents provide deep context that improves planning quality.
+
+| Agent | What It Does | Why It Matters |
+|-------|--------------|----------------|
+| **Repo Research Analyst** | Analyzes repository structure, documentation patterns, existing conventions | Ensures plan follows existing patterns |
+| **Git History Analyzer** | Traces code evolution, identifies key contributors, finds patterns in past changes | Understands *why* code exists, not just *what* |
+| **Framework Docs Researcher** | Fetches current documentation for frameworks/libraries in your project | Avoids deprecated patterns, uses correct APIs |
+| **Best Practices Researcher** | Gathers external standards, community patterns, well-regarded examples | Aligns with industry standards |
+
+**How it works:** `/workflows:plan` (compound-engineering) automatically selects and runs relevant research agents based on your feature description. No manual configuration needed.
+
+### Review Agents
+
+The Review phase runs 12+ specialized agents in parallel. This catches issues that single-pass reviews miss.
+
+| Agent | Focus Area | What It Catches |
+|-------|------------|-----------------|
+| **Code Simplicity Reviewer** | YAGNI, minimalism | Over-engineering, unnecessary abstractions |
+| **Architecture Strategist** | Design patterns, boundaries | Architectural violations, misplaced code |
+| **Security Sentinel** | OWASP, auth, secrets | Vulnerabilities, exposed credentials |
+| **Performance Oracle** | Algorithms, queries | N+1 queries, inefficient patterns |
+| **Data Integrity Guardian** | Migrations, transactions | Unsafe migrations, missing constraints |
+| **Pattern Recognition Specialist** | Consistency, anti-patterns | Naming drift, code duplication |
+
+Additional language-specific reviewers run based on file types changed (Rails, Python, TypeScript, etc.).
+
+**How it works:** `/workflows:review` (compound-engineering) automatically runs all relevant agents in parallel. Findings are prioritized (P1/P2/P3) and converted to GitHub issues. No manual agent selection needed.
+
+**Why this matters:** A single reviewer can't hold all these perspectives. Parallel agents catch more issues with no additional time cost.
+
+---
+
+## Which Command Do I Use?
+
+| Situation | Command | Prerequisite | What Runs |
+|-----------|---------|--------------|-----------|
+| Vague idea, not ready to build | `--idea` | None | Creates issue only, no implementation |
+| Clear idea, ready to implement | (default) | None | Full workflow: all 6 phases |
+| Existing idea issue to promote | `--promote #123` | Issue with [shaped comments](../CLAUDE.md#shaping-comment-prefixes) | Full workflow with pre-filled context |
+| Just need the plan, not implementation | `--plan` | None | Pre-flight → Research → Plan, then stops |
+| Tiny fix, no tracking needed | Just ask Claude | None | No workflow—direct changes |
+| Research only, no implementation | Just ask Claude | None | No workflow—conversation only |
+
+### Command Examples
+
+```bash
+# Capture an idea quickly
+/wdi:workflows-feature --idea
+
+# Full workflow (most common)
+/wdi:workflows-feature
+
+# Promote a shaped idea to implementation
+/wdi:workflows-feature --promote #123
+
+# Get a plan but don't implement yet
+/wdi:workflows-feature --plan
+
+# Auto-continue without pauses (experienced users)
+/wdi:workflows-feature --yes
 ```
 
 ---

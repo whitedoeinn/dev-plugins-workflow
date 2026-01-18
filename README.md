@@ -87,17 +87,10 @@ This installs both `compound-engineering` and `wdi` plugins.
 
 ## Updating
 
-To update plugins to the latest versions:
+Re-run the install script to get the latest versions:
 
 ```bash
-./install.sh update
-```
-
-Or manually:
-
-```bash
-claude plugin update compound-engineering --scope project
-claude plugin update wdi --scope project
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
 ## Workflow Details
