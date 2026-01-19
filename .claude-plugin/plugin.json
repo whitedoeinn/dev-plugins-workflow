@@ -1,7 +1,7 @@
 {
   "name": "wdi",
   "description": "WDI development toolkit - workflows, standards, and automation for Claude Code",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": {
     "name": "White Doe Inn",
     "url": "https://github.com/whitedoeinn"
