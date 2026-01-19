@@ -5,7 +5,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.3.1 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.3.16 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -88,11 +88,32 @@ This installs both `compound-engineering` and `wdi` plugins.
 
 ## Updating
 
-Re-run the install script to get the latest versions:
+### Automatic Updates (Default)
+
+Plugin updates happen automatically on session start:
+1. **First restart** - SessionStart hook downloads new plugin files
+2. **Second restart** - Claude loads the updated plugin
+
+This two-restart requirement is a Claude Code limitation. The hook clears the plugin cache and reinstalls to work around a bug in `plugin update` that doesn't re-download changed files.
+
+### Manual Update
+
+Re-run the install script:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
+
+### If Updates Aren't Working
+
+Nuclear reset (clears all plugin state):
+
+```bash
+rm -rf ~/.claude/plugins/cache/wdi-marketplace/
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
+```
+
+See [troubleshooting.md](docs/troubleshooting.md) for more details.
 
 ## Workflow Details
 

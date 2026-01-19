@@ -4,6 +4,28 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-19
+
+### Fixed
+- **Plugin architecture overhaul (#52)** - Complete rewrite of plugin update mechanism to fix version propagation issues discovered during 10 days of testing
+  - **Bug 1: Stale marketplace cache** - `check-deps.sh` now deletes marketplace cache before reinstall (workaround for `plugin update` not re-downloading files)
+  - **Bug 2: Maintainer mode false positive** - `install.sh` now requires full source structure (marketplace.json + commands/ + skills/) to trigger maintainer mode
+  - Removed vendor method entirely - marketplace-only installation path
+  - Added `.claude/` to .gitignore (machine-specific settings shouldn't be committed)
+
+### Changed
+- **Two restarts required for updates** - First restart downloads new plugin files, second restart loads them. This is a Claude Code limitation, not a bug in wdi
+
+### Removed
+- **Vendor tooling** - Deleted `scripts/vendor-to-project.sh` and all vendor references from docs. Marketplace is the only supported installation method
+- **hello.md test command** - Temporary test file used during update cycle verification
+
+### Known Issues
+- **Claude Code `plugin update` is broken** - Doesn't re-download files when version changes, only updates metadata. Workaround: delete cache before install. Tracking issue: #53
+- **Claude Code `plugin list` display bug** - Plain text output shows duplicates for project-scoped plugins; `--json` output is correct
+
+---
+
 ## 2026-01-18
 
 ### Added

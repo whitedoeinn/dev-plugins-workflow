@@ -27,7 +27,15 @@ This installs both `wdi` and `compound-engineering` plugins.
 
 This checks that all dependencies are configured correctly.
 
-### Update to Latest Version
+### Automatic Updates
+
+Plugin updates happen automatically when you start Claude Code:
+1. **First restart** - SessionStart hook downloads new plugin files
+2. **Second restart** - Claude loads the updated plugin
+
+This two-restart requirement is a Claude Code limitation, not a wdi bug.
+
+### Manual Update
 
 Re-run the install script:
 
@@ -35,7 +43,14 @@ Re-run the install script:
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
-Run this periodically to get new features and fixes.
+### If Updates Aren't Working
+
+Clear the cache and reinstall:
+
+```bash
+rm -rf ~/.claude/plugins/cache/wdi-marketplace/
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
+```
 
 ---
 
@@ -305,4 +320,4 @@ Run `gh auth login` and follow prompts.
 
 ---
 
-*This guide covers wdi v0.3.1. For compound-engineering capabilities, see their documentation.*
+*This guide covers wdi v0.3.16. For compound-engineering capabilities, see their documentation.*
