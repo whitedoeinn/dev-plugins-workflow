@@ -3,5 +3,5 @@
 Say "Hello, World!" to verify the plugin auto-update is working.
 
 ```
-echo "Hello, World! - wdi plugin auto-update is working"
+echo "Hello, World! - wdi plugin auto-update is working. CAN YOU BELIEVE IT?!"
 ```
