@@ -8,6 +8,8 @@ All notable changes documented here.
 
 ### Added
 - **Issue scope taxonomy** - Defined hierarchy (initiative → epic → feature/bug/spike → task) in `docs/standards/ISSUE-STANDARDS.md`. Clarifies distinction between scope (size) and type (nature) labels. Created GitHub labels: initiative, epic, spike, task, chore
+- **Commit skill pre-flight check (#58)** - Commit skill now verifies local branch is in sync with origin/main before proceeding. Prevents version regression from stale local state (the exact problem that caused the #52/#53 debugging nightmare)
+- **Fixed marketplace.json staging** - Version bump now stages both `plugin.json` and `marketplace.json` to keep versions in sync
 - **CI version bump enforcement** - New GitHub Action (`.github/workflows/version-bump-check.yml`) fails if plugin files change without a version bump. Catches forgotten bumps even without pre-commit hook installed
 
 ### Fixed

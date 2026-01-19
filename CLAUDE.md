@@ -100,6 +100,10 @@ dev-plugins/
 > **IMPORTANT:** Always use the commit skill instead of running `git commit` directly.
 > The skill ensures tests pass, documentation stays in sync, and changelog is updated.
 
+> **SYNC REQUIRED:** The commit skill requires your local branch to be in sync with origin/main.
+> If behind, it will abort and ask you to `git pull` first. This prevents version regression
+> and accidentally overwriting remote commits. See #58 for why this gate exists.
+
 ## Dependencies
 
 This plugin requires the `compound-engineering` plugin (external dependency):

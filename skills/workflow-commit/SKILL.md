@@ -39,6 +39,34 @@ Then:
 </flags>
 
 <workflow>
+## Step 0: Pre-flight - Branch Sync Check
+
+**CRITICAL:** Before any work, verify local branch is in sync with remote.
+
+```bash
+git fetch origin
+BEHIND=$(git rev-list HEAD..origin/main --count 2>/dev/null || echo "0")
+```
+
+**If behind (BEHIND > 0):**
+```
+⚠️  Local branch is behind origin/main
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your local branch is {BEHIND} commits behind origin/main.
+Committing now could cause version regression or overwrite remote changes.
+
+Action required:
+  git pull origin main
+
+Then re-run the commit.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**ABORT** - Do not proceed. This is a hard gate, not a warning.
+
+**Why this matters:** Without this check, bumping a stale local version (e.g., 0.3.1 → 0.3.2 when remote is 0.3.19) would regress the plugin version and potentially overwrite commits.
+
 ## Step 1: Check Status
 
 ```bash
@@ -147,8 +175,10 @@ With `--yes`: Default to patch for features.
 
 ```bash
 NEW_VERSION=$(./scripts/bump-version.sh <type>)
-git add .claude-plugin/plugin.json
+git add .claude-plugin/plugin.json .claude-plugin/marketplace.json
 ```
+
+**Important:** Stage both files. `bump-version.sh` updates both `plugin.json` and `marketplace.json` to keep versions in sync.
 
 The version change is included in the same commit.
 
