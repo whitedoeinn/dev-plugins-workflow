@@ -29,18 +29,30 @@ Use labels instead of title prefixes for categorization.
 
 ### Required Labels (Type)
 
-Every issue should have exactly one type label:
+Every issue should have at least one type label describing the **nature** of the work:
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `bug` | `#d73a4a` (red) | Something isn't working correctly |
-| `feature` | `#0075ca` (blue) | New functionality |
+| `bug` | `#d73a4a` (red) | Defect or broken behavior |
+| `feature` | `#006B75` (teal) | User-facing capability |
 | `enhancement` | `#a2eeef` (cyan) | Improvement to existing functionality |
-| `documentation` | `#0075ca` (blue) | Documentation only |
+| `documentation` | `#0075ca` (blue) | Documentation changes only |
+| `chore` | `#FEF2C0` (light yellow) | Maintenance, dependencies, CI, cleanup |
+| `spike` | `#1E90FF` (blue) | Research or investigation |
+| `idea` | `#0052CC` (blue) | Needs shaping before becoming a feature/epic |
 | `question` | `#d876e3` (purple) | Needs discussion or clarification |
-| `experiment` | `#fbca04` (yellow) | Exploratory work, spike, POC |
-| `idea` | `#c5def5` (light blue) | Captured idea, not yet shaped or planned |
-| `chore` | `#bfdadc` (gray-teal) | Maintenance, cleanup, dependencies, config |
+
+### Optional Labels (Scope)
+
+Add a scope label to indicate position in the hierarchy (see [Scope Taxonomy](#scope-taxonomy) below):
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `initiative` | `#5319E7` (dark purple) | Strategic goal spanning multiple epics |
+| `epic` | `#7057ff` (purple) | Multi-phase work coordinating several features |
+| `task` | `#C5DEF5` (light blue) | Single unit of work (child of feature) |
+
+Note: `feature`, `bug`, and `spike` appear in both lists - they serve as both type and default scope.
 
 ### Optional Labels (Priority)
 
@@ -71,6 +83,80 @@ For mono-repos or larger projects:
 | `area: dashboard` | `#5319e7` (purple) | Affects dashboard package |
 | `area: api` | `#5319e7` (purple) | Affects API package |
 | `area: docs` | `#5319e7` (purple) | Affects documentation |
+
+---
+
+## Scope Taxonomy
+
+Issues are classified by **scope** to indicate their size and relationship to other work. This creates a hierarchy from strategic goals down to individual tasks.
+
+### Scope Hierarchy
+
+```
+Initiative
+    └── Epic
+            └── Feature / Bug / Spike
+                    └── Task
+```
+
+| Label | Color | Description | Example |
+|-------|-------|-------------|---------|
+| `initiative` | `#5319E7` (dark purple) | Strategic goal spanning multiple epics | "Improve developer experience" |
+| `epic` | `#7057ff` (purple) | Multi-phase work coordinating several features | "Adopt branching & PR workflow" |
+| `feature` | `#006B75` (teal) | User-facing capability | "Add PR creation step" |
+| `bug` | `#d73a4a` (red) | Defect or broken behavior | "Plugin update not re-downloading" |
+| `spike` | `#1E90FF` (blue) | Research or investigation | "Research Claude Code issues" |
+| `task` | `#C5DEF5` (light blue) | Single unit of work | "Update CLAUDE.md" |
+
+### Scope vs Type
+
+- **Scope** describes the size/hierarchy (initiative → epic → feature → task)
+- **Type** describes the nature of work (feature, bug, chore, docs, spike)
+
+An issue can have both:
+- `epic` + `chore` = An epic focused on maintenance work
+- `feature` + `documentation` = A feature that's documentation-related
+- `spike` is both a scope and type (research is inherently scoped)
+
+### Using Scope Labels
+
+1. **Initiatives** are rare - strategic goals that span months
+2. **Epics** coordinate multiple features/bugs into a cohesive effort
+3. **Features/Bugs/Spikes** are the typical working level
+4. **Tasks** are optional - use for breaking down features if helpful
+
+### Parent-Child Relationships
+
+Use issue body to link scope relationships:
+
+```markdown
+## Parent
+- #57 (Epic: Adopt Branching & PR Workflow)
+
+## Children
+- [ ] #58 - Update workflows-feature.md
+- [ ] #59 - Update commit skill
+```
+
+Child issues should be assigned to the parent's **milestone** for tracking.
+
+### Epics and Milestones
+
+Every `epic` should have a corresponding **milestone**:
+- Milestone groups all child issues
+- Progress bar shows completion
+- Epic issue is pinned for visibility
+
+### When to Use What
+
+| Situation | Scope Label |
+|-----------|-------------|
+| "We need to improve X across the board" | `initiative` |
+| "This requires multiple coordinated changes" | `epic` |
+| "Add this specific capability" | `feature` |
+| "This is broken" | `bug` |
+| "We need to research/investigate" | `spike` |
+| "Do this one specific thing" | `task` |
 
 ---
 

@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-19
 
 ### Added
+- **Issue scope taxonomy** - Defined hierarchy (initiative → epic → feature/bug/spike → task) in `docs/standards/ISSUE-STANDARDS.md`. Clarifies distinction between scope (size) and type (nature) labels. Created GitHub labels: initiative, epic, spike, task, chore
 - **CI version bump enforcement** - New GitHub Action (`.github/workflows/version-bump-check.yml`) fails if plugin files change without a version bump. Catches forgotten bumps even without pre-commit hook installed
 
 ### Fixed
