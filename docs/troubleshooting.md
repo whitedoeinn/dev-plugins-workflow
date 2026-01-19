@@ -116,6 +116,53 @@ Follow the prompts to authenticate with GitHub.
 
 ---
 
+### Plugin updates not propagating to other projects
+
+**Cause:** Version wasn't bumped when committing. Claude Code caches plugins by version, so without a version change, `claude plugin update` sees no difference.
+
+**Symptoms:**
+- You pushed changes to the plugin repo
+- Other projects still have old behavior
+- `git log` shows your commits, but consuming projects don't see them
+
+**Quick Fix (if already committed):**
+```bash
+# Bump version now
+./scripts/bump-version.sh patch
+git add .claude-plugin/plugin.json
+git commit --amend --no-edit
+
+# Create and push tag
+VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+git tag "v$VERSION"
+git push --force-with-lease
+git push origin "v$VERSION"
+```
+
+**Prevention:**
+1. **Always use the commit skill** - Say "commit these changes" instead of `git commit`
+2. **Install the pre-commit hook** (safety net):
+   ```bash
+   cp scripts/pre-commit-version-check.sh .git/hooks/pre-commit
+   chmod +x .git/hooks/pre-commit
+   ```
+
+**Verification checklist:**
+```bash
+# 1. Check version was bumped
+git show --name-only HEAD | grep "plugin.json"
+
+# 2. Check tag exists locally
+git tag | grep "$(jq -r '.version' .claude-plugin/plugin.json)"
+
+# 3. Check tag exists on remote
+git ls-remote --tags origin | grep "$(jq -r '.version' .claude-plugin/plugin.json)"
+```
+
+See [Plugin Version Propagation](solutions/developer-experience/plugin-version-propagation.md) for full details.
+
+---
+
 ### Hooks not firing during development
 
 **Cause:** Hooks only work when the plugin is properly loaded via `--plugin-dir` or installation.

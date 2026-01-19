@@ -287,12 +287,27 @@ Current version: See `.claude-plugin/plugin.json`
 
 The commit skill automatically handles version bumps. Always use the commit skill for plugin changes.
 
+### Pre-Commit Hook (Safety Net)
+
+Install the pre-commit hook to catch accidental direct `git commit` usage:
+
+```bash
+cp scripts/pre-commit-version-check.sh .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
+```
+
+This blocks commits that don't include a version bump, reminding you to use the commit skill.
+
 ### How Updates Work
 
-1. Commit using the commit skill (auto-bumps version)
-2. Push to GitHub
+1. Commit using the commit skill (auto-bumps version, creates git tag)
+2. Push to GitHub (skill pushes tag automatically)
 3. Consuming projects: restart Claude → SessionStart hook runs `claude plugin update`
 4. Restart Claude again to load the new version
+
+### If Updates Aren't Propagating
+
+See [Plugin Version Propagation Troubleshooting](docs/troubleshooting.md#plugin-updates-not-propagating-to-other-projects).
 
 Recent changes:
 - **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
