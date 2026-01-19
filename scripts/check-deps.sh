@@ -62,6 +62,4 @@ if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
   echo "Updating wdi plugin..."
   claude plugin uninstall wdi --scope project 2>/dev/null || true
   claude plugin install wdi@wdi-marketplace --scope project 2>/dev/null || true
-  # Write timestamp for testing (remove after confirming auto-update works)
-  mkdir -p "$PWD/.claude" && echo "wdi updated: $(date)" > "$PWD/.claude/wdi-last-update.txt"
 fi
