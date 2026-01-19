@@ -638,6 +638,39 @@ Use Skill tool:
 
 This runs 6 parallel subagents to extract and document learnings in `docs/solutions/`.
 
+### Step 1.5: Add Learnings to Issue
+
+After compound completes, extract learnings from the generated solution doc and post to the feature issue:
+
+1. Read the generated solution doc from `docs/solutions/{category}/{slug}.md`
+2. Extract from YAML frontmatter:
+   - `learnings` array
+   - `related_issues` (should include current issue)
+3. Extract from body:
+   - Prevention/best practices section (if exists)
+4. Post comment to feature issue:
+
+```bash
+gh issue comment {issue-number} --body "$(cat <<'EOF'
+## Compounding Learnings
+
+Documented in `docs/solutions/{category}/{slug}.md`
+
+### Key Learnings
+
+{bulleted list from frontmatter learnings array}
+
+### Prevention
+
+{prevention section content, or omit if none}
+EOF
+)"
+```
+
+This creates bidirectional linking:
+- Issue → Solution doc (via this comment)
+- Solution doc → Issue (via `related_issues` in frontmatter)
+
 ### Step 2: Commit and Changelog
 
 Say "commit these changes --skip-tests --yes":
