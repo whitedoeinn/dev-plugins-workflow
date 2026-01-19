@@ -4,6 +4,7 @@
   },
   "enabledPlugins": {
     "compound-engineering@every-marketplace": true,
-    "wdi@wdi-local": true
+    "wdi@wdi-local": true,
+    "wdi@wdi-marketplace": false
   }
 }
