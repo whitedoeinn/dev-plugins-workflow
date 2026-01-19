@@ -61,5 +61,7 @@ if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
    [[ "$(jq -r '.name' "$PWD/.claude-plugin/plugin.json" 2>/dev/null)" != "wdi" ]]; then
   echo "Updating wdi plugin..."
   claude plugin uninstall wdi --scope project 2>/dev/null || true
+  # Clear cache to force fresh download
+  rm -rf ~/.claude/plugins/cache/wdi-marketplace/wdi/* 2>/dev/null || true
   claude plugin install wdi@wdi-marketplace --scope project 2>/dev/null || true
 fi
