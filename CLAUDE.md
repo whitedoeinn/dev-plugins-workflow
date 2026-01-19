@@ -48,7 +48,7 @@ dev-plugins/
 │   └── hooks.json                   # SessionStart hook config
 ├── scripts/                         # Helper scripts
 │   ├── vendor-to-project.sh         # Vendor plugin to target project
-│   ├── check-deps.sh                # Dependency and standards checker
+│   ├── check-deps.sh                # Dependency checker + auto-update
 │   ├── validate-env.sh              # Environment validation
 │   ├── run-tests.sh                 # Run unit + integration tests
 │   └── ...
@@ -178,11 +178,17 @@ Promote → Interview (pre-filled) → Pre-flight → Plan → Work → Review �
 
 ## Environment Validation
 
-On every session start, the plugin validates your environment against `env-baseline.json`:
+On every session start, the plugin:
 
-1. **Required plugins** - Checks compound-engineering is installed
-2. **Required CLI tools** - Checks for gh, jq, and auto-installs if possible
-3. **Authentication** - Checks gh auth status
+1. **Validates environment** against `env-baseline.json`:
+   - Required plugins (compound-engineering)
+   - Required CLI tools (gh, jq) with auto-install
+   - Authentication (gh auth status)
+
+2. **Auto-updates wdi plugin** from marketplace:
+   - Runs `claude plugin update wdi@wdi-marketplace`
+   - Skipped in maintainer mode (when working in this repo)
+   - Ensures consuming projects always have latest version
 
 ### Validation Outcomes
 
@@ -225,7 +231,7 @@ Skills work similarly but auto-invoke based on context. When you say "commit the
 ### Commands and Skills
 1. **Edit command files** in `/commands/*.md` or skill files in `/skills/*/SKILL.md`
 2. **Test locally** - Changes take effect immediately in this project
-3. **Push to GitHub** - Other projects can then update via `./scripts/update-plugins.sh`
+3. **Push to GitHub** - Other projects auto-update on next session start
 
 ### Testing
 
