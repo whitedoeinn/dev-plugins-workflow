@@ -285,9 +285,9 @@ Current version: See `.claude-plugin/plugin.json`
 
 The commit skill automatically handles version bumps. Always use the commit skill for plugin changes.
 
-### Pre-Commit Hook (Safety Net)
+### Pre-Commit Hook (Optional Safety Net)
 
-Install the pre-commit hook to catch accidental direct `git commit` usage:
+Install the pre-commit hook to catch version bump issues locally:
 
 ```bash
 cp scripts/pre-commit-version-check.sh .git/hooks/pre-commit
@@ -295,6 +295,21 @@ chmod +x .git/hooks/pre-commit
 ```
 
 This blocks commits that don't include a version bump, reminding you to use the commit skill.
+
+### CI Enforcement (Required)
+
+GitHub Actions enforces version bumps on every push to main. If you forget to bump:
+
+1. CI fails with clear error message
+2. Fix with:
+   ```bash
+   ./scripts/bump-version.sh patch
+   git add .claude-plugin/
+   git commit -m "chore: Bump version"
+   git push
+   ```
+
+This catches issues even if the pre-commit hook isn't installed locally.
 
 ### How Updates Work
 

@@ -6,6 +6,9 @@ All notable changes documented here.
 
 ## 2026-01-19
 
+### Added
+- **CI version bump enforcement** - New GitHub Action (`.github/workflows/version-bump-check.yml`) fails if plugin files change without a version bump. Catches forgotten bumps even without pre-commit hook installed
+
 ### Fixed
 - **Plugin architecture overhaul (#52)** - Complete rewrite of plugin update mechanism to fix version propagation issues discovered during 10 days of testing
   - **Bug 1: Stale marketplace cache** - `check-deps.sh` now deletes marketplace cache before reinstall (workaround for `plugin update` not re-downloading files)

@@ -1,0 +1,80 @@
+name: Version Bump Check
+# Ensures every commit that changes plugin files also bumps the version.
+# Claude Code caches plugins by version - without a bump, updates don't propagate.
+#
+# This check runs on every push to main. If it fails:
+#   ./scripts/bump-version.sh patch
+#   git add .claude-plugin/
+#   git commit -m "chore: Bump version"
+#   git push
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-version-bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit to compare
+
+      - name: Check if version was bumped
+        run: |
+          echo "Checking version bump requirement..."
+
+          # Get list of changed files (excluding .claude-plugin/ itself)
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep -v "^\.claude-plugin/" || true)
+
+          # If no files changed outside .claude-plugin/, no bump needed
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "Only .claude-plugin/ files changed - no bump required"
+            exit 0
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES" | sed 's/^/  /'
+          echo ""
+
+          # Check if plugin.json was modified
+          PLUGIN_CHANGED=$(git diff --name-only HEAD~1 HEAD | grep "^\.claude-plugin/plugin\.json$" || true)
+
+          if [ -z "$PLUGIN_CHANGED" ]; then
+            echo ""
+            echo "================================================================"
+            echo "  ERROR: Plugin files changed without version bump!"
+            echo "================================================================"
+            echo ""
+            echo "Claude Code caches plugins by version. Without a bump,"
+            echo "your changes won't propagate to consuming projects."
+            echo ""
+            echo "To fix:"
+            echo ""
+            echo "  ./scripts/bump-version.sh patch"
+            echo "  git add .claude-plugin/"
+            echo "  git commit -m \"chore: Bump version\""
+            echo "  git push"
+            echo ""
+            echo "Or use the commit skill: say 'commit these changes' to Claude"
+            echo "================================================================"
+            exit 1
+          fi
+
+          # Verify version actually changed (not just whitespace)
+          OLD_VERSION=$(git show HEAD~1:.claude-plugin/plugin.json 2>/dev/null | jq -r '.version' || echo "0.0.0")
+          NEW_VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+
+          if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+            echo ""
+            echo "ERROR: plugin.json was modified but version unchanged!"
+            echo "Old: $OLD_VERSION"
+            echo "New: $NEW_VERSION"
+            echo ""
+            echo "Run: ./scripts/bump-version.sh patch"
+            exit 1
+          fi
+
+          echo "Version bumped: $OLD_VERSION → $NEW_VERSION"
+          echo "Version bump check passed"
