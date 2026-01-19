@@ -1,8 +1,29 @@
 ---
 title: Installer Auto-Detection for Maintainer Mode
-date: 2025-01-18
-category: plugin-development
-tags: [install, auto-detect, maintainer-mode]
+date: 2026-01-18
+category: developer-experience
+tags:
+  - install
+  - auto-detect
+  - maintainer-mode
+  - tooling
+component: install.sh
+severity: medium
+problem_type: developer-experience
+symptoms:
+  - Manual config editing required
+  - Installation friction for maintainers
+  - Onboarding friction for new contributors
+root_cause: No context-aware detection of plugin source directory
+solution_approach: Detect .claude-plugin/plugin.json and auto-configure local marketplace
+files_modified:
+  - install.sh
+related_issues:
+  - "#43"
+learnings:
+  - Context determines intent better than flags
+  - Generic solutions work better than hardcoded ones
+  - Simplify by eliminating unnecessary configuration options
 ---
 
 # Installer Auto-Detection for Maintainer Mode
@@ -38,7 +59,14 @@ Detect plugin source?
 
 ```bash
 if [[ -f ".claude-plugin/plugin.json" ]]; then
-  PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
+  if command -v jq >/dev/null 2>&1; then
+    PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
+  else
+    # Fallback: extract name without jq
+    PLUGIN_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/plugin.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
+  fi
+
+  # Validate extraction succeeded
   if [[ -n "$PLUGIN_NAME" && "$PLUGIN_NAME" != "null" ]]; then
     MARKETPLACE_NAME="${PLUGIN_NAME}-local"
     IS_MAINTAINER=true
@@ -61,6 +89,13 @@ Key points:
 
 In maintainer mode, `./install.sh update` advises to use `git pull` instead since updates aren't relevant with live edits.
 
+## Prevention
+
+This pattern should be applied to any future plugin installers:
+- Always check context before asking for configuration
+- Use file system state (presence of config files) to infer intent
+- Validate extracted values before using them
+
 ## Learnings
 
 1. **Start with the simplest solution that could work.** We went through three iterations:
@@ -73,3 +108,9 @@ In maintainer mode, `./install.sh update` advises to use `git pull` instead sinc
 3. **Context over configuration.** The directory you're in tells us everything we need to know. No need to ask.
 
 4. **Generic over specific.** Reading plugin name from `plugin.json` means this works for any plugin, not just wdi.
+
+## Related Documentation
+
+- [Getting Started Guide](../../GETTING-STARTED.md) - Installation instructions
+- [Plugin Architecture](../../standards/PLUGIN-ARCHITECTURE.md) - One-plugin policy
+- [WDI-Compound-Engineering Alignment](../integration-issues/wdi-compound-engineering-alignment.md) - Related integration work
