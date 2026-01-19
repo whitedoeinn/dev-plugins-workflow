@@ -59,5 +59,7 @@ fi
 # Auto-update wdi plugin (skip in maintainer mode)
 if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
    [[ "$(jq -r '.name' "$PWD/.claude-plugin/plugin.json" 2>/dev/null)" != "wdi" ]]; then
-  claude plugin update wdi@wdi-marketplace --scope project 2>/dev/null || true
+  echo "Updating wdi plugin..."
+  claude plugin uninstall wdi --scope project 2>/dev/null || true
+  claude plugin install wdi@wdi-marketplace --scope project 2>/dev/null || true
 fi
