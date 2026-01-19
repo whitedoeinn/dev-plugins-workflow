@@ -1,0 +1,3 @@
+This file tests auto-update functionality.
+If you see this in ~/.claude/plugins/wdi/, the auto-update worked.
+Delete this file after testing.
