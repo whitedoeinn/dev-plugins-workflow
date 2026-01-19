@@ -11,6 +11,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_JSON="$SCRIPT_DIR/../.claude-plugin/plugin.json"
+MARKETPLACE_JSON="$SCRIPT_DIR/../.claude-plugin/marketplace.json"
 
 if [ ! -f "$PLUGIN_JSON" ]; then
   echo "Error: plugin.json not found at $PLUGIN_JSON" >&2
@@ -51,5 +52,10 @@ esac
 
 # Update plugin.json
 jq --arg v "$NEW" '.version = $v' "$PLUGIN_JSON" > "$PLUGIN_JSON.tmp" && mv "$PLUGIN_JSON.tmp" "$PLUGIN_JSON"
+
+# Update marketplace.json if it exists (keeps marketplace version in sync)
+if [ -f "$MARKETPLACE_JSON" ]; then
+  jq --arg v "$NEW" '.plugins[0].version = $v' "$MARKETPLACE_JSON" > "$MARKETPLACE_JSON.tmp" && mv "$MARKETPLACE_JSON.tmp" "$MARKETPLACE_JSON"
+fi
 
 echo "$CURRENT → $NEW"
