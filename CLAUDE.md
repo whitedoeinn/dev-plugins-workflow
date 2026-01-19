@@ -47,7 +47,6 @@ dev-plugins/
 ├── hooks/                           # Claude Code hooks
 │   └── hooks.json                   # SessionStart hook config
 ├── scripts/                         # Helper scripts
-│   ├── vendor-to-project.sh         # Vendor plugin to target project
 │   ├── check-deps.sh                # Dependency checker + auto-update
 │   ├── validate-env.sh              # Environment validation
 │   ├── run-tests.sh                 # Run unit + integration tests
@@ -266,7 +265,6 @@ claude --plugin-dir .
 | File | Purpose |
 |------|---------|
 | `.claude-plugin/plugin.json` | Plugin metadata, version, command registration |
-| `scripts/vendor-to-project.sh` | Vendor plugin to target projects |
 | `commands/*.md` | Command definitions (these ARE the implementation) |
 | `docs/standards/*.md` | Development standards documents |
 | `hooks/hooks.json` | SessionStart hook to check dependencies |

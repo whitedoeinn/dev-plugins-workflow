@@ -1,5 +1,8 @@
 .DS_Store
 .playwright-mcp/
 
+# Claude Code project-local settings (machine-specific)
+.claude/
+
 # Ephemeral working files (research, drafts, scratch)
 /temp/

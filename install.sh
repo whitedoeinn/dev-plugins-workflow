@@ -13,27 +13,27 @@ PLUGIN_NAME=""
 MARKETPLACE_NAME=""
 REMOTE_MARKETPLACE_NAME=""
 
-if [[ -f ".claude-plugin/plugin.json" ]]; then
+# Maintainer mode requires the FULL plugin source structure:
+# - .claude-plugin/plugin.json (plugin config)
+# - .claude-plugin/marketplace.json (local marketplace definition)
+# - commands/ directory (command definitions)
+# - skills/ directory (skill definitions)
+# This prevents false positives on vendored projects or wrong directories.
+if [[ -f ".claude-plugin/plugin.json" ]] && \
+   [[ -f ".claude-plugin/marketplace.json" ]] && \
+   [[ -d "commands" ]] && \
+   [[ -d "skills" ]]; then
   if command -v jq >/dev/null 2>&1; then
     PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
-    # Read actual marketplace name from marketplace.json (Claude uses this, not plugin name)
-    if [[ -f ".claude-plugin/marketplace.json" ]]; then
-      MARKETPLACE_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
-    fi
+    MARKETPLACE_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
   else
     # Fallback: extract name without jq
     PLUGIN_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/plugin.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
-    if [[ -f ".claude-plugin/marketplace.json" ]]; then
-      MARKETPLACE_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/marketplace.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
-    fi
+    MARKETPLACE_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/marketplace.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
   fi
 
   # Validate extraction succeeded
   if [[ -n "$PLUGIN_NAME" && "$PLUGIN_NAME" != "null" ]]; then
-    # Fall back to plugin-name-local if marketplace.json doesn't exist or has no name
-    if [[ -z "$MARKETPLACE_NAME" || "$MARKETPLACE_NAME" == "null" ]]; then
-      MARKETPLACE_NAME="${PLUGIN_NAME}-local"
-    fi
     # Track remote marketplace name for conflict handling
     REMOTE_MARKETPLACE_NAME="${PLUGIN_NAME}-marketplace"
     IS_MAINTAINER=true

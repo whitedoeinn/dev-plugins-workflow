@@ -96,7 +96,6 @@ All notable changes documented here.
 
 ### Added
 - **Plugin architecture standard** - New `docs/standards/PLUGIN-ARCHITECTURE.md` documents the one-plugin policy, domain-prefixed naming, and scaling guidelines
-- **Vendor tooling** - `scripts/vendor-to-project.sh` copies wdi plugin into target projects for version control isolation. Creates `update-plugins.sh` in target for easy updates
 - **Project-local plugins milestone** - Tracks the architectural decision and implementation
 
 ### Changed

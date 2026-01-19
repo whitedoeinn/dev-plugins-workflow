@@ -9,7 +9,7 @@
 
 ## Value Delivered
 
-Projects become fully self-contained with zero global plugin state for internal tooling. External dependencies (compound-engineering) remain global via marketplace, which is appropriate since they're maintained by external teams. Internal plugin (wdi) is vendored for version control and isolation.
+Projects become fully self-contained with zero global plugin state for internal tooling. External dependencies (compound-engineering) remain global via marketplace, which is appropriate since they're maintained by external teams. Internal plugin (wdi) is installed via marketplace with automatic updates on session start.
 
 ## Architecture Decision
 
@@ -28,8 +28,8 @@ See `docs/standards/PLUGIN-ARCHITECTURE.md` for full details.
 - Plugin rename: `wdi-workflows` → `wdi` (v1.0.0)
 - Domain-prefixed command naming (e.g., `/wdi:workflows-feature`)
 - Domain-prefixed skill naming (e.g., `workflow-commit`)
-- Vendor tooling (`scripts/vendor-to-project.sh`) for copying wdi into projects
-- compound-engineering declared as external dependency (not vendored)
+- Marketplace-based installation via `install.sh`
+- compound-engineering declared as external dependency (marketplace-based)
 
 ### What's NOT Included
 
@@ -43,15 +43,15 @@ See `docs/standards/PLUGIN-ARCHITECTURE.md` for full details.
 | # | Feature | Priority | Status |
 |---|---------|----------|--------|
 | 1 | One internal plugin architecture | Critical | Complete |
-| 2 | Vendor wdi to projects | Critical | Complete |
+| 2 | Marketplace-based wdi installation | Critical | Complete |
 | 3 | External dependency management | High | Complete |
 
 ### Feature Summary
 
 **Complete:**
 - Renamed plugin to `wdi` with domain-prefixed commands/skills
-- Created vendor script that copies wdi into project's `.claude-plugin/`
-- compound-engineering configured as external dependency via settings.json
+- Marketplace-based installation via `install.sh`
+- compound-engineering configured as external dependency via marketplace
 - Created PLUGIN-ARCHITECTURE.md standard documenting the approach
 
 ---
@@ -75,14 +75,14 @@ See `docs/standards/PLUGIN-ARCHITECTURE.md` for full details.
 - [x] Commands renamed with domain prefixes
 - [x] Skills renamed with domain prefixes
 - [x] All internal references updated
-- [x] `scripts/vendor-to-project.sh` updated for new architecture
+- [x] Marketplace-based installation via install.sh
 - [x] Documentation updated (README.md, CLAUDE.md, etc.)
 
 ---
 
 ## Notes
 
-This milestone addressed the environmental drift problem discovered when wdi-content had cached v0.1.2 while the source was at v0.1.7. During implementation, a namespace collision problem was identified if we vendored multiple plugins.
+This milestone addressed the environmental drift problem discovered when wdi-content had cached v0.1.2 while the source was at v0.1.7. During implementation, a namespace collision problem was identified if multiple plugins were installed locally.
 
 The solution: ONE internal plugin policy. All WDI internal tooling lives in the `wdi` plugin. External dependencies (compound-engineering) stay global because:
 1. They have their own namespace (`/compound-engineering:*`)

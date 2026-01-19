@@ -42,8 +42,8 @@ Third-party plugins (e.g., `compound-engineering`) are installed globally via ma
 # External dependency (global)
 claude plugin install compound-engineering --scope project
 
-# Internal plugin (vendored locally)
-./scripts/vendor-to-project.sh /path/to/project
+# Internal plugin (via marketplace)
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
 ### 3. Domain-Prefixed Naming
@@ -88,25 +88,8 @@ dev-plugins/
 ├── hooks/
 │   └── hooks.json
 ├── scripts/
-│   ├── vendor-to-project.sh
 │   └── ...
 ├── env-baseline.json
-└── CLAUDE.md
-```
-
-### Vendored Project Structure
-
-```
-my-project/
-├── .claude/
-│   └── settings.json         # Enables compound-engineering (external)
-├── .claude-plugin/
-│   ├── plugin.json           # Vendored wdi plugin
-│   ├── commands/             # Copied from wdi
-│   ├── skills/               # Copied from wdi
-│   └── hooks/
-├── scripts/
-│   └── update-plugins.sh     # Re-vendor script
 └── CLAUDE.md
 ```
 
@@ -174,7 +157,6 @@ External dependencies are declared in `env-baseline.json`:
 The SessionStart hook validates external dependencies:
 1. Checks if plugin is installed
 2. Warns if missing with installation instructions
-3. Does not vendor external plugins
 
 ### Invocation
 
@@ -266,12 +248,6 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 ✗ wdi-workflows/    → namespace collision risk
 ✗ wdi-frontend/     → can't use both in one project
 ✗ wdi-marketingops/ → versioning complexity
-```
-
-### Don't: Vendor External Dependencies
-
-```
-✗ .claude-plugin/vendor/compound-engineering/  → version drift, maintenance burden
 ```
 
 ### Don't: Use Subdirectories for Commands
