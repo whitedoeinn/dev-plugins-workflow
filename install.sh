@@ -7,10 +7,36 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+# Auto-detect maintainer mode when running from plugin source
+IS_MAINTAINER=false
+PLUGIN_NAME=""
+MARKETPLACE_NAME=""
+
+if [[ -f ".claude-plugin/plugin.json" ]]; then
+  if command -v jq >/dev/null 2>&1; then
+    PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
+  else
+    # Fallback: extract name without jq
+    PLUGIN_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/plugin.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
+  fi
+
+  # Validate extraction succeeded
+  if [[ -n "$PLUGIN_NAME" && "$PLUGIN_NAME" != "null" ]]; then
+    MARKETPLACE_NAME="${PLUGIN_NAME}-local"
+    IS_MAINTAINER=true
+  fi
+fi
+
 SCOPE="${1:-project}"
 
 # Handle update flag
 if [ "$1" = "update" ]; then
+  if [[ "$IS_MAINTAINER" == true ]]; then
+    echo -e "${YELLOW}Maintainer mode: No update needed (using live edits)${NC}"
+    echo "Just pull the latest changes with git:"
+    echo "  git pull origin main"
+    exit 0
+  fi
   echo -e "${YELLOW}Updating plugins...${NC}"
   claude plugin update compound-engineering@every-marketplace --scope project
   claude plugin update wdi@wdi-marketplace --scope project
@@ -80,7 +106,12 @@ EOF
   exit 0
 fi
 
-echo -e "${YELLOW}Setting up wdi and dependencies...${NC}"
+if [[ "$IS_MAINTAINER" == true ]]; then
+  echo -e "${YELLOW}Detected plugin source: $PLUGIN_NAME${NC}"
+  echo "Installing in maintainer mode (live edits enabled)"
+else
+  echo -e "${YELLOW}Setting up wdi and dependencies...${NC}"
+fi
 echo ""
 
 # Detect platform
@@ -122,21 +153,41 @@ else
 fi
 echo ""
 
-# Step 3: Add wdi marketplace
-echo -e "${YELLOW}Step 3: Adding wdi marketplace...${NC}"
-if claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow 2>/dev/null; then
-  echo -e "${GREEN}Marketplace added${NC}"
+# Step 3: Add plugin marketplace (local or remote)
+if [[ "$IS_MAINTAINER" == true ]]; then
+  echo -e "${YELLOW}Step 3: Adding local marketplace...${NC}"
+  if claude plugin marketplace add "$(pwd)" 2>/dev/null; then
+    echo -e "${GREEN}Local marketplace added: $MARKETPLACE_NAME${NC}"
+  else
+    echo -e "${YELLOW}Local marketplace already exists (continuing)${NC}"
+  fi
 else
-  echo -e "${YELLOW}Marketplace already exists (continuing)${NC}"
+  echo -e "${YELLOW}Step 3: Adding wdi marketplace...${NC}"
+  if claude plugin marketplace add https://github.com/whitedoeinn/dev-plugins-workflow 2>/dev/null; then
+    echo -e "${GREEN}Marketplace added${NC}"
+  else
+    echo -e "${YELLOW}Marketplace already exists (continuing)${NC}"
+  fi
 fi
 echo ""
 
-# Step 4: Install wdi
-echo -e "${YELLOW}Step 4: Installing wdi...${NC}"
-if claude plugin install wdi@wdi-marketplace --scope "$SCOPE"; then
-  echo -e "${GREEN}wdi installed${NC}"
+# Step 4: Install plugin
+if [[ "$IS_MAINTAINER" == true ]]; then
+  echo -e "${YELLOW}Step 4: Installing $PLUGIN_NAME from local...${NC}"
+  # Disable remote version to avoid conflicts
+  claude plugin disable "${PLUGIN_NAME}@${PLUGIN_NAME}-marketplace" --scope "$SCOPE" 2>/dev/null || true
+  if claude plugin install "${PLUGIN_NAME}@${MARKETPLACE_NAME}" --scope "$SCOPE"; then
+    echo -e "${GREEN}$PLUGIN_NAME installed from local (live edits enabled)${NC}"
+  else
+    echo -e "${YELLOW}$PLUGIN_NAME may already be installed${NC}"
+  fi
 else
-  echo -e "${YELLOW}wdi may already be installed${NC}"
+  echo -e "${YELLOW}Step 4: Installing wdi...${NC}"
+  if claude plugin install wdi@wdi-marketplace --scope "$SCOPE"; then
+    echo -e "${GREEN}wdi installed${NC}"
+  else
+    echo -e "${YELLOW}wdi may already be installed${NC}"
+  fi
 fi
 echo ""
 
@@ -180,7 +231,16 @@ fi
 echo ""
 
 # Done
-echo -e "${GREEN}Setup complete!${NC}"
+if [[ "$IS_MAINTAINER" == true ]]; then
+  echo -e "${GREEN}Maintainer setup complete!${NC}"
+  echo ""
+  echo "Mode: Maintainer (live edits enabled)"
+  echo "  Changes to commands/*.md and skills/*/SKILL.md take effect immediately."
+  echo "  Restart Claude Code after modifying hooks/hooks.json."
+  echo ""
+else
+  echo -e "${GREEN}Setup complete!${NC}"
+fi
 echo ""
 echo "Available commands:"
 echo "  Workflow:"
