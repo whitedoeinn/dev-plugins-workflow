@@ -6,4 +6,4 @@ A simple test command to verify plugin updates are propagating.
 
 When this command is invoked, respond with:
 
-"Hello from wdi v0.3.14! Plugin updates are working."
+"Hello from wdi v0.3.15! Plugin updates are working."
