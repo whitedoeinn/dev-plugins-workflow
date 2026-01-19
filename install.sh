@@ -11,18 +11,31 @@ NC='\033[0m' # No Color
 IS_MAINTAINER=false
 PLUGIN_NAME=""
 MARKETPLACE_NAME=""
+REMOTE_MARKETPLACE_NAME=""
 
 if [[ -f ".claude-plugin/plugin.json" ]]; then
   if command -v jq >/dev/null 2>&1; then
     PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
+    # Read actual marketplace name from marketplace.json (Claude uses this, not plugin name)
+    if [[ -f ".claude-plugin/marketplace.json" ]]; then
+      MARKETPLACE_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
+    fi
   else
     # Fallback: extract name without jq
     PLUGIN_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/plugin.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
+    if [[ -f ".claude-plugin/marketplace.json" ]]; then
+      MARKETPLACE_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/marketplace.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
+    fi
   fi
 
   # Validate extraction succeeded
   if [[ -n "$PLUGIN_NAME" && "$PLUGIN_NAME" != "null" ]]; then
-    MARKETPLACE_NAME="${PLUGIN_NAME}-local"
+    # Fall back to plugin-name-local if marketplace.json doesn't exist or has no name
+    if [[ -z "$MARKETPLACE_NAME" || "$MARKETPLACE_NAME" == "null" ]]; then
+      MARKETPLACE_NAME="${PLUGIN_NAME}-local"
+    fi
+    # Track remote marketplace name for conflict handling
+    REMOTE_MARKETPLACE_NAME="${PLUGIN_NAME}-marketplace"
     IS_MAINTAINER=true
   fi
 fi
@@ -156,10 +169,19 @@ echo ""
 # Step 3: Add plugin marketplace (local or remote)
 if [[ "$IS_MAINTAINER" == true ]]; then
   echo -e "${YELLOW}Step 3: Adding local marketplace...${NC}"
-  if claude plugin marketplace add "$(pwd)" 2>/dev/null; then
-    echo -e "${GREEN}Local marketplace added: $MARKETPLACE_NAME${NC}"
+  # Remove existing marketplace first if names conflict (local and remote use same name in marketplace.json)
+  # This ensures local directory takes precedence over remote GitHub URL
+  if ! claude plugin marketplace add "$(pwd)" 2>/dev/null; then
+    echo -e "${YELLOW}Marketplace '$MARKETPLACE_NAME' exists, replacing with local...${NC}"
+    claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
+    if claude plugin marketplace add "$(pwd)" 2>/dev/null; then
+      echo -e "${GREEN}Local marketplace added: $MARKETPLACE_NAME${NC}"
+    else
+      echo -e "${RED}Failed to add local marketplace${NC}"
+      exit 1
+    fi
   else
-    echo -e "${YELLOW}Local marketplace already exists (continuing)${NC}"
+    echo -e "${GREEN}Local marketplace added: $MARKETPLACE_NAME${NC}"
   fi
 else
   echo -e "${YELLOW}Step 3: Adding wdi marketplace...${NC}"
@@ -174,8 +196,10 @@ echo ""
 # Step 4: Install plugin
 if [[ "$IS_MAINTAINER" == true ]]; then
   echo -e "${YELLOW}Step 4: Installing $PLUGIN_NAME from local...${NC}"
-  # Disable remote version to avoid conflicts
-  claude plugin disable "${PLUGIN_NAME}@${PLUGIN_NAME}-marketplace" --scope "$SCOPE" 2>/dev/null || true
+  # Disable any orphaned plugin entries from previous installations
+  # This handles cases where marketplace was removed but plugin entry persists
+  claude plugin disable "${PLUGIN_NAME}@${REMOTE_MARKETPLACE_NAME}" --scope "$SCOPE" 2>/dev/null || true
+  claude plugin disable "${PLUGIN_NAME}@${PLUGIN_NAME}-local" --scope "$SCOPE" 2>/dev/null || true
   if claude plugin install "${PLUGIN_NAME}@${MARKETPLACE_NAME}" --scope "$SCOPE"; then
     echo -e "${GREEN}$PLUGIN_NAME installed from local (live edits enabled)${NC}"
   else

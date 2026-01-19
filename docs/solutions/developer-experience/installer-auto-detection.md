@@ -109,8 +109,13 @@ This pattern should be applied to any future plugin installers:
 
 4. **Generic over specific.** Reading plugin name from `plugin.json` means this works for any plugin, not just wdi.
 
+## Follow-up Issue
+
+After initial implementation, a follow-up issue was discovered: the installer assumed marketplace would be named `${PLUGIN_NAME}-local` but Claude Code uses the `name` field from `marketplace.json`. See [Marketplace Naming Conflict](./marketplace-naming-conflict.md) for the complete fix.
+
 ## Related Documentation
 
+- [Marketplace Naming Conflict](./marketplace-naming-conflict.md) - Follow-up fix for naming collision
 - [Getting Started Guide](../../GETTING-STARTED.md) - Installation instructions
 - [Plugin Architecture](../../standards/PLUGIN-ARCHITECTURE.md) - One-plugin policy
 - [WDI-Compound-Engineering Alignment](../integration-issues/wdi-compound-engineering-alignment.md) - Related integration work

@@ -15,6 +15,9 @@ All notable changes documented here.
 - **Branch strategy deferred** - Moved BRANCH-NAMING.md to drafts/, work directly on main with quality gates (#44)
 - **Enabled marketplace plugin for testing (#43)** - Re-enabled wdi@wdi-marketplace alongside wdi@wdi-local to test different installation contexts
 
+### Fixed
+- **Marketplace naming conflict (#43)** - Installer now reads actual marketplace name from marketplace.json instead of assuming `-local` suffix. Handles conflicts when local and remote use same name by replacing existing marketplace. Cleans up orphaned plugin entries from previous installations
+
 ### Removed
 - **Redundant commit skill steps** - Removed simplicity review (runs in workflow) and branch validation (we use main). Commit skill now focused on tests, auto-docs, changelog
 
