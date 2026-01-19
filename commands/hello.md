@@ -1,3 +1,3 @@
 # Hello Command
 
-Say "Hello, World!" to the user.
+Say "Hello, Universe!" to the user.
