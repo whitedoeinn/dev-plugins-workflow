@@ -113,51 +113,35 @@ Skip this step if `.claude-plugin/plugin.json` doesn't exist or has no `version`
 
 ### Detect bump type from commit
 
-Analyze the proposed commit message per `docs/standards/COMMIT-STANDARDS.md`:
+**Every commit bumps the version.** Claude Code caches plugins by version, so without a bump, updates don't propagate to consuming projects.
 
 | Signal | Action |
 |--------|--------|
-| Message starts with `docs:`, `chore:`, `test:`, `style:`, `refactor:` | No bump |
-| Message starts with `fix:`, `perf:` | Auto-bump patch |
-| Message starts with `feat:` | Prompt |
-| Message body contains `BREAKING CHANGE:` | Prompt |
-| Staged files in `commands/`, `skills/`, `hooks/` | Prompt |
-
-### Choosing the Right Type
-
-| If the change... | Use | Bump |
-|------------------|-----|------|
-| Adds new capability for users | `feat:` | Prompt (minor/patch) |
-| Fixes broken functionality | `fix:` | Patch |
-| Restructures code without changing behavior | `refactor:` | None |
-| Fixes typos, config paths, internal references | `chore:` | None |
-| Updates documentation only | `docs:` | None |
-| Improves performance | `perf:` | Patch |
-
-**Key distinction:** `fix:` means something was **broken for users**. Internal cleanup (typos in configs, stale references) is `chore:`.
+| Message starts with `feat:` | Prompt (minor or patch) |
+| Message body contains `BREAKING CHANGE:` | Prompt (major or minor) |
+| All other commits | Auto-bump patch |
 
 ### Auto-bump (no prompt)
 
-For `fix:` or `perf:` commits, bump patch automatically:
+For most commits, bump patch automatically:
 ```
-Version: 0.1.0 → 0.1.1 (patch for fix)
+Version: 0.1.0 → 0.1.1 (patch)
 ```
 
 ### Prompt when needed
 
-For features or core file changes:
+For features:
 ```
 Version bump for feature commit.
 Current: 0.1.0
 
   [m] Minor (0.2.0) - New feature or capability
   [p] Patch (0.1.1) - Small enhancement
-  [n] None - Skip version bump
 
-Choice [m/p/n]:
+Choice [m/p]:
 ```
 
-With `--yes`: Default to patch for features, skip for breaking (requires explicit choice).
+With `--yes`: Default to patch for features.
 
 ### Apply bump
 

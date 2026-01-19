@@ -265,20 +265,34 @@ claude --plugin-dir .
 
 | File | Purpose |
 |------|---------|
-| `.claude-plugin/plugin.json` | Plugin metadata and command registration |
+| `.claude-plugin/plugin.json` | Plugin metadata, version, command registration |
 | `scripts/vendor-to-project.sh` | Vendor plugin to target projects |
 | `commands/*.md` | Command definitions (these ARE the implementation) |
 | `docs/standards/*.md` | Development standards documents |
 | `hooks/hooks.json` | SessionStart hook to check dependencies |
 
-## Updates
+## Version
 
-This plugin uses content-based caching (no version field). Updates propagate automatically when content changes.
+Current version: See `.claude-plugin/plugin.json`
 
-**How it works:**
-1. Push changes to GitHub
-2. Consuming projects run `claude plugin update wdi@wdi-marketplace --scope project`
-3. Changes are picked up based on content hash, not version number
+### Versioning Policy
+
+**Every commit bumps the version.** Claude Code caches plugins by version, so without a bump, updates don't propagate.
+
+| Commit type | Version bump |
+|-------------|--------------|
+| `feat:` | Patch (or minor for significant features) |
+| `fix:`, `perf:` | Patch |
+| `docs:`, `chore:`, `refactor:`, `test:`, `style:` | Patch |
+
+The commit skill automatically handles version bumps. Always use the commit skill for plugin changes.
+
+### How Updates Work
+
+1. Commit using the commit skill (auto-bumps version)
+2. Push to GitHub
+3. Consuming projects: restart Claude → SessionStart hook runs `claude plugin update`
+4. Restart Claude again to load the new version
 
 Recent changes:
 - **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
