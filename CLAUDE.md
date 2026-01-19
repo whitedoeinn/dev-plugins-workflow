@@ -265,28 +265,21 @@ claude --plugin-dir .
 
 | File | Purpose |
 |------|---------|
-| `.claude-plugin/plugin.json` | Plugin metadata, version, command registration |
+| `.claude-plugin/plugin.json` | Plugin metadata and command registration |
 | `scripts/vendor-to-project.sh` | Vendor plugin to target projects |
 | `commands/*.md` | Command definitions (these ARE the implementation) |
 | `docs/standards/*.md` | Development standards documents |
 | `hooks/hooks.json` | SessionStart hook to check dependencies |
 
-## Version
+## Updates
 
-Current version: 0.3.1 (see `.claude-plugin/plugin.json`)
+This plugin uses content-based caching (no version field). Updates propagate automatically when content changes.
+
+**How it works:**
+1. Push changes to GitHub
+2. Consuming projects run `claude plugin update wdi@wdi-marketplace --scope project`
+3. Changes are picked up based on content hash, not version number
 
 Recent changes:
 - **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
 - **#30:** Added idea promotion workflow with prescriptive comment prefixes and conflict detection
-
-### Versioning Policy
-
-This plugin uses [semantic versioning](https://semver.org/):
-
-| Bump | When to use |
-|------|-------------|
-| `patch` | Bug fixes, small enhancements, documentation |
-| `minor` | New features, new commands/skills |
-| `major` | Breaking changes (command renames, removals) |
-
-The commit skill automatically handles version bumps based on commit type.
