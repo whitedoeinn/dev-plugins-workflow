@@ -37,6 +37,15 @@ gh label create "status:needs-design" --color "FBCA04" --description "Problem cl
 gh label create "status:needs-research" --color "FBCA04" --description "Needs technical investigation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-research" || echo "  - status:needs-research (exists)"
 gh label create "status:ready" --color "0E8A16" --description "Ready for implementation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:ready" || echo "  - status:ready (exists)"
 gh label create "status:in-progress" --color "1D76DB" --description "Actively being worked" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:in-progress" || echo "  - status:in-progress (exists)"
+gh label create "status:ready-to-promote" --color "0E8A16" --description "Triaged, ready for promotion" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:ready-to-promote" || echo "  - status:ready-to-promote (exists)"
+
+echo ""
+
+# Triage labels (from /wdi:triage-ideas)
+echo "Creating triage labels..."
+gh label create "triage:quick-decision" --color "1D76DB" --description "Needs brief investigation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} triage:quick-decision" || echo "  - triage:quick-decision (exists)"
+gh label create "blocked:research" --color "D93F0B" --description "Waiting on parent research" 2>/dev/null && echo -e "  ${GREEN}✓${NC} blocked:research" || echo "  - blocked:research (exists)"
+gh label create "research" --color "5319E7" --description "Research initiative" 2>/dev/null && echo -e "  ${GREEN}✓${NC} research" || echo "  - research (exists)"
 
 echo ""
 
@@ -60,5 +69,7 @@ echo ""
 echo "Label scheme:"
 echo "  Type labels - What the issue IS (bug, feature, idea, chore, etc.)"
 echo "  status:*    - Lifecycle state (needs-shaping → ready → in-progress)"
+echo "  triage:*    - Triage actions (quick-decision)"
+echo "  blocked:*   - Blockers (research)"
 echo "  needs:*     - Blockers (info, decision, discussion)"
 echo "  appetite:*  - Time budget (small, medium, big)"

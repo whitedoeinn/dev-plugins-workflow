@@ -36,6 +36,7 @@ dev-plugins/
 │   ├── workflows-enhanced-ralph.md  # /wdi:workflows-enhanced-ralph
 │   ├── workflows-milestone.md       # /wdi:workflows-milestone
 │   ├── workflows-setup.md           # /wdi:workflows-setup
+│   ├── triage-ideas.md              # /wdi:triage-ideas
 │   ├── standards-new-repo.md        # /wdi:standards-new-repo
 │   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
 │   ├── standards-check.md           # /wdi:standards-check
@@ -78,6 +79,7 @@ dev-plugins/
 | `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflows-milestone` | Create and execute milestone-based feature groupings |
 | `/wdi:workflows-setup` | Verify dependencies and installation status |
+| `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
 
 ### Standards Commands
 
@@ -144,6 +146,7 @@ Use `--idea` mode to quickly capture ideas without implementing them:
 Ideas live entirely in GitHub Issues:
 - **Capture:** Issue body contains problem, appetite, rough solution, open questions
 - **Shape:** Add comments using prefixes (see below)
+- **Triage:** Periodically run `/wdi:triage-ideas` to review unshaped ideas and recommend actions
 - **Promote:** When ready, run `/wdi:workflows-feature --promote #123`
 
 ### Shaping Comment Prefixes

@@ -35,6 +35,7 @@ cd dev-plugins-workflow
 | `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflows-milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi:workflows-setup` | Set up and verify plugin dependencies |
+| `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
 
 ### Skills (Auto-Invoked)
 

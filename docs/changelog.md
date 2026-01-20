@@ -4,6 +4,14 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-20
+
+### Added
+- **`/wdi:triage-ideas` command** - Periodic review of unshaped ideas (`status:needs-shaping`). Clusters related ideas, recommends actions (quick-decision, individual-promote, needs-research), and automates GitHub issue updates. Supports `--plan` for analysis-only mode and `--yes` for auto-accept
+- **Triage labels** - New GitHub labels for triage workflow: `status:ready-to-promote`, `triage:quick-decision`, `blocked:research`, `research`
+
+---
+
 ## 2026-01-19
 
 ### Added
