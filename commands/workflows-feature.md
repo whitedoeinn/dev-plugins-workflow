@@ -152,9 +152,10 @@ Appetite: {appetite}
 ✓ Issue: #{issue-number} (idea, status:needs-shaping)
 
 Next steps:
-• Shape the idea by adding comments to the issue
+• Shape the idea: /wdi:shape-idea #{issue-number} --perspective business
+• Or add comments to the issue with Decision:/Test:/Blocked: prefixes
 • Promote to feature when ready: /wdi:feature --promote #{issue-number}
-• Or close the issue if the idea doesn't pan out
+• Close the issue if the idea doesn't pan out
 ```
 
 **Exit after idea mode - do not continue to full workflow.**
@@ -172,6 +173,76 @@ gh issue view {issue-number} --json title,body,labels,comments
 ```
 
 Verify the issue has label `idea`. If not, warn and ask to confirm.
+
+### Step 1.5: Read Shaping Plan Files
+
+Check for shaping plan files from `/wdi:shape-idea` sessions:
+
+```bash
+ls .claude/plans/idea-{issue-number}-*.md 2>/dev/null
+```
+
+If shaping files exist, read and synthesize them:
+
+#### Display Shaping Context
+
+```
+Shaping Context Found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Files:
+  • idea-{n}-business-2024-01-15.md
+  • idea-{n}-technical-2024-01-16.md
+
+Perspectives covered: business, technical
+```
+
+#### Extract from Each File
+
+For each shaping file, extract:
+- **Decisions Made** - Pre-populate research context
+- **Risks Identified** - Add to risk tracking
+- **Open Questions** - Flag for interview clarification
+- **Cross-Cutting Implications** - Identify dependencies between perspectives
+- **Rough Scope** - Inform feature boundaries
+
+#### Synthesize Multi-Perspective Context
+
+When multiple perspectives exist, synthesize:
+
+1. **Alignment check:** Do business and technical decisions align?
+2. **Coverage gaps:** Which perspective is missing? (Warn if UX implications exist but no UX shaping)
+3. **Cross-cutting needs:** Collect all `→ Tech`, `→ UX`, `→ Business` implications
+4. **Consolidated decisions:** Merge decisions from all perspectives
+5. **Aggregated risks:** Combine risks with perspective tags
+
+```
+Synthesized Shaping Context
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Decisions (3):
+  [business] Premium tier feature
+  [business] CSV and JSON export formats
+  [technical] Use background jobs for large exports
+
+Cross-Cutting Needs:
+  → Tech: API rate limiting needed (from business)
+  → UX: Progress indicator for long exports (from technical)
+
+Risks (2):
+  [technical] Large datasets may timeout
+  [business] Competitor already has this feature
+
+Open Questions:
+  • What's the maximum export size? (from technical)
+
+Missing perspective: ux
+  Note: Technical shaping mentioned UX implications
+```
+
+#### If No Shaping Files
+
+If no `.claude/plans/idea-{n}-*.md` files exist, continue with standard promotion (comments only).
 
 ### Step 2: Parse Actionable Comments
 
@@ -243,12 +314,25 @@ Continue? (y)es, (a)bort:
 
 ### Step 3: Pre-populate Workflow Context
 
-Create context that will pre-fill interview answers:
+Create context that will pre-fill interview answers from three sources:
+
+#### From Issue Content
 - **Feature Type:** Infer from idea content (problem description, appetite)
 - **Feature Description:** From Problem + Rough Solution sections
-- **Research context:** From `Decision:` comments (passed to `/workflows:plan`)
+
+#### From Shaping Plan Files (Step 1.5)
+- **Research context:** Consolidated decisions from all perspectives
+- **Risks:** Aggregated risks with perspective tags
+- **Scope:** In-scope/out-of-scope from shaping files
+- **Cross-cutting needs:** Dependencies between business/technical/UX
+- **Interview clarifications:** Open questions flagged for user input
+
+#### From Issue Comments (Step 2)
+- **Additional research context:** From `Decision:` comments (passed to `/workflows:plan`)
 - **Acceptance criteria:** From `Test:` comments (added to Done When)
 - **Dependencies:** From `Blocked:` comments
+
+**Priority:** Shaping files take precedence over comments when both exist for the same decision.
 
 ### Step 4: Run Standard Workflow (Pre-populated)
 

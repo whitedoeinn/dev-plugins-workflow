@@ -130,8 +130,9 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 | Situation | Command | Prerequisite | What Runs |
 |-----------|---------|--------------|-----------|
 | Vague idea, not ready to build | `--idea` | None | Creates issue only, no implementation |
+| Idea needs exploration | `/wdi:shape-idea #N` | Idea issue | Plan mode exploration, produces committed plan file |
 | Clear idea, ready to implement | (default) | None | Full workflow: all 6 phases |
-| Existing idea issue to promote | `--promote #123` | Issue with [shaped comments](../CLAUDE.md#shaping-comment-prefixes) | Full workflow with pre-filled context |
+| Existing idea issue to promote | `--promote #123` | Issue with shaping (plan files or comments) | Full workflow with pre-filled context |
 | Just need the plan, not implementation | `--plan` | None | Pre-flight → Research → Plan, then stops |
 | Tiny fix, no tracking needed | Just ask Claude | None | No workflow—direct changes |
 | Research only, no implementation | Just ask Claude | None | No workflow—conversation only |
@@ -141,6 +142,12 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 ```bash
 # Capture an idea quickly
 /wdi:workflows-feature --idea
+
+# Shape an idea from business perspective
+/wdi:shape-idea #45 --perspective business
+
+# Shape from technical perspective (adds to shaping context)
+/wdi:shape-idea #45 --perspective technical
 
 # Full workflow (most common)
 /wdi:workflows-feature
@@ -186,10 +193,14 @@ See: [#30](https://github.com/whitedoeinn/dev-plugins-workflow/issues/30), [#21]
 Ideas captured in the moment are rarely implementation-ready. The flow:
 
 1. **Capture** (`--idea`) — Get it out of your head before you forget
-2. **Shape** (issue comments) — Refine over time, no pressure
-3. **Promote** (`--promote #123`) — Convert to spec when ready
+2. **Shape** (`/wdi:shape-idea #N`) — Explore from business/technical/UX perspectives
+3. **Promote** (`--promote #123`) — Convert to spec with all shaping context
 
 This separates "having ideas" from "building things."
+
+**Shaping options:**
+- **Quick shaping:** Add comments with `Decision:`, `Test:`, `Blocked:` prefixes
+- **Deep shaping:** Use `/wdi:shape-idea #N --perspective business` (or technical/ux) for iterative exploration sessions that produce committed plan files
 
 See: [#30](https://github.com/whitedoeinn/dev-plugins-workflow/issues/30)
 
@@ -288,6 +299,7 @@ Run `gh auth login` and follow prompts.
 | Task | Command |
 |------|---------|
 | Capture idea | `/wdi:workflows-feature --idea` |
+| Shape idea | `/wdi:shape-idea #N --perspective business` |
 | Full workflow | `/wdi:workflows-feature` |
 | Plan only | `/wdi:workflows-feature --plan` |
 | Promote idea | `/wdi:workflows-feature --promote #123` |

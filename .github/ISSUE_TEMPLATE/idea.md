@@ -16,3 +16,10 @@ What might this solve or enable?
 ## Initial Thoughts
 
 Any early thinking on approach?
+
+---
+
+**Next steps:**
+- Shape this idea: `/wdi:shape-idea #{issue-number} --perspective business`
+- Or add comments with `Decision:`, `Test:`, `Blocked:` prefixes
+- When ready: `/wdi:workflows-feature --promote #{issue-number}`

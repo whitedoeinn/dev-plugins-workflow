@@ -88,7 +88,9 @@ Plugins follow a specific pattern for Claude Code integration:
 │   ├── plugin.json             # Plugin metadata
 │   └── marketplace.json        # Marketplace config
 ├── .claude/
-│   └── settings.json           # Local settings
+│   ├── settings.json           # Local settings (gitignored)
+│   └── plans/                  # Plan files (selectively tracked)
+│       └── idea-*.md           # Shaping plan files (committed)
 ├── commands/                   # Markdown command definitions
 │   ├── {command-a}.md
 │   └── {command-b}.md
@@ -106,6 +108,8 @@ Plugins follow a specific pattern for Claude Code integration:
 ├── CLAUDE.md                   # Claude-facing docs
 └── CONTRIBUTING.md             # Contribution guide
 ```
+
+**Note:** `.claude/` is generally gitignored (machine-specific settings), but `.claude/plans/idea-*.md` files are tracked via gitignore exception. These are shaping artifacts from `/wdi:shape-idea` sessions that should persist across collaborators.
 
 ---
 

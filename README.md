@@ -36,6 +36,7 @@ cd dev-plugins-workflow
 | `/wdi:workflows-milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi:workflows-setup` | Set up and verify plugin dependencies |
 | `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
+| `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
 
 ### Skills (Auto-Invoked)
 

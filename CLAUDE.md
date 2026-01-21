@@ -37,6 +37,7 @@ dev-plugins/
 │   ├── workflows-milestone.md       # /wdi:workflows-milestone
 │   ├── workflows-setup.md           # /wdi:workflows-setup
 │   ├── triage-ideas.md              # /wdi:triage-ideas
+│   ├── shape-idea.md                # /wdi:shape-idea
 │   ├── standards-new-repo.md        # /wdi:standards-new-repo
 │   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
 │   ├── standards-check.md           # /wdi:standards-check
@@ -80,6 +81,7 @@ dev-plugins/
 | `/wdi:workflows-milestone` | Create and execute milestone-based feature groupings |
 | `/wdi:workflows-setup` | Verify dependencies and installation status |
 | `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
+| `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
 
 ### Standards Commands
 
@@ -143,21 +145,52 @@ Use `--idea` mode to quickly capture ideas without implementing them:
 
 **Creates:** GitHub issue with `idea` label and `status:needs-shaping`
 
-Ideas live entirely in GitHub Issues:
+Ideas flow through these stages:
 - **Capture:** Issue body contains problem, appetite, rough solution, open questions
-- **Shape:** Add comments using prefixes (see below)
-- **Triage:** Periodically run `/wdi:triage-ideas` to review unshaped ideas and recommend actions
+- **Shape:** Use `/wdi:shape-idea` for iterative exploration (or add comments with prefixes)
+- **Triage:** Periodically run `/wdi:triage-ideas` to review unshaped ideas
 - **Promote:** When ready, run `/wdi:workflows-feature --promote #123`
 
-### Shaping Comment Prefixes
+### Shaping with Plan Files (Recommended)
 
-Comments are only parsed during promotion if they start with a recognized prefix. Comments without prefixes are for human discussion and are ignored.
+For ideas that need exploration before implementation, use iterative shaping sessions:
+
+```bash
+# Explore from business perspective
+/wdi:shape-idea #45 --perspective business
+
+# Later, explore from technical perspective
+/wdi:shape-idea #45 --perspective technical
+
+# Optionally, explore UX implications
+/wdi:shape-idea #45 --perspective ux
+```
+
+**What happens:**
+1. Claude enters plan mode to explore the idea from the chosen perspective
+2. Produces a committed plan file: `.claude/plans/idea-{n}-{perspective}-{date}.md`
+3. Adds a summary comment to the GitHub issue linking to the plan file
+
+**Perspectives:**
+| Perspective | Focus Areas |
+|-------------|-------------|
+| `business` | Value proposition, appetite, ROI, business risks |
+| `technical` | Feasibility, architecture, complexity, technical risks |
+| `ux` | User needs, workflows, accessibility, edge cases |
+
+Each session produces a separate file, building rich context for promotion.
+
+### Shaping Comment Prefixes (Lightweight)
+
+For simple shaping, add comments directly to the issue with recognized prefixes:
 
 | Prefix | Maps to | Example |
 |--------|---------|---------|
 | `Decision:` | Research context | "Decision: Use YAML frontmatter" |
 | `Test:` | Acceptance criteria | "Test: Verify API returns 200" |
 | `Blocked:` | Dependencies | "Blocked: Waiting on #45" |
+
+Comments without prefixes are for human discussion and are ignored.
 
 **Conflict detection:** If two `Decision:` comments contradict each other, promotion halts and requires human resolution.
 
@@ -169,9 +202,14 @@ Comments are only parsed during promotion if they start with a recognized prefix
 Promote → Interview (pre-filled) → Pre-flight → Plan → Work → Review → Compound
 ```
 
+When promoting, the workflow reads context from:
+1. **Issue body** - Original problem, appetite, rough solution
+2. **Shaping plan files** - Decisions, risks, scope from `.claude/plans/idea-{n}-*.md`
+3. **Issue comments** - `Decision:`, `Test:`, `Blocked:` prefixes
+
 | Status | Location | Next Step |
 |--------|----------|-----------|
-| Idea | GitHub Issue | Shape via comments |
+| Idea | GitHub Issue | Shape with `/wdi:shape-idea` or comments |
 | Feature | Full workflow with pre-populated context | All phases run |
 | Complete | Merged to main | - |
 
@@ -330,5 +368,7 @@ This catches issues even if the pre-commit hook isn't installed locally.
 See [Plugin Version Propagation Troubleshooting](docs/troubleshooting.md#plugin-updates-not-propagating-to-other-projects).
 
 Recent changes:
+- Added `/wdi:shape-idea` for iterative idea shaping with committed plan files
+- Enhanced `--promote` to synthesize context from shaping plan files and issue comments
 - **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
 - **#30:** Added idea promotion workflow with prescriptive comment prefixes and conflict detection
