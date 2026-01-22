@@ -1,26 +1,38 @@
 # Project Structure Standards
 
 **Organization:** whitedoeinn
-**Last Updated:** 2026-01-11
+**Last Updated:** 2026-01-22
 
 ---
 
 ## Mono-repo Structure
 
-Mono-repos cluster related packages. Use this structure:
+Mono-repos cluster related subprojects by functional type. Use this structure:
 
 ```
 {repo}/
-├── README.md                   # Repo overview, package list
-├── packages/                   # Individual packages
-│   ├── {package-a}/
-│   │   ├── README.md           # Package docs
-│   │   ├── src/                # Source code
-│   │   ├── tests/              # Package tests
-│   │   └── pyproject.toml      # Or package.json
-│   └── {package-b}/
-├── shared/                     # Cross-package utilities
+├── README.md                   # Repo overview, subproject list
+├── CLAUDE.md                   # Claude instructions for repo
+│
+├── apps/                       # User-facing applications
+│   └── {app-name}/
+│       ├── README.md           # Subproject docs
+│       ├── src/                # Source code
+│       ├── tests/              # Tests
+│       └── package.json        # Or pyproject.toml
+│
+├── services/                   # Backend APIs
+│   └── {service-name}/
+│
+├── libs/                       # Shared libraries (internal, Git-based install)
+│   └── {lib-name}/
+│
+├── tools/                      # CLIs and automation scripts
+│   └── {tool-name}/
+│
+├── shared/                     # Repo-internal utilities (not cross-repo)
 │   └── utils/
+│
 ├── docs/                       # Repo-level documentation
 │   ├── architecture.md         # System design
 │   ├── changelog.md            # Change history
@@ -32,6 +44,7 @@ Mono-repos cluster related packages. Use this structure:
 │           ├── features/       # Individual feature specs
 │           ├── milestones/     # Milestone definitions
 │           └── status.md       # Current progress overview
+│
 └── scripts/                    # Build, deploy, dev tooling
     ├── build.sh
     └── dev.sh
@@ -41,10 +54,23 @@ Mono-repos cluster related packages. Use this structure:
 
 | File | Purpose |
 |------|---------|
-| `README.md` | Overview, quick start, package list |
-| `docs/architecture.md` | How packages relate, system design |
+| `README.md` | Overview, quick start, subproject list |
+| `CLAUDE.md` | Claude instructions for working in this repo |
+| `docs/architecture.md` | How subprojects relate, system design |
 | `docs/changelog.md` | Version history |
-| `packages/{name}/README.md` | Per-package documentation |
+| `{type}/{name}/README.md` | Per-subproject documentation |
+
+### Functional Type Directories
+
+| Directory | Contents | Cross-repo? |
+|-----------|----------|-------------|
+| `apps/` | User-facing applications with UI | No |
+| `services/` | Backend APIs, long-running processes | No |
+| `libs/` | Shared libraries | Yes (Git-based install) |
+| `tools/` | CLIs, automation scripts | Sometimes |
+| `shared/` | Repo-internal utilities | Never |
+
+See [REPO-STANDARDS.md](REPO-STANDARDS.md) for detailed functional type definitions.
 
 ---
 
@@ -55,6 +81,7 @@ Standalone repos contain a single focused project. Use this structure:
 ```
 {repo}/
 ├── README.md                   # Project overview
+├── CLAUDE.md                   # Claude instructions
 ├── src/                        # Source code
 │   └── {module}/
 ├── tests/                      # Test suite
@@ -74,6 +101,7 @@ Standalone repos contain a single focused project. Use this structure:
 | File | Purpose |
 |------|---------|
 | `README.md` | Overview, installation, usage |
+| `CLAUDE.md` | Claude instructions |
 | `docs/changelog.md` | Version history |
 
 ---
@@ -129,10 +157,66 @@ Plugins follow a specific pattern for Claude Code integration:
 | Related tools in same domain | Mono-repo |
 | Plugin installed via URL | Standalone |
 | External consumers | Standalone |
-| Internal utilities | Mono-repo package |
-| Experimental/spike | Mono-repo package with `experiment-` prefix |
+| Internal utilities | Mono-repo subproject |
+| Experimental/spike | Mono-repo subproject with `experiment-` prefix |
 
 See [REPO-STANDARDS.md](REPO-STANDARDS.md) for repository naming decisions.
+
+---
+
+## Subproject Internal Structure
+
+Each subproject within a mono-repo follows this pattern:
+
+```
+{type}/{subproject-name}/
+├── README.md                   # Subproject overview
+├── CLAUDE.md                   # Claude instructions (if needed)
+├── src/                        # Source code
+│   ├── {module}/               # Feature/concern groupings
+│   └── index.js                # Entry point
+├── tests/                      # Tests
+│   ├── unit/
+│   └── integration/
+├── bin/                        # CLI entry points (for tools)
+│   └── {tool-name}
+├── package.json                # Or pyproject.toml, Cargo.toml
+└── ...
+```
+
+### Type-Specific Variations
+
+**Tools** (CLIs):
+```
+tools/{tool-name}/
+├── bin/                        # CLI binary/entry point
+├── commands/                   # Command templates (if bundled)
+├── templates/                  # Config templates
+└── src/
+    ├── cli.js                  # CLI entry
+    └── {module}/               # Feature modules
+```
+
+**Applications**:
+```
+apps/{app-name}/
+├── src/
+│   ├── components/             # UI components
+│   ├── pages/                  # Routes/pages
+│   └── services/               # Business logic
+├── public/                     # Static assets
+└── ...
+```
+
+**Services** (APIs):
+```
+services/{service-name}/
+├── src/
+│   ├── routes/                 # API endpoints
+│   ├── models/                 # Data models
+│   └── services/               # Business logic
+└── ...
+```
 
 ---
 
