@@ -120,6 +120,18 @@ This plugin requires the `compound-engineering` plugin (external dependency):
 
 **Note:** wdi delegates to compound-engineering for all heavy lifting. wdi provides context gathering (interview), validation (pre-flight), GitHub issue integration, and workflow orchestration.
 
+### Installation Scope
+
+Plugins can be installed at **user scope** (global) or **project scope** (local). For personal workstations, global installation is recommended:
+
+```bash
+# Global installation (recommended - works across all projects)
+claude plugin install compound-engineering@every-marketplace --scope user
+claude plugin install wdi@wdi-marketplace --scope user
+```
+
+Scripts like `check-deps.sh` and `validate-env.sh` automatically detect your installation scope and use it for updates and remediation. See [Troubleshooting: Installation Scopes](docs/troubleshooting.md#installation-scopes) for details.
+
 ## WDI CLI (Deprecated)
 
 > **Note:** The wdi CLI is deprecated. Claude Code can create directories and projects directly - just describe what you want. The CLI remains available but is no longer actively maintained.

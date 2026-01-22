@@ -77,6 +77,17 @@ log() {
   fi
 }
 
+# Get plugin installation scope
+# Returns "user" for global installation, "project" for project-local
+get_plugin_scope() {
+  local plugin_name="$1"
+  if [[ -x "${SCRIPT_DIR}/get-plugin-scope.sh" ]]; then
+    "${SCRIPT_DIR}/get-plugin-scope.sh" "$plugin_name" 2>/dev/null || echo "project"
+  else
+    echo "project"
+  fi
+}
+
 # Validate CLI tools
 validate_cli_tools() {
   local tools
@@ -153,9 +164,13 @@ validate_plugins() {
   while IFS= read -r plugin; do
     [[ -z "$plugin" ]] && continue
 
-    local name min_version
+    local name min_version scope
     name=$(echo "$plugin" | jq -r '.name')
     min_version=$(echo "$plugin" | jq -r '.min_version // empty')
+
+    # Get the scope this plugin should use (detect from existing installation or default)
+    # For wdi, check existing scope; for others, use wdi's scope as reference
+    scope=$(get_plugin_scope "wdi")
 
     # Check if plugin is installed
     if ! is_plugin_installed "$name"; then
@@ -163,13 +178,13 @@ validate_plugins() {
 
       if [[ "$NO_REMEDIATE" == "false" ]]; then
         log "  Installing plugin: $name..."
-        if claude plugin install "$name" --scope project &> /dev/null; then
+        if claude plugin install "$name" --scope "$scope" &> /dev/null; then
           ISSUES_FIXED+=("Installed plugin $name")
         else
-          ISSUES_BLOCKED+=("Plugin $name not installed. Run: claude plugin install $name --scope project")
+          ISSUES_BLOCKED+=("Plugin $name not installed. Run: claude plugin install $name --scope $scope")
         fi
       else
-        ISSUES_BLOCKED+=("Plugin $name not installed. Run: claude plugin install $name --scope project")
+        ISSUES_BLOCKED+=("Plugin $name not installed. Run: claude plugin install $name --scope $scope")
       fi
     fi
   done <<< "$plugins"

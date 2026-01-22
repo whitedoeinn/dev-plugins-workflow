@@ -1,5 +1,26 @@
 # Troubleshooting
 
+## Installation Scopes
+
+Plugins can be installed at two scopes:
+
+| Scope | Flag | Settings Location | Use Case |
+|-------|------|-------------------|----------|
+| **User (global)** | `--scope user` | `~/.claude/settings.json` | Recommended for personal workstations |
+| **Project** | `--scope project` | `.claude/settings.json` | Shared team projects |
+
+**Recommendation:** For personal use, install globally (`--scope user`). This provides a single installation that works across all projects.
+
+```bash
+# Clean up duplicates and install globally
+claude plugin uninstall wdi@wdi-marketplace --all
+claude plugin uninstall compound-engineering@every-marketplace --all
+claude plugin install compound-engineering@every-marketplace --scope user
+claude plugin install wdi@wdi-marketplace --scope user
+```
+
+---
+
 ## Common Issues
 
 ### "Unknown skill: commit" or "Unknown skill: feature"
@@ -35,6 +56,11 @@ claude
 **Solution:**
 ```bash
 claude plugin marketplace add https://github.com/EveryInc/compound-engineering-plugin
+
+# For global installation (recommended):
+claude plugin install compound-engineering --scope user
+
+# For project-only installation:
 claude plugin install compound-engineering --scope project
 ```
 
@@ -42,15 +68,27 @@ claude plugin install compound-engineering --scope project
 
 ### Plugin installed but commands still don't work
 
-**Cause:** The plugin may be installed globally but not for your project scope.
+**Cause:** The plugin may be installed but disabled, or there may be duplicate installations at different scopes.
 
-**Solution:** Check installation and reinstall for project:
+**Solution:** Check installation scope and status:
 ```bash
-# View current installations
-cat ~/.claude/plugins/installed_plugins.json | grep -A5 "wdi"
+# Check user (global) settings
+cat ~/.claude/settings.json | jq '.enabledPlugins | keys' 2>/dev/null
 
-# Reinstall for project scope
-claude plugin install wdi --scope project
+# Check project settings
+cat .claude/settings.json | jq '.enabledPlugins | keys' 2>/dev/null
+
+# For global installation (recommended - works across all projects):
+claude plugin install wdi@wdi-marketplace --scope user
+
+# For project-only installation:
+claude plugin install wdi@wdi-marketplace --scope project
+```
+
+**Note:** If you have duplicate entries from both scopes, uninstall all and reinstall at one scope:
+```bash
+claude plugin uninstall wdi@wdi-marketplace --all
+claude plugin install wdi@wdi-marketplace --scope user
 ```
 
 ---
@@ -108,9 +146,14 @@ Follow the prompts to authenticate with GitHub.
    ```bash
    rm -rf ~/.claude/plugins/cache/wdi*
    ```
-3. Reinstall:
+3. Reinstall (use your existing scope):
    ```bash
-   claude plugin install wdi --scope project
+   # Check which scope you're using:
+   ./scripts/get-plugin-scope.sh wdi
+
+   # Then reinstall with that scope:
+   claude plugin install wdi@wdi-marketplace --scope user   # for global
+   claude plugin install wdi@wdi-marketplace --scope project  # for project
    ```
 4. Restart Claude Code
 

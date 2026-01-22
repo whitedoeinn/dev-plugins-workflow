@@ -50,9 +50,20 @@ if [ "$1" = "update" ]; then
     echo "  git pull origin main"
     exit 0
   fi
-  echo -e "${YELLOW}Updating plugins...${NC}"
-  claude plugin update compound-engineering@every-marketplace --scope project
-  claude plugin update wdi@wdi-marketplace --scope project
+
+  # Detect existing plugin scope (use wdi as reference)
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  if [[ -x "${SCRIPT_DIR}/scripts/get-plugin-scope.sh" ]]; then
+    UPDATE_SCOPE=$("${SCRIPT_DIR}/scripts/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
+  elif [[ -x "${SCRIPT_DIR}/get-plugin-scope.sh" ]]; then
+    UPDATE_SCOPE=$("${SCRIPT_DIR}/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
+  else
+    UPDATE_SCOPE="project"
+  fi
+
+  echo -e "${YELLOW}Updating plugins (scope: $UPDATE_SCOPE)...${NC}"
+  claude plugin update compound-engineering@every-marketplace --scope "$UPDATE_SCOPE"
+  claude plugin update wdi@wdi-marketplace --scope "$UPDATE_SCOPE"
   echo -e "${GREEN}Update complete!${NC}"
   exit 0
 fi

@@ -59,9 +59,12 @@ fi
 # Auto-update wdi plugin (skip in maintainer mode)
 if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
    [[ "$(jq -r '.name' "$PWD/.claude-plugin/plugin.json" 2>/dev/null)" != "wdi" ]]; then
+  # Detect installation scope (user = global, project = local)
+  WDI_SCOPE=$("${SCRIPT_DIR}/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
+
   # Delete stale cache and reinstall (workaround for plugin update cache bug)
   # See: https://github.com/anthropics/claude-code/issues/XXX
   rm -rf ~/.claude/plugins/cache/wdi-marketplace/ 2>/dev/null || true
   claude plugin marketplace update wdi-marketplace 2>/dev/null || true
-  claude plugin install wdi@wdi-marketplace --scope project 2>/dev/null || true
+  claude plugin install wdi@wdi-marketplace --scope "$WDI_SCOPE" 2>/dev/null || true
 fi
