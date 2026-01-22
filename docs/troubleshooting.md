@@ -1,5 +1,39 @@
 # Troubleshooting
 
+## New Machine Setup / Nuclear Reset
+
+Use `machine-setup.sh` to bootstrap a new development machine or reset a broken installation to a known good state.
+
+```bash
+# From the repo (if cloned)
+cd ~/github/whitedoeinn/dev-plugins-workflow
+git pull
+./scripts/machine-setup.sh
+
+# Or via curl (new machines without the repo)
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+```
+
+**What it does:**
+1. Clears plugin caches (ensures fresh downloads)
+2. Updates marketplaces (gets latest versions)
+3. Removes ALL project-scope entries from `~/.claude/plugins/installed_plugins.json`
+4. Deletes stale `.claude/settings.json` files from known project directories
+5. Installs plugins at user scope (global)
+6. Creates `~/.claude/CLAUDE.md` with environment standards
+7. Verifies installation
+
+**When to use:**
+- Setting up a new development machine
+- Plugin installations are in a broken/inconsistent state
+- `claude plugin list` shows duplicate entries (same plugin at both scopes)
+- Updates aren't propagating correctly
+- You want to reset to a known good state
+
+**Safe to re-run.** The script is idempotent.
+
+---
+
 ## Installation Scopes
 
 Plugins can be installed at two scopes:

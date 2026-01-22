@@ -260,6 +260,17 @@ On every session start, the plugin:
 
 Say "check my config" to run validation manually (useful after fixing issues).
 
+### New Machine / Reset
+
+For new machines or to reset a broken installation:
+
+```bash
+./scripts/machine-setup.sh
+# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+```
+
+This clears caches, removes stale project-scope entries, installs plugins at user scope, and creates `~/.claude/CLAUDE.md`. Safe to re-run.
+
 ## Key Standards
 
 When working in WDI projects, follow these conventions:

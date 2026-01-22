@@ -6,6 +6,9 @@ All notable changes documented here.
 
 ## 2026-01-22
 
+### Documentation
+- **`machine-setup.sh` documented everywhere** - Added references to troubleshooting.md (Nuclear Reset section), GETTING-STARTED.md (New Machine Setup, Multi-Machine Sync), and CLAUDE.md (New Machine / Reset subsection)
+
 ### Fixed
 - **Duplicate plugin scope detection** - SessionStart hook now detects when wdi is installed at both user AND project scope and auto-removes the project-scope entry from `~/.claude/plugins/installed_plugins.json`. Previously only checked project settings files, missing the actual plugin registry
 - **`machine-setup.sh` now comprehensive** - Script clears caches, updates marketplaces, removes ALL project-scope entries from registry, deletes stale project settings files, then installs fresh. Safe to re-run to reset to known good state

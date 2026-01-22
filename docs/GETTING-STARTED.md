@@ -8,16 +8,42 @@ This guide gets you productive in 15 minutes. It explains what commands to use, 
 
 - Claude Code CLI installed (`claude --version`)
 - `gh` CLI authenticated (`gh auth login`)
+- `jq` installed (`brew install jq` on macOS, `apt install jq` on Linux)
 
 ## Installation
 
-Run in your project directory:
+### New Machine Setup
+
+For a fresh development machine, use the comprehensive setup script:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+```
+
+This installs plugins at **user scope** (global), creates `~/.claude/CLAUDE.md` with environment standards, and verifies the installation.
+
+### Existing Machine / Project Install
+
+If you already have plugins installed and just need to add them to a project:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
 ```
 
 This installs both `wdi` and `compound-engineering` plugins.
+
+### Multi-Machine Sync
+
+If you work across multiple machines, run the setup script on each:
+
+```bash
+# If you have the repo cloned
+cd ~/github/whitedoeinn/dev-plugins-workflow
+git pull
+./scripts/machine-setup.sh
+```
+
+The script ensures consistent configuration across all your development machines.
 
 ### Verify Installation
 
@@ -45,12 +71,14 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/mai
 
 ### If Updates Aren't Working
 
-Clear the cache and reinstall:
+Run the machine setup script to reset to a known good state:
 
 ```bash
-rm -rf ~/.claude/plugins/cache/wdi-marketplace/
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
+./scripts/machine-setup.sh
+# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
 ```
+
+This clears caches, removes stale entries, and reinstalls fresh. See [troubleshooting.md](troubleshooting.md) for more details.
 
 ---
 
