@@ -8,6 +8,7 @@ All notable changes documented here.
 
 ### Fixed
 - **Duplicate plugin scope detection** - SessionStart hook now detects when wdi is installed at both user AND project scope and auto-removes the project-scope entry from `~/.claude/plugins/installed_plugins.json`. Previously only checked project settings files, missing the actual plugin registry
+- **`machine-setup.sh` now comprehensive** - Script clears caches, updates marketplaces, removes ALL project-scope entries from registry, deletes stale project settings files, then installs fresh. Safe to re-run to reset to known good state
 
 ### Added
 - **`scripts/machine-setup.sh`** - Bootstrap script for new development machines. Installs plugins at user scope, creates global `~/.claude/CLAUDE.md` with environment standards and drift detection rules. Run via curl or directly

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Machine Setup for Claude Code
 # Run this once on a new development machine to configure plugins and settings.
+# Also safe to re-run to clean up and reset to a known good state.
 #
 # Usage:
 #   curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
@@ -10,13 +11,10 @@
 set -euo pipefail
 
 echo "Setting up Claude Code environment..."
+echo ""
 
 # Ensure ~/.claude directory exists
-mkdir -p ~/.claude
-
-# Install plugins at user scope (global)
-echo ""
-echo "Installing plugins at user scope..."
+mkdir -p ~/.claude/plugins
 
 if ! command -v claude &>/dev/null; then
   echo "ERROR: Claude Code CLI not found. Install it first:"
@@ -24,12 +22,71 @@ if ! command -v claude &>/dev/null; then
   exit 1
 fi
 
+if ! command -v jq &>/dev/null; then
+  echo "ERROR: jq not found. Install it first:"
+  echo "  brew install jq  # macOS"
+  echo "  sudo apt install jq  # Ubuntu/Debian"
+  exit 1
+fi
+
+# Step 1: Clear plugin caches to ensure fresh downloads
+echo "Step 1: Clearing plugin caches..."
+rm -rf ~/.claude/plugins/cache/wdi-marketplace/ 2>/dev/null || true
+rm -rf ~/.claude/plugins/cache/every-marketplace/ 2>/dev/null || true
+echo "  Done"
+
+# Step 2: Update marketplaces to get latest versions
+echo ""
+echo "Step 2: Updating marketplaces..."
+claude plugin marketplace update wdi-marketplace 2>/dev/null || true
+claude plugin marketplace update every-marketplace 2>/dev/null || true
+echo "  Done"
+
+# Step 3: Clean installed_plugins.json - remove ALL project-scope entries
+echo ""
+echo "Step 3: Cleaning plugin registry (removing project-scope entries)..."
+INSTALLED_PLUGINS="$HOME/.claude/plugins/installed_plugins.json"
+
+if [[ -f "$INSTALLED_PLUGINS" ]]; then
+  # Remove all project-scope entries for both plugins
+  jq '
+    .plugins["wdi@wdi-marketplace"] = [.plugins["wdi@wdi-marketplace"][]? | select(.scope == "user")] |
+    .plugins["compound-engineering@every-marketplace"] = [.plugins["compound-engineering@every-marketplace"][]? | select(.scope == "user")]
+  ' "$INSTALLED_PLUGINS" > "${INSTALLED_PLUGINS}.tmp" && mv "${INSTALLED_PLUGINS}.tmp" "$INSTALLED_PLUGINS"
+
+  echo "  Removed project-scope entries from registry"
+else
+  echo "  No existing registry (fresh install)"
+fi
+
+# Step 4: Remove any project-scope settings.json files in known project directories
+echo ""
+echo "Step 4: Removing stale project settings files..."
+PROJECTS=(
+  "$HOME/github/whitedoeinn/dev-plugins-workflow"
+  "$HOME/github/whitedoeinn/events"
+  "$HOME/github/whitedoeinn/google-ads"
+  "$HOME/github/whitedoeinn/integration"
+)
+
+for project in "${PROJECTS[@]}"; do
+  if [[ -f "$project/.claude/settings.json" ]]; then
+    rm -f "$project/.claude/settings.json"
+    echo "  Removed: $project/.claude/settings.json"
+  fi
+done
+echo "  Done"
+
+# Step 5: Install plugins at user scope (global)
+echo ""
+echo "Step 5: Installing plugins at user scope..."
 claude plugin install compound-engineering@every-marketplace --scope user
 claude plugin install wdi@wdi-marketplace --scope user
+echo "  Done"
 
-# Create global CLAUDE.md with environment standards
+# Step 6: Create global CLAUDE.md with environment standards
 echo ""
-echo "Creating global CLAUDE.md..."
+echo "Step 6: Creating global CLAUDE.md..."
 
 cat > ~/.claude/CLAUDE.md << 'EOF'
 # Global Claude Code Settings
@@ -81,33 +138,42 @@ These settings should NEVER be modified without explicit user request:
 If any workflow or script attempts to modify these settings, warn me before proceeding.
 EOF
 
-# Verify installation
+echo "  Done"
+
+# Step 7: Verify installation
 echo ""
-echo "Verifying installation..."
+echo "Step 7: Verifying installation..."
+echo ""
 
-INSTALLED=$(claude plugin list 2>/dev/null || echo "")
+# Get fresh plugin list
+PLUGIN_JSON=$(claude plugin list --json 2>/dev/null || echo "[]")
 
-if echo "$INSTALLED" | grep -q "compound-engineering.*user"; then
-  echo "  compound-engineering: OK (user scope)"
+# Check compound-engineering
+CE_USER=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "compound-engineering@every-marketplace" and .scope == "user")] | length')
+CE_PROJECT=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "compound-engineering@every-marketplace" and .scope == "project")] | length')
+CE_VERSION=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "compound-engineering@every-marketplace" and .scope == "user")][0].version // "none"')
+
+if [[ "$CE_USER" == "1" ]] && [[ "$CE_PROJECT" == "0" ]]; then
+  echo "  ✓ compound-engineering: OK (user scope, v$CE_VERSION)"
 else
-  echo "  compound-engineering: MISSING or wrong scope"
+  echo "  ✗ compound-engineering: PROBLEM (user=$CE_USER, project=$CE_PROJECT)"
 fi
 
-if echo "$INSTALLED" | grep -q "wdi.*user"; then
-  echo "  wdi: OK (user scope)"
+# Check wdi
+WDI_USER=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "wdi@wdi-marketplace" and .scope == "user")] | length')
+WDI_PROJECT=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "wdi@wdi-marketplace" and .scope == "project")] | length')
+WDI_VERSION=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "wdi@wdi-marketplace" and .scope == "user")][0].version // "none"')
+
+if [[ "$WDI_USER" == "1" ]] && [[ "$WDI_PROJECT" == "0" ]]; then
+  echo "  ✓ wdi: OK (user scope, v$WDI_VERSION)"
 else
-  echo "  wdi: MISSING or wrong scope"
-fi
-
-# Check for duplicate scopes (should not exist on fresh install)
-DUPLICATE_COUNT=$(echo "$INSTALLED" | grep -c "wdi@wdi-marketplace" || echo "0")
-if [[ "$DUPLICATE_COUNT" -gt 1 ]]; then
-  echo ""
-  echo "WARNING: Duplicate wdi installations detected. Run in any project:"
-  echo "  claude plugin uninstall wdi@wdi-marketplace --scope project"
+  echo "  ✗ wdi: PROBLEM (user=$WDI_USER, project=$WDI_PROJECT)"
 fi
 
 echo ""
-echo "Setup complete! Restart Claude Code to activate plugins."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  Setup complete!"
 echo ""
-echo "To verify, run: claude plugin list"
+echo "  Restart Claude Code to activate plugins."
+echo "  To verify: claude plugin list"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
