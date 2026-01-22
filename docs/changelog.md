@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-21
 
 ### Added
+- **Solution doc: Plugin source auto-loading** - Documented why dev-plugins-workflows doesn't need wdi-local installation. Claude Code auto-loads plugins from directories with `.claude-plugin/plugin.json`, making the source repo self-sufficient
 - **`/wdi:shape-idea` command** - Iterative shaping sessions for ideas captured via `--idea`. Explore ideas from business, technical, or UX perspectives. Each session produces a committed plan file at `.claude/plans/idea-{n}-{perspective}-{date}.md` and adds a summary comment to the GitHub issue. Multiple sessions accumulate as separate files, building rich context for promotion
 - **Enhanced `--promote` workflow** - Now reads and synthesizes context from shaping plan files in addition to issue comments. Identifies cross-cutting needs between perspectives, detects coverage gaps, and pre-populates the interview with decisions, risks, and scope from shaping sessions
 - **Gitignore exception for plan files** - `.claude/plans/idea-*.md` files are now tracked by git (exception to the `.claude/` ignore rule)
