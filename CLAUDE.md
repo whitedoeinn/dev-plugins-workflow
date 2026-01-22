@@ -132,6 +132,8 @@ claude plugin install wdi@wdi-marketplace --scope user
 
 Scripts like `check-deps.sh` and `validate-env.sh` automatically detect your installation scope and use it for updates and remediation. See [Troubleshooting: Installation Scopes](docs/troubleshooting.md#installation-scopes) for details.
 
+> **DRIFT PREVENTION:** Never create `.claude/settings.json` files in project directories. If `claude plugin list` shows duplicate installations (same plugin at both user and project scope), the SessionStart hook will auto-remove the project-scope one. All plugins should be user-scope only.
+
 ## WDI CLI (Deprecated)
 
 > **Note:** The wdi CLI is deprecated. Claude Code can create directories and projects directly - just describe what you want. The CLI remains available but is no longer actively maintained.
