@@ -2,10 +2,11 @@
 .playwright-mcp/
 
 # Claude Code project-local settings (machine-specific)
-.claude/
+.claude/*
 
 # Exception: Committed plan files for idea shaping
 !.claude/plans/
+.claude/plans/*
 !.claude/plans/idea-*.md
 
 # Ephemeral working files (research, drafts, scratch)

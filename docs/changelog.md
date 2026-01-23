@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-23
 
 ### Fixed
+- **Gitignore negation for `.claude/plans/`** - Pattern `.claude/` ignores the entire directory, so negation patterns like `!.claude/plans/idea-*.md` were never evaluated. Changed to `.claude/*` to allow selective tracking of shaping plan files. Unblocks `/wdi:shape-idea` workflow (#59)
 - **Duplicate user-scope plugin entries** - The sledgehammer workaround (cache clear + install on every session) was creating duplicate user-scope entries. Now uses `plugin update` instead of `plugin install`, and properly deduplicates existing entries by keeping most recent
 - **BATS library detection** - Test runner now finds BATS helper libraries in `/usr/lib/bats` (Ubuntu apt install location) in addition to `/usr/local/lib`
 
