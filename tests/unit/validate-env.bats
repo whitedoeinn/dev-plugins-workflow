@@ -292,3 +292,97 @@ EOF
 
   assert_success
 }
+
+# ==============================================================================
+# Gitignore .claude/plans/ pattern tests
+# ==============================================================================
+
+# Helper to create a passing baseline
+create_passing_baseline() {
+  local baseline_file="$1"
+  cat > "$baseline_file" << 'EOF'
+{
+  "version": "1.0",
+  "required_plugins": [],
+  "required_cli_tools": [],
+  "admin_contact": {"name": "Test"}
+}
+EOF
+}
+
+@test "validate-env: fixes broken .claude/ pattern in gitignore" {
+  # Create project with broken gitignore
+  mkdir -p "${TEST_TEMP_DIR}/project"
+  cd "${TEST_TEMP_DIR}/project"
+
+  cat > .gitignore << 'EOF'
+node_modules/
+.claude/
+EOF
+
+  create_passing_baseline "${MOCK_PLUGIN_ROOT}/env-baseline.json"
+
+  run "${MOCK_PLUGIN_ROOT}/scripts/validate-env.sh"
+
+  # Should fix the pattern
+  assert_output --partial "Fixing .gitignore"
+
+  # Verify the file was updated
+  grep -q "^\.claude/\*$" .gitignore
+  grep -q "^!\.claude/plans/$" .gitignore
+  grep -q "^!\.claude/plans/idea-\*\.md$" .gitignore
+
+  # Old broken pattern should be gone
+  ! grep -q "^\.claude/$" .gitignore
+}
+
+@test "validate-env: adds .claude/* pattern when missing" {
+  mkdir -p "${TEST_TEMP_DIR}/project"
+  cd "${TEST_TEMP_DIR}/project"
+
+  cat > .gitignore << 'EOF'
+node_modules/
+.env
+EOF
+
+  create_passing_baseline "${MOCK_PLUGIN_ROOT}/env-baseline.json"
+
+  run "${MOCK_PLUGIN_ROOT}/scripts/validate-env.sh"
+
+  assert_output --partial "Adding .claude/* pattern"
+  grep -q "^\.claude/\*$" .gitignore
+}
+
+@test "validate-env: leaves correct .claude/* pattern unchanged" {
+  mkdir -p "${TEST_TEMP_DIR}/project"
+  cd "${TEST_TEMP_DIR}/project"
+
+  cat > .gitignore << 'EOF'
+node_modules/
+.claude/*
+!.claude/plans/
+.claude/plans/*
+!.claude/plans/idea-*.md
+EOF
+
+  create_passing_baseline "${MOCK_PLUGIN_ROOT}/env-baseline.json"
+
+  run "${MOCK_PLUGIN_ROOT}/scripts/validate-env.sh"
+
+  # Should not mention gitignore fixes
+  ! echo "$output" | grep -q "gitignore"
+}
+
+@test "validate-env: skips gitignore check when file missing" {
+  mkdir -p "${TEST_TEMP_DIR}/project"
+  cd "${TEST_TEMP_DIR}/project"
+
+  # No .gitignore file
+
+  create_passing_baseline "${MOCK_PLUGIN_ROOT}/env-baseline.json"
+
+  run "${MOCK_PLUGIN_ROOT}/scripts/validate-env.sh"
+
+  assert_success
+  ! echo "$output" | grep -q "gitignore"
+}

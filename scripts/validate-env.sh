@@ -190,6 +190,64 @@ validate_plugins() {
   done <<< "$plugins"
 }
 
+# Validate .gitignore has correct .claude/plans/ pattern
+# Returns 0 if no changes needed, 1 if changes were made
+validate_gitignore_claude_plans() {
+  local gitignore=".gitignore"
+
+  # Skip if not in a git repo or no gitignore exists
+  [[ ! -f "$gitignore" ]] && return 0
+
+  # Check for broken pattern: .claude/ (excludes everything including plans)
+  if grep -q "^\.claude/$" "$gitignore"; then
+    if [[ "$NO_REMEDIATE" == "false" ]]; then
+      log "  Fixing .gitignore: .claude/ → .claude/* (enables plan file tracking)"
+      # Remove the broken patterns
+      sed -i.bak '/^\.claude\/$/d' "$gitignore"
+      sed -i.bak '/^!\.claude\/plans/d' "$gitignore"
+      rm -f "$gitignore.bak"
+      # Add the correct patterns
+      cat >> "$gitignore" << 'EOF'
+
+# Claude Code project-local settings
+.claude/*
+
+# Exception: Committed plan files for idea shaping
+!.claude/plans/
+.claude/plans/*
+!.claude/plans/idea-*.md
+EOF
+      ISSUES_FIXED+=("Fixed .gitignore pattern for .claude/plans/")
+      return 1
+    else
+      ISSUES_FOUND+=(".gitignore has broken .claude/ pattern")
+      ISSUES_BLOCKED+=(".gitignore uses .claude/ instead of .claude/* (blocks plan file tracking)")
+      return 1
+    fi
+  fi
+
+  # Check if .claude pattern is missing entirely
+  if ! grep -q "^\.claude" "$gitignore"; then
+    if [[ "$NO_REMEDIATE" == "false" ]]; then
+      log "  Adding .claude/* pattern to .gitignore"
+      cat >> "$gitignore" << 'EOF'
+
+# Claude Code project-local settings
+.claude/*
+
+# Exception: Committed plan files for idea shaping
+!.claude/plans/
+.claude/plans/*
+!.claude/plans/idea-*.md
+EOF
+      ISSUES_FIXED+=("Added .claude/* pattern to .gitignore")
+      return 1
+    fi
+  fi
+
+  return 0
+}
+
 # Get admin contact
 get_admin_contact() {
   local name email note
@@ -211,6 +269,7 @@ main() {
   # Run validations
   validate_cli_tools
   validate_plugins
+  validate_gitignore_claude_plans
 
   # Determine outcome
   local exit_code=0

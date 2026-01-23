@@ -315,6 +315,40 @@ Based on type, create appropriate structure:
 └── .gitignore
 ```
 
+**Standard .gitignore content (all types):**
+```gitignore
+# Dependencies
+node_modules/
+vendor/
+venv/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Claude Code project-local settings
+.claude/*
+
+# Exception: Committed plan files for idea shaping
+!.claude/plans/
+.claude/plans/*
+!.claude/plans/idea-*.md
+```
+
 Add to README for experiments:
 ```markdown
 > ⚠️ **Experiment**: This repo has a 90-day lifecycle.

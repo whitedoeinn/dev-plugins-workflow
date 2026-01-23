@@ -8,6 +8,7 @@ All notable changes documented here.
 
 ### Added
 - **`scripts/get-google-drive-path.sh`** - Cross-platform Google Drive path detection utility. Detects WSL vs Mac/Linux and returns the correct base path. Accepts optional relative path argument. Promoted from idea #64
+- **Auto-fix `.gitignore` pattern in consuming projects** - `validate-env.sh` now detects and fixes broken `.claude/` patterns on session start, propagating the #59 fix to all wdi projects automatically
 
 ### Fixed
 - **Gitignore negation for `.claude/plans/`** - Pattern `.claude/` ignores the entire directory, so negation patterns like `!.claude/plans/idea-*.md` were never evaluated. Changed to `.claude/*` to allow selective tracking of shaping plan files. Unblocks `/wdi:shape-idea` workflow (#59)

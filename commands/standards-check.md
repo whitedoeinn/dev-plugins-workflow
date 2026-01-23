@@ -115,7 +115,31 @@ git log --oneline -5
 | Missing type prefix | Warning |
 | Subject too long | Info |
 
-### Step 6: Check Directory Structure
+### Step 6: Check .gitignore Pattern
+
+If `.gitignore` exists, validate the `.claude/` pattern:
+
+**Correct pattern:**
+```gitignore
+# Claude Code project-local settings
+.claude/*
+
+# Exception: Committed plan files for idea shaping
+!.claude/plans/
+.claude/plans/*
+!.claude/plans/idea-*.md
+```
+
+**Validation rules:**
+- Must NOT use `.claude/` (excludes everything, blocks plan file tracking)
+- Should use `.claude/*` with negation patterns for plans
+
+| Issue | Level | Fix |
+|-------|-------|-----|
+| Uses `.claude/` instead of `.claude/*` | Warning | Replace with correct pattern |
+| Missing `.claude/*` pattern | Info | Add pattern |
+
+### Step 7: Check Directory Structure
 
 **For mono-repos:**
 - `packages/` exists and has subdirectories
@@ -130,7 +154,7 @@ git log --oneline -5
 - No `.DS_Store` files (add to `.gitignore`)
 - No `node_modules/` or `venv/` committed
 
-### Step 7: Generate Report
+### Step 8: Generate Report
 
 ```
 Standards Check: {repo-name}
@@ -173,7 +197,7 @@ INFO (optional)
 ══════════════════════════════════════════════════════
 ```
 
-### Step 8: Auto-fix (if --fix)
+### Step 9: Auto-fix (if --fix)
 
 For issues that can be auto-fixed:
 
@@ -183,6 +207,7 @@ For issues that can be auto-fixed:
 | Missing `CLAUDE.md` | Create template |
 | Missing `docs/changelog.md` | Create template |
 | `.DS_Store` exists | Delete and add to `.gitignore` |
+| Broken `.claude/` pattern | Replace with `.claude/*` and plan exceptions |
 
 ```
 Auto-fixing...
@@ -195,7 +220,7 @@ Auto-fixing...
 Fixed 4 issues. 2 issues require manual attention.
 ```
 
-### Step 9: Exit Code
+### Step 10: Exit Code
 
 | Condition | Exit Code |
 |-----------|-----------|
