@@ -99,6 +99,8 @@ fi
 # Auto-update wdi plugin (skip in maintainer mode)
 if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
    [[ "$(jq -r '.name' "$PWD/.claude-plugin/plugin.json" 2>/dev/null)" != "wdi" ]]; then
-  # Update plugin to latest version
+  # Refresh marketplace clone first (git pulls the repo)
+  claude plugin marketplace update wdi-marketplace 2>/dev/null || true
+  # Then update plugin (now sees new version in marketplace)
   claude plugin update wdi@wdi-marketplace 2>/dev/null || true
 fi

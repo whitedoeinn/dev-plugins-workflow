@@ -11,6 +11,7 @@ All notable changes documented here.
 - **Auto-fix `.gitignore` pattern in consuming projects** - `validate-env.sh` now detects and fixes broken `.claude/` patterns on session start, propagating the #59 fix to all wdi projects automatically
 
 ### Fixed
+- **Plugin auto-update not propagating** - `claude plugin update` reads from a stale marketplace clone. Added `claude plugin marketplace update wdi-marketplace` before `plugin update` in `check-deps.sh` to git-pull the marketplace repo first, so the update command sees the latest version
 - **Gitignore negation for `.claude/plans/`** - Pattern `.claude/` ignores the entire directory, so negation patterns like `!.claude/plans/idea-*.md` were never evaluated. Changed to `.claude/*` to allow selective tracking of shaping plan files. Unblocks `/wdi:shape-idea` workflow (#59)
 - **Duplicate user-scope plugin entries** - The sledgehammer workaround (cache clear + install on every session) was creating duplicate user-scope entries. Now uses `plugin update` instead of `plugin install`, and properly deduplicates existing entries by keeping most recent
 - **BATS library detection** - Test runner now finds BATS helper libraries in `/usr/lib/bats` (Ubuntu apt install location) in addition to `/usr/local/lib`
