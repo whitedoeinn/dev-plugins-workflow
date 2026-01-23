@@ -6,6 +6,9 @@ All notable changes documented here.
 
 ## 2026-01-23
 
+### Added
+- **`scripts/get-google-drive-path.sh`** - Cross-platform Google Drive path detection utility. Detects WSL vs Mac/Linux and returns the correct base path. Accepts optional relative path argument. Promoted from idea #64
+
 ### Fixed
 - **Gitignore negation for `.claude/plans/`** - Pattern `.claude/` ignores the entire directory, so negation patterns like `!.claude/plans/idea-*.md` were never evaluated. Changed to `.claude/*` to allow selective tracking of shaping plan files. Unblocks `/wdi:shape-idea` workflow (#59)
 - **Duplicate user-scope plugin entries** - The sledgehammer workaround (cache clear + install on every session) was creating duplicate user-scope entries. Now uses `plugin update` instead of `plugin install`, and properly deduplicates existing entries by keeping most recent
