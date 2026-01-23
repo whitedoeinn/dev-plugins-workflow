@@ -157,6 +157,50 @@ test_plugin_json() {
 }
 
 # ============================================================================
+# Test: Version sync between plugin.json and marketplace.json
+# ============================================================================
+
+test_version_sync() {
+  log "Testing version sync..."
+
+  local plugin_json="${PROJECT_ROOT}/.claude-plugin/plugin.json"
+  local marketplace_json="${PROJECT_ROOT}/.claude-plugin/marketplace.json"
+
+  # Skip if either file is missing
+  if [[ ! -f "$plugin_json" ]]; then
+    fail "plugin.json not found"
+    return
+  fi
+
+  if [[ ! -f "$marketplace_json" ]]; then
+    # marketplace.json is optional
+    success "Version sync: marketplace.json not present (OK)"
+    return
+  fi
+
+  local plugin_version marketplace_version
+
+  plugin_version=$(jq -r '.version' "$plugin_json" 2>/dev/null)
+  marketplace_version=$(jq -r '.plugins[0].version' "$marketplace_json" 2>/dev/null)
+
+  if [[ -z "$plugin_version" ]] || [[ "$plugin_version" == "null" ]]; then
+    fail "Version sync: plugin.json has no version"
+    return
+  fi
+
+  if [[ -z "$marketplace_version" ]] || [[ "$marketplace_version" == "null" ]]; then
+    fail "Version sync: marketplace.json has no version"
+    return
+  fi
+
+  if [[ "$plugin_version" == "$marketplace_version" ]]; then
+    success "Version sync: plugin.json ($plugin_version) == marketplace.json ($marketplace_version)"
+  else
+    fail "Version sync: plugin.json ($plugin_version) != marketplace.json ($marketplace_version)"
+  fi
+}
+
+# ============================================================================
 # Test: hooks.json is valid
 # ============================================================================
 
@@ -289,6 +333,7 @@ log "Running integration tests..."
 echo ""
 
 test_plugin_json
+test_version_sync
 test_hooks_json
 test_env_baseline
 test_command_files

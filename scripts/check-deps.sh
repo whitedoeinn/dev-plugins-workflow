@@ -56,39 +56,49 @@ if [[ "$REPO_NAME" == wdi-* ]]; then
   echo "Note: Repo '$REPO_NAME' uses deprecated wdi- prefix. See docs/standards/REPO-STANDARDS.md"
 fi
 
-# Check for duplicate scope installations (user + project = bad)
-# User scope is preferred; auto-remove project scope if both exist
+# Clean up duplicate plugin entries in registry
 # Source of truth is ~/.claude/plugins/installed_plugins.json
 INSTALLED_PLUGINS="$HOME/.claude/plugins/installed_plugins.json"
 
 if [[ -f "$INSTALLED_PLUGINS" ]] && command -v jq &>/dev/null; then
-  # Count how many wdi installations exist (user + project = 2+)
   WDI_COUNT=$(jq -r '.plugins["wdi@wdi-marketplace"] | length' "$INSTALLED_PLUGINS" 2>/dev/null || echo "0")
   HAS_USER=$(jq -e '.plugins["wdi@wdi-marketplace"][] | select(.scope == "user")' "$INSTALLED_PLUGINS" &>/dev/null && echo "yes" || echo "no")
   HAS_PROJECT=$(jq -e '.plugins["wdi@wdi-marketplace"][] | select(.scope == "project")' "$INSTALLED_PLUGINS" &>/dev/null && echo "yes" || echo "no")
 
+  NEEDS_CLEANUP="no"
+  CLEANUP_REASON=""
+
+  # Case 1: Both user and project scope (remove project scope)
   if [[ "$HAS_USER" == "yes" ]] && [[ "$HAS_PROJECT" == "yes" ]]; then
-    echo "Detected duplicate wdi installation (user + project scope)"
-    echo "  Auto-removing project-scope entries from registry..."
-    # Remove project-scope entries, keeping only user-scope
-    jq '.plugins["wdi@wdi-marketplace"] = [.plugins["wdi@wdi-marketplace"][] | select(.scope == "user")]' \
-      "$INSTALLED_PLUGINS" > "${INSTALLED_PLUGINS}.tmp" && \
+    NEEDS_CLEANUP="yes"
+    CLEANUP_REASON="user + project scope"
+  fi
+
+  # Case 2: Multiple user-scope entries (keep most recent)
+  if [[ "$WDI_COUNT" -gt 1 ]] && [[ "$HAS_PROJECT" != "yes" ]]; then
+    NEEDS_CLEANUP="yes"
+    CLEANUP_REASON="$WDI_COUNT duplicate user-scope entries"
+  fi
+
+  if [[ "$NEEDS_CLEANUP" == "yes" ]]; then
+    echo "Cleaning wdi registry ($CLEANUP_REASON)..."
+    # Keep only the most recent user-scope entry
+    jq '
+      .plugins["wdi@wdi-marketplace"] = [
+        [.plugins["wdi@wdi-marketplace"][]? | select(.scope == "user")]
+        | sort_by(.installedAt) | last // empty
+      ] | map(select(. != null))
+    ' "$INSTALLED_PLUGINS" > "${INSTALLED_PLUGINS}.tmp" && \
       mv "${INSTALLED_PLUGINS}.tmp" "$INSTALLED_PLUGINS"
     # Also remove any stale project settings.json
     rm -f "${PWD}/.claude/settings.json" 2>/dev/null || true
-    echo "  Done. Restart Claude to use user-scope wdi only."
+    echo "  Done. Restart Claude to load clean registry."
   fi
 fi
 
 # Auto-update wdi plugin (skip in maintainer mode)
 if [[ ! -f "$PWD/.claude-plugin/plugin.json" ]] || \
    [[ "$(jq -r '.name' "$PWD/.claude-plugin/plugin.json" 2>/dev/null)" != "wdi" ]]; then
-  # Detect installation scope (user = global, project = local)
-  WDI_SCOPE=$("${SCRIPT_DIR}/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
-
-  # Delete stale cache and reinstall (workaround for plugin update cache bug)
-  # See: https://github.com/anthropics/claude-code/issues/XXX
-  rm -rf ~/.claude/plugins/cache/wdi-marketplace/ 2>/dev/null || true
-  claude plugin marketplace update wdi-marketplace 2>/dev/null || true
-  claude plugin install wdi@wdi-marketplace --scope "$WDI_SCOPE" 2>/dev/null || true
+  # Update plugin to latest version
+  claude plugin update wdi@wdi-marketplace 2>/dev/null || true
 fi

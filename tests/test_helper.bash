@@ -12,6 +12,7 @@ SCRIPTS_DIR="${PROJECT_ROOT}/scripts"
 # Try multiple locations for flexibility
 load_bats_libs() {
   local lib_paths=(
+    "/usr/lib/bats"
     "/usr/local/lib"
     "${HOME}/.local/lib"
     "${BATS_LIB_PATH:-}"

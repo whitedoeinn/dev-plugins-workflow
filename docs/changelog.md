@@ -4,6 +4,19 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-23
+
+### Fixed
+- **Duplicate user-scope plugin entries** - The sledgehammer workaround (cache clear + install on every session) was creating duplicate user-scope entries. Now uses `plugin update` instead of `plugin install`, and properly deduplicates existing entries by keeping most recent
+- **BATS library detection** - Test runner now finds BATS helper libraries in `/usr/lib/bats` (Ubuntu apt install location) in addition to `/usr/local/lib`
+
+### Added
+- **`plugin-dedup.bats`** - Unit tests for jq deduplication logic that cleans plugin registry (#52 kept breaking)
+- **`bump-version.bats`** - Unit tests for version bump script, including sync verification between plugin.json and marketplace.json
+- **Version sync integration test** - Catches plugin.json/marketplace.json version drift before commit
+
+---
+
 ## 2026-01-22
 
 ### Documentation

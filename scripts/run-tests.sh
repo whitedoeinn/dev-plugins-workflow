@@ -64,13 +64,25 @@ check_bats() {
 
 # Check for BATS helper libraries
 check_bats_libs() {
-  local libs_path="${BATS_LIB_PATH:-/usr/local/lib}"
+  local libs_path=""
+
+  # Try multiple locations
+  for try_path in "/usr/lib/bats" "/usr/local/lib" "${BATS_LIB_PATH:-}"; do
+    if [[ -n "$try_path" ]] && [[ -d "${try_path}/bats-support" ]]; then
+      libs_path="$try_path"
+      export BATS_LIB_PATH="$libs_path"
+      break
+    fi
+  done
 
   # On macOS with Homebrew, check the brew prefix
-  if [[ "$(uname)" == "Darwin" ]] && command -v brew &> /dev/null; then
+  if [[ -z "$libs_path" ]] && [[ "$(uname)" == "Darwin" ]] && command -v brew &> /dev/null; then
     libs_path="$(brew --prefix)/lib"
     export BATS_LIB_PATH="$libs_path"
   fi
+
+  # Default fallback
+  libs_path="${libs_path:-/usr/local/lib}"
 
   local missing=()
 

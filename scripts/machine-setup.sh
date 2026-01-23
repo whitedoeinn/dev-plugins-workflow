@@ -42,19 +42,25 @@ claude plugin marketplace update wdi-marketplace 2>/dev/null || true
 claude plugin marketplace update every-marketplace 2>/dev/null || true
 echo "  Done"
 
-# Step 3: Clean installed_plugins.json - remove ALL project-scope entries
+# Step 3: Clean installed_plugins.json - remove project-scope and deduplicate
 echo ""
-echo "Step 3: Cleaning plugin registry (removing project-scope entries)..."
+echo "Step 3: Cleaning plugin registry..."
 INSTALLED_PLUGINS="$HOME/.claude/plugins/installed_plugins.json"
 
 if [[ -f "$INSTALLED_PLUGINS" ]]; then
-  # Remove all project-scope entries for both plugins
+  # Keep only the most recent user-scope entry for each plugin (removes project-scope AND duplicates)
   jq '
-    .plugins["wdi@wdi-marketplace"] = [.plugins["wdi@wdi-marketplace"][]? | select(.scope == "user")] |
-    .plugins["compound-engineering@every-marketplace"] = [.plugins["compound-engineering@every-marketplace"][]? | select(.scope == "user")]
+    .plugins["wdi@wdi-marketplace"] = (
+      [.plugins["wdi@wdi-marketplace"][]? | select(.scope == "user")]
+      | sort_by(.installedAt) | if length > 0 then [last] else [] end
+    ) |
+    .plugins["compound-engineering@every-marketplace"] = (
+      [.plugins["compound-engineering@every-marketplace"][]? | select(.scope == "user")]
+      | sort_by(.installedAt) | if length > 0 then [last] else [] end
+    )
   ' "$INSTALLED_PLUGINS" > "${INSTALLED_PLUGINS}.tmp" && mv "${INSTALLED_PLUGINS}.tmp" "$INSTALLED_PLUGINS"
 
-  echo "  Removed project-scope entries from registry"
+  echo "  Cleaned registry (kept most recent user-scope entry per plugin)"
 else
   echo "  No existing registry (fresh install)"
 fi
@@ -77,11 +83,29 @@ for project in "${PROJECTS[@]}"; do
 done
 echo "  Done"
 
-# Step 5: Install plugins at user scope (global)
+# Step 5: Ensure plugins are installed at user scope (install if missing, update if present)
 echo ""
-echo "Step 5: Installing plugins at user scope..."
-claude plugin install compound-engineering@every-marketplace --scope user
-claude plugin install wdi@wdi-marketplace --scope user
+echo "Step 5: Ensuring plugins at user scope..."
+
+# Check what's already installed
+CE_INSTALLED=$(jq -r '.plugins["compound-engineering@every-marketplace"] | length' "$INSTALLED_PLUGINS" 2>/dev/null || echo "0")
+WDI_INSTALLED=$(jq -r '.plugins["wdi@wdi-marketplace"] | length' "$INSTALLED_PLUGINS" 2>/dev/null || echo "0")
+
+if [[ "$CE_INSTALLED" == "0" ]]; then
+  echo "  Installing compound-engineering..."
+  claude plugin install compound-engineering@every-marketplace --scope user
+else
+  echo "  Updating compound-engineering..."
+  claude plugin update compound-engineering@every-marketplace 2>/dev/null || true
+fi
+
+if [[ "$WDI_INSTALLED" == "0" ]]; then
+  echo "  Installing wdi..."
+  claude plugin install wdi@wdi-marketplace --scope user
+else
+  echo "  Updating wdi..."
+  claude plugin update wdi@wdi-marketplace 2>/dev/null || true
+fi
 echo "  Done"
 
 # Step 6: Create global CLAUDE.md with environment standards
