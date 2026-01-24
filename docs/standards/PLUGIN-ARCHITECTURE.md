@@ -62,17 +62,17 @@ All commands, skills, and hooks use domain prefixes for organization.
 
 ## Directory Structure
 
-### Plugin Repository (dev-plugins)
+### Plugin Repository (dev-plugins-workflow)
 
 ```
-dev-plugins/
+dev-plugins-workflow/
 ├── .claude-plugin/
 │   ├── plugin.json           # name: "wdi"
 │   └── marketplace.json
 ├── commands/                  # Flat, domain-prefixed
-│   ├── workflows-feature.md
-│   ├── workflows-milestone.md
-│   ├── workflows-enhanced-ralph.md
+│   ├── workflow-feature.md
+│   ├── workflow-milestone.md
+│   ├── workflow-enhanced-ralph.md
 │   ├── standards-new-repo.md
 │   ├── standards-check.md
 │   ├── standards-update.md
@@ -101,7 +101,7 @@ dev-plugins/
 
 | Domain | Pattern | Example | Invocation |
 |--------|---------|---------|------------|
-| Workflows | `workflows-{name}.md` | `workflows-feature.md` | `/wdi:workflows-feature` |
+| Workflows | `workflow-{name}.md` | `workflow-feature.md` | `/wdi:workflow-feature` |
 | Standards | `standards-{name}.md` | `standards-new-repo.md` | `/wdi:standards-new-repo` |
 | Frontend | `frontend-{name}.md` | `frontend-component.md` | `/wdi:frontend-component` |
 | Marketing | `mktops-{name}.md` | `mktops-campaign.md` | `/wdi:mktops-campaign` |
@@ -221,8 +221,8 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 ### From wdi-workflows to wdi
 
 1. **Rename commands:**
-   - `feature.md` → `workflows-feature.md`
-   - `setup.md` → `workflows-setup.md`
+   - `feature.md` → `workflow-feature.md`
+   - `setup.md` → `workflow-setup.md`
    - etc. for all commands
 
 2. **Rename skills:**
@@ -254,14 +254,14 @@ subagent_type='compound-engineering:research:repo-research-analyst'
 
 ```
 ✗ commands/workflows/feature.md  → won't be discovered
-✓ commands/workflows-feature.md  → works correctly
+✓ commands/workflow-feature.md   → works correctly
 ```
 
 ### Don't: Use Ambiguous Names
 
 ```
-✗ setup.md       → which domain?
-✓ workflows-setup.md  → clear ownership
+✗ setup.md            → which domain?
+✓ workflow-setup.md   → clear ownership
 ```
 
 ---

@@ -947,7 +947,7 @@ if (!validateTaskData(data)) {
 
 ### Enhanced Ralph Detection
 
-When `/wdi:workflows-enhanced-ralph` detects UI tasks, it:
+When `/wdi:workflow-enhanced-ralph` detects UI tasks, it:
 
 1. References `FRONTEND-STANDARDS.md` for conventions
 2. Invokes `frontend-design` skill for implementation
@@ -967,7 +967,7 @@ UI tasks pass through:
 2. **Verification**: `playwright-test` for rendering
 3. **Review**: `design-implementation-reviewer` for visual quality
 
-See [workflows-enhanced-ralph.md](../../commands/workflows-enhanced-ralph.md) for full workflow.
+See [workflow-enhanced-ralph.md](../../commands/workflow-enhanced-ralph.md) for full workflow.
 
 ---
 

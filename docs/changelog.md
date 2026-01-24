@@ -6,7 +6,18 @@ All notable changes documented here.
 
 ## 2026-01-23
 
+### Breaking Changes
+- **Command rename: `workflows-*` → `workflow-*` (v0.4.0)** - Renamed all workflow commands from plural to singular for consistency with skills and repository name:
+  - `/wdi:workflows-feature` → `/wdi:workflow-feature`
+  - `/wdi:workflows-setup` → `/wdi:workflow-setup`
+  - `/wdi:workflows-milestone` → `/wdi:workflow-milestone`
+  - `/wdi:workflows-enhanced-ralph` → `/wdi:workflow-enhanced-ralph`
+
+  **Migration:** Run `./scripts/force-update-plugin.sh` to force-update, then restart Claude Code twice. See #78
+
 ### Added
+- **`scripts/force-update-plugin.sh`** - Bulletproof migration script for breaking changes. Clears cache, refreshes marketplace, reinstalls plugin fresh. Use when automatic updates don't propagate
+
 - **`/wdi:frontend-setup` command** - Install WDI design tokens to consuming projects following the shadcn copy pattern. Downloads from GitHub raw URLs (stable, version-agnostic), copies to project with version metadata, shows diff before updates. Includes security fixes: secure temp file handling with mktemp, portable date format. Addresses #77
 - **Frontend Standards** - Comprehensive `docs/standards/FRONTEND-STANDARDS.md` documenting JSON Schema-first development, design tokens, typography/spacing scales, component architecture, form patterns, accessibility (WCAG 2.1 AA), and theme system. Addresses #65-#75
 - **Design Tokens** - Portable `assets/tokens/tokens.css` and `tokens.json` with 6 minimal themes (precision, warmth, sophistication, boldness, utility, data). Extracted from google-ads, filtered to proven patterns only
@@ -158,7 +169,7 @@ All notable changes documented here.
 ## 2026-01-15
 
 ### Fixed
-- **Stale file references (v0.2.1)** - Fixed all references to old command/skill paths leftover from v1.0.0 rename. Updated `commands/feature.md` → `commands/workflows-feature.md`, `skills/commit/` → `skills/workflow-commit/`, etc. across 10 files
+- **Stale file references (v0.2.1)** - Fixed all references to old command/skill paths leftover from v1.0.0 rename. Updated `commands/feature.md` → `commands/workflow-feature.md`, `skills/commit/` → `skills/workflow-commit/`, etc. across 10 files
 
 ### Added
 - **CI drift detection** - GitHub Actions now validates documentation drift and dependency map on every push. Catches stale file references before merge
@@ -172,7 +183,7 @@ All notable changes documented here.
 
 ### Breaking Changes
 - **Plugin renamed to `wdi` (v1.0.0)** - Major architecture change implementing the One Internal Plugin Policy. All WDI internal tooling now lives in a single plugin named `wdi` instead of `wdi-workflows`. Commands use domain-prefixed naming:
-  - `/wdi-workflows:feature` → `/wdi:workflows-feature`
+  - `/wdi-workflows:feature` → `/wdi:workflow-feature`
   - `/wdi-workflows:new-repo` → `/wdi:standards-new-repo`
   - Skills: `commit` → `workflow-commit`, `auto-update-docs` → `workflow-auto-docs`
 
@@ -183,7 +194,7 @@ All notable changes documented here.
 - **Project-local plugins milestone** - Tracks the architectural decision and implementation
 
 ### Changed
-- **Idea capture mode (v0.1.7)** - New `--idea` flag for `/wdi:workflows-feature` enables quick idea capture without implementation. Creates minimal idea file in `docs/product/ideas/` and draft GitHub issue with `idea` type label and `status:needs-shaping`. Includes `setup-labels.sh` script to create type labels and lifecycle labels (`status:needs-shaping`, `status:ready`, `appetite:*`, `needs:*`). Promote ideas to features when ready via `@docs/product/ideas/{slug}.md`
+- **Idea capture mode (v0.1.7)** - New `--idea` flag for `/wdi:workflow-feature` enables quick idea capture without implementation. Creates minimal idea file in `docs/product/ideas/` and draft GitHub issue with `idea` type label and `status:needs-shaping`. Includes `setup-labels.sh` script to create type labels and lifecycle labels (`status:needs-shaping`, `status:ready`, `appetite:*`, `needs:*`). Promote ideas to features when ready via `@docs/product/ideas/{slug}.md`
 - **Cleaner CLI flags (v0.1.6)** - Renamed feature command flag `--plan-only` → `--plan` (simpler). Added `-y` short form for `--yes`. Old flag still works as alias for backwards compatibility
 
 ---

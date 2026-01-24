@@ -16,7 +16,7 @@ Projects become fully self-contained with zero global plugin state for internal 
 **One Internal Plugin Policy:**
 - All WDI internal tooling lives in ONE plugin named `wdi`
 - External dependencies (compound-engineering) stay global via marketplace
-- Domain-prefixed naming: `workflows-*`, `standards-*` for commands/skills
+- Domain-prefixed naming: `workflow-*`, `standards-*` for commands/skills
 - This simplifies versioning, installation, and prevents namespace collisions
 
 See `docs/standards/PLUGIN-ARCHITECTURE.md` for full details.
@@ -26,7 +26,7 @@ See `docs/standards/PLUGIN-ARCHITECTURE.md` for full details.
 ### What's Included
 
 - Plugin rename: `wdi-workflows` → `wdi` (v1.0.0)
-- Domain-prefixed command naming (e.g., `/wdi:workflows-feature`)
+- Domain-prefixed command naming (e.g., `/wdi:workflow-feature`)
 - Domain-prefixed skill naming (e.g., `workflow-commit`)
 - Marketplace-based installation via `install.sh`
 - compound-engineering declared as external dependency (marketplace-based)

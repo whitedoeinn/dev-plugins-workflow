@@ -134,7 +134,7 @@ Use issue body to link scope relationships:
 - #57 (Epic: Adopt Branching & PR Workflow)
 
 ## Children
-- [ ] #58 - Update workflows-feature.md
+- [ ] #58 - Update workflow-feature.md
 - [ ] #59 - Update commit skill
 ```
 

@@ -36,7 +36,7 @@ No Unshaped Ideas
 
 No issues with status:needs-shaping label found.
 
-To capture a new idea: /wdi:workflows-feature --idea
+To capture a new idea: /wdi:workflow-feature --idea
 ```
 
 **Exit here if no ideas to triage.**
@@ -284,7 +284,7 @@ For issues marked `individual-promote`:
 
    **Promote with:**
    ```
-   /wdi:workflows-feature --promote #{number}
+   /wdi:workflow-feature --promote #{number}
    ```
 
    *Tagged by `/wdi:triage-ideas`*
@@ -390,8 +390,8 @@ Next Steps by Category:
     → Answer: which caching strategy?
 
 ✅ Ready to Promote (run promotion command):
-  #20 - /wdi:workflows-feature --promote #20
-  #21 - /wdi:workflows-feature --promote #21
+  #20 - /wdi:workflow-feature --promote #20
+  #21 - /wdi:workflow-feature --promote #21
 
 📚 Research Initiatives (structured investigation):
   #99 - Research: Authentication improvements
@@ -488,10 +488,10 @@ Triage Complete
 ## Integration Points
 
 ### Input From
-- `/wdi:workflows-feature --idea` - Creates ideas that get triaged here
+- `/wdi:workflow-feature --idea` - Creates ideas that get triaged here
 
 ### Output To
-- `/wdi:workflows-feature --promote` - Promotes ready ideas to features
+- `/wdi:workflow-feature --promote` - Promotes ready ideas to features
 - `/compound-engineering:workflows:plan` - Kicks off research for research initiatives
 
 ---

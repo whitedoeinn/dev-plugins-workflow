@@ -29,12 +29,12 @@ cd dev-plugins-workflow
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflows-feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
-| `/wdi:workflows-feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
-| `/wdi:workflows-feature --plan` | Stop after planning phase |
-| `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
-| `/wdi:workflows-milestone` | Create and manage milestones that group related features for delivery |
-| `/wdi:workflows-setup` | Set up and verify plugin dependencies |
+| `/wdi:workflow-feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
+| `/wdi:workflow-feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
+| `/wdi:workflow-feature --plan` | Stop after planning phase |
+| `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi:workflow-milestone` | Create and manage milestones that group related features for delivery |
+| `/wdi:workflow-setup` | Set up and verify plugin dependencies |
 | `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
 | `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
 
@@ -125,7 +125,7 @@ See [troubleshooting.md](docs/troubleshooting.md) for more details.
 
 ## Workflow Details
 
-### /wdi:workflows-feature
+### /wdi:workflow-feature
 
 Orchestrates the complete feature development cycle:
 
@@ -235,7 +235,7 @@ Quick reference: [knowledge/standards-summary.md](knowledge/standards-summary.md
 ### Key Conventions
 
 - **Repos:** No `wdi-` prefix (org name provides context)
-- **Commands:** Use `/wdi:*` prefix with domain-prefixed names (e.g., `/wdi:workflows-feature`)
+- **Commands:** Use `/wdi:*` prefix with domain-prefixed names (e.g., `/wdi:workflow-feature`)
 - **Mono-repos:** Cluster by domain (`marketing-ops`, `business-ops`)
 - **Plugins:** Standalone repos (`dev-plugins-*`)
 - **Branches:** Workflow uses main; if using branches manually: `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/`
@@ -254,7 +254,7 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/mai
 \`\`\`
 
 Available commands:
-- `/wdi:workflows-feature` - Full feature workflow
+- `/wdi:workflow-feature` - Full feature workflow
 - `/wdi:standards-check` - Validate against WDI standards
 
 Skills (auto-invoked):

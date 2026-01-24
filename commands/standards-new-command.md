@@ -443,7 +443,7 @@ Commit? (y)es, (r)eview, (a)bort: y
 
 ## Notes
 
-- Commands use domain-prefixed naming: `workflows-*`, `standards-*` (per PLUGIN-ARCHITECTURE.md)
+- Commands use domain-prefixed naming: `workflow-*`, `standards-*` (per PLUGIN-ARCHITECTURE.md)
 - Command names should be lowercase with hyphens
 - Short descriptions should be under 80 characters
 - Complex commands should follow the interview-driven pattern

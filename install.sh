@@ -74,11 +74,11 @@ if [ "$1" = "--show-commands" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflows-feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi:workflows-feature --idea` - Quick idea capture (creates idea file + draft issue)
-- `/wdi:workflows-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
-- `/wdi:workflows-milestone` - Create and execute milestone-based feature groupings
-- `/wdi:workflows-setup` - Set up and verify plugin dependencies
+- `/wdi:workflow-feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi:workflow-feature --idea` - Quick idea capture (creates idea file + draft issue)
+- `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
+- `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
+- `/wdi:workflow-setup` - Set up and verify plugin dependencies
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
@@ -235,11 +235,11 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflows-feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi:workflows-feature --idea` - Quick idea capture (creates idea file + draft issue)
-- `/wdi:workflows-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
-- `/wdi:workflows-milestone` - Create and execute milestone-based feature groupings
-- `/wdi:workflows-setup` - Set up and verify plugin dependencies
+- `/wdi:workflow-feature` - Full feature workflow (research → plan → work → review → compound)
+- `/wdi:workflow-feature --idea` - Quick idea capture (creates idea file + draft issue)
+- `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
+- `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
+- `/wdi:workflow-setup` - Set up and verify plugin dependencies
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
@@ -279,10 +279,10 @@ fi
 echo ""
 echo "Available commands:"
 echo "  Workflow:"
-echo "    /wdi:workflows-feature         - Full feature workflow"
-echo "    /wdi:workflows-feature --idea  - Quick idea capture"
-echo "    /wdi:workflows-enhanced-ralph  - Quality-gated feature execution"
-echo "    /wdi:workflows-milestone       - Create/execute milestone groupings"
+echo "    /wdi:workflow-feature         - Full feature workflow"
+echo "    /wdi:workflow-feature --idea  - Quick idea capture"
+echo "    /wdi:workflow-enhanced-ralph  - Quality-gated feature execution"
+echo "    /wdi:workflow-milestone       - Create/execute milestone groupings"
 echo "  Skills (auto-invoked):"
 echo "    workflow-commit                - Say 'commit these changes' to trigger"
 echo "    workflow-auto-docs             - Say 'update the docs' to trigger"

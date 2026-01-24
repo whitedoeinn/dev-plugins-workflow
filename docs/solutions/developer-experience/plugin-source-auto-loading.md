@@ -94,7 +94,7 @@ To confirm the plugin is loading correctly in this repo:
 # (visible at session start)
 
 # Commands should be available
-# Try: /wdi:workflows-setup
+# Try: /wdi:workflow-setup
 ```
 
 ## Prevention

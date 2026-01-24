@@ -48,7 +48,7 @@ The script ensures consistent configuration across all your development machines
 ### Verify Installation
 
 ```
-/wdi:workflows-setup
+/wdi:workflow-setup
 ```
 
 This checks that all dependencies are configured correctly.
@@ -97,7 +97,7 @@ You interact with wdi commands. They call compound-engineering under the hood.
 
 ## The Full Feature Workflow
 
-`/wdi:workflows-feature` runs these phases:
+`/wdi:workflow-feature` runs these phases:
 
 ```
 Interview → Pre-flight → Plan → Work → Review → Compound
@@ -169,7 +169,7 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 
 ```bash
 # Capture an idea quickly
-/wdi:workflows-feature --idea
+/wdi:workflow-feature --idea
 
 # Shape an idea from business perspective
 /wdi:shape-idea #45 --perspective business
@@ -178,16 +178,16 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 /wdi:shape-idea #45 --perspective technical
 
 # Full workflow (most common)
-/wdi:workflows-feature
+/wdi:workflow-feature
 
 # Promote a shaped idea to implementation
-/wdi:workflows-feature --promote #123
+/wdi:workflow-feature --promote #123
 
 # Get a plan but don't implement yet
-/wdi:workflows-feature --plan
+/wdi:workflow-feature --plan
 
 # Auto-continue without pauses (experienced users)
-/wdi:workflows-feature --yes
+/wdi:workflow-feature --yes
 ```
 
 ---
@@ -269,7 +269,7 @@ Let's add a feature to this repo. Follow along:
 ### 1. Start the workflow
 
 ```
-/wdi:workflows-feature
+/wdi:workflow-feature
 ```
 
 Claude will ask:
@@ -326,11 +326,11 @@ Run `gh auth login` and follow prompts.
 
 | Task | Command |
 |------|---------|
-| Capture idea | `/wdi:workflows-feature --idea` |
+| Capture idea | `/wdi:workflow-feature --idea` |
 | Shape idea | `/wdi:shape-idea #N --perspective business` |
-| Full workflow | `/wdi:workflows-feature` |
-| Plan only | `/wdi:workflows-feature --plan` |
-| Promote idea | `/wdi:workflows-feature --promote #123` |
+| Full workflow | `/wdi:workflow-feature` |
+| Plan only | `/wdi:workflow-feature --plan` |
+| Promote idea | `/wdi:workflow-feature --promote #123` |
 | Commit changes | "commit these changes" |
 | Check standards | `/wdi:standards-check` |
 | New repo | `/wdi:standards-new-repo` |

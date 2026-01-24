@@ -26,9 +26,9 @@ The command uses `### Phase N:` (H3 with "Phase") but other commands in the plug
 ```
 
 **Other commands:**
-- `workflows-feature.md`: `## Phase N:` (H2 with Phase)
+- `workflow-feature.md`: `## Phase N:` (H2 with Phase)
 - `standards-check.md`: `### Step N:` (H3 with Step)
-- `workflows-enhanced-ralph.md`: `## Step N:` (H2 with Step)
+- `workflow-enhanced-ralph.md`: `## Step N:` (H2 with Step)
 
 ## Proposed Solutions
 
@@ -41,7 +41,7 @@ The command uses `### Phase N:` (H3 with "Phase") but other commands in the plug
 
 ### Option B: Change to `## Phase N:`
 
-**Pros:** Matches `workflows-feature.md`
+**Pros:** Matches `workflow-feature.md`
 **Cons:** May affect document hierarchy
 **Effort:** Minimal
 **Risk:** None
@@ -77,4 +77,4 @@ The command uses `### Phase N:` (H3 with "Phase") but other commands in the plug
 ## Resources
 
 - Reference: `commands/standards-check.md` for Step pattern
-- Reference: `commands/workflows-feature.md` for Phase pattern
+- Reference: `commands/workflow-feature.md` for Phase pattern

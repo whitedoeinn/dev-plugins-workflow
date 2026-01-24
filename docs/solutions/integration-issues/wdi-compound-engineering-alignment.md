@@ -90,7 +90,7 @@ wdi (orchestration layer)
 
 | File | Changes |
 |------|---------|
-| `commands/workflows-feature.md` | Removed phases 3/3.5, rewrote phases 5/6, delegation notes |
+| `commands/workflow-feature.md` | Removed phases 3/3.5, rewrote phases 5/6, delegation notes |
 | `CLAUDE.md` | Updated workflow docs, promotion as onramp |
 | `.claude-plugin/plugin.json` | Version 0.3.0 → 0.3.1 |
 | `docs/changelog.md` | Added alignment entry |
@@ -188,7 +188,7 @@ The wdi alignment reduced code by 264 lines while gaining capabilities (12+ revi
 **Meta-lesson:** When implementing a plan, cross-reference prior decisions (especially deferred work tracked in issues). The plan may contain assumptions that contradict earlier decisions.
 
 **Why this wasn't caught earlier:**
-- We implemented directly from a plan, not via `/wdi:workflows-feature`
+- We implemented directly from a plan, not via `/wdi:workflow-feature`
 - The Review phase (which runs 12+ agents) was skipped
 - Only the commit skill ran, which has lighter review
 

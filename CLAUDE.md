@@ -30,12 +30,12 @@ The function pipes input through `fabric-ai --pattern improve_prompt`, streams o
 ## Structure
 
 ```
-dev-plugins/
+dev-plugins-workflow/
 ├── commands/                        # Markdown-based command definitions
-│   ├── workflows-feature.md         # /wdi:workflows-feature
-│   ├── workflows-enhanced-ralph.md  # /wdi:workflows-enhanced-ralph
-│   ├── workflows-milestone.md       # /wdi:workflows-milestone
-│   ├── workflows-setup.md           # /wdi:workflows-setup
+│   ├── workflow-feature.md          # /wdi:workflow-feature
+│   ├── workflow-enhanced-ralph.md   # /wdi:workflow-enhanced-ralph
+│   ├── workflow-milestone.md        # /wdi:workflow-milestone
+│   ├── workflow-setup.md            # /wdi:workflow-setup
 │   ├── triage-ideas.md              # /wdi:triage-ideas
 │   ├── shape-idea.md                # /wdi:shape-idea
 │   ├── standards-new-repo.md        # /wdi:standards-new-repo
@@ -80,12 +80,12 @@ dev-plugins/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflows-feature` | Full feature workflow (interview → pre-flight → plan → work → review → compound) |
-| `/wdi:workflows-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
-| `/wdi:workflows-feature --plan` | Stop after planning phase |
-| `/wdi:workflows-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
-| `/wdi:workflows-milestone` | Create and execute milestone-based feature groupings |
-| `/wdi:workflows-setup` | Verify dependencies and installation status |
+| `/wdi:workflow-feature` | Full feature workflow (interview → pre-flight → plan → work → review → compound) |
+| `/wdi:workflow-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
+| `/wdi:workflow-feature --plan` | Stop after planning phase |
+| `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
+| `/wdi:workflow-milestone` | Create and execute milestone-based feature groupings |
+| `/wdi:workflow-setup` | Verify dependencies and installation status |
 | `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
 | `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
 
@@ -166,7 +166,7 @@ wdi update           # Update CLI to latest version
 Use `--idea` mode to quickly capture ideas without implementing them:
 
 ```bash
-/wdi:workflows-feature --idea
+/wdi:workflow-feature --idea
 ```
 
 **Creates:** GitHub issue with `idea` label and `status:needs-shaping`
@@ -175,7 +175,7 @@ Ideas flow through these stages:
 - **Capture:** Issue body contains problem, appetite, rough solution, open questions
 - **Shape:** Use `/wdi:shape-idea` for iterative exploration (or add comments with prefixes)
 - **Triage:** Periodically run `/wdi:triage-ideas` to review unshaped ideas
-- **Promote:** When ready, run `/wdi:workflows-feature --promote #123`
+- **Promote:** When ready, run `/wdi:workflow-feature --promote #123`
 
 ### Shaping with Plan Files (Recommended)
 
@@ -241,7 +241,7 @@ When promoting, the workflow reads context from:
 
 **Promote an idea to a feature:**
 ```bash
-/wdi:workflows-feature --promote #123
+/wdi:workflow-feature --promote #123
 ```
 
 > **Planned:** PR-based Review phase is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33). Currently all commits go directly to main with quality gates.
@@ -291,7 +291,7 @@ When working in WDI projects, follow these conventions:
 |-------|------------|
 | Repo names | No `wdi-` prefix (org provides context) |
 | Command prefix | `/wdi:` (single internal plugin) |
-| Domain prefixes | `workflows-`, `standards-`, `frontend-`, etc. |
+| Domain prefixes | `workflow-`, `standards-`, `frontend-`, etc. |
 | Mono-repos | `{cluster}-ops` (marketing-ops, business-ops) |
 | Branches | `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/` |
 | Commits | `feat:`, `fix:`, `docs:`, `refactor:`, `chore:` |
@@ -313,8 +313,8 @@ When working in WDI projects, follow these conventions:
 
 ## How It Works
 
-Claude Code plugins use markdown files as command definitions. When you run `/wdi:workflows-feature`:
-1. Claude Code finds `commands/workflows-feature.md` via `plugin.json`
+Claude Code plugins use markdown files as command definitions. When you run `/wdi:workflow-feature`:
+1. Claude Code finds `commands/workflow-feature.md` via `plugin.json`
 2. Loads the markdown as instructions
 3. Executes the workflow steps described in the markdown
 

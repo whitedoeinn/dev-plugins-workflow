@@ -7,7 +7,7 @@ tags:
   - github
   - documentation
   - workflow
-component: workflows-feature.md
+component: workflow-feature.md
 severity: low
 problem_type: developer-experience
 symptoms:
@@ -17,7 +17,7 @@ symptoms:
 root_cause: No bidirectional linking between solution docs and GitHub issues
 solution_approach: Add Step 1.5 to post learnings comment after compound completes
 files_modified:
-  - commands/workflows-feature.md
+  - commands/workflow-feature.md
 related_issues:
   - "#49"
 learnings:
@@ -37,7 +37,7 @@ After `/workflows:compound` generates a solution doc in `docs/solutions/`, the l
 
 ## Solution
 
-Add Step 1.5 to Phase 6 of `/wdi:workflows-feature` that:
+Add Step 1.5 to Phase 6 of `/wdi:workflow-feature` that:
 1. Reads the generated solution doc
 2. Extracts learnings from YAML frontmatter
 3. Posts a structured comment to the feature issue
@@ -48,7 +48,7 @@ This creates bidirectional linking:
 
 ## Implementation
 
-Added to `commands/workflows-feature.md` after Step 1 (compound) and before Step 2 (commit):
+Added to `commands/workflow-feature.md` after Step 1 (compound) and before Step 2 (commit):
 
 ```markdown
 ### Step 1.5: Add Learnings to Issue

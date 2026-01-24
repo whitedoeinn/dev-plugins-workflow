@@ -33,7 +33,7 @@ if jq -e '.dependencies.next' package.json > /dev/null 2>&1; then
 
 ### Option A: Add Phase 0 for pre-flight checks (Recommended)
 
-**Pros:** Consistent with other complex commands (workflows-feature has Pre-flight Checks)
+**Pros:** Consistent with other complex commands (workflow-feature has Pre-flight Checks)
 **Cons:** Adds a phase
 **Effort:** Small
 **Risk:** None
@@ -97,4 +97,4 @@ fi
 
 ## Resources
 
-- Similar pattern: `commands/workflows-feature.md` Phase 2: Pre-flight Checks
+- Similar pattern: `commands/workflow-feature.md` Phase 2: Pre-flight Checks

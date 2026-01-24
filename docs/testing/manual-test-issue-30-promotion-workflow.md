@@ -22,7 +22,7 @@ Use this checklist to manually verify the promotion workflow works as designed.
 
 ### Steps
 
-1. Run `/wdi:workflows-feature --idea`
+1. Run `/wdi:workflow-feature --idea`
 2. Answer the interview:
    - Title: "Test idea for manual verification"
    - Problem: "Testing that idea workflow creates issue only"
@@ -85,7 +85,7 @@ gh issue comment {number} --body "Blocked: Depends on issue #999"
 ### Steps
 
 1. Use the issue from Test 2 (with comments added)
-2. Run `/wdi:workflows-feature --promote #{issue-number}`
+2. Run `/wdi:workflow-feature --promote #{issue-number}`
 
 ### Expected Results
 
@@ -146,7 +146,7 @@ gh issue comment {number} --body "Decision: Use JSON for all config files"
 gh issue comment {number} --body "Decision: Use YAML for all config files"
 ```
 
-3. Run `/wdi:workflows-feature --promote #{issue-number}`
+3. Run `/wdi:workflow-feature --promote #{issue-number}`
 
 ### Expected Results
 
@@ -171,7 +171,7 @@ gh issue delete {number} --yes
 
 ### Steps
 
-1. Modify a command file (e.g., `commands/workflows-feature.md`)
+1. Modify a command file (e.g., `commands/workflow-feature.md`)
 2. Stage the changes
 3. Run the commit skill ("commit these changes")
 

@@ -68,7 +68,7 @@ These files reference all standards by design and don't need updating for indivi
 ## PROJECT-STRUCTURE.md
 
 **Enforced by:**
-- commands/workflows-feature.md (directory creation, docs/product layout)
+- commands/workflow-feature.md (directory creation, docs/product layout)
 - commands/standards-check.md (structure validation)
 - commands/standards-new-repo.md (structure templates)
 - commands/standards-new-subproject.md (package structure)
@@ -98,7 +98,7 @@ These files reference all standards by design and don't need updating for indivi
 
 **Enforced by:**
 - commands/standards-check.md (plugin validation)
-- commands/workflows-setup.md (dependency and naming check)
+- commands/workflow-setup.md (dependency and naming check)
 - commands/standards-new-command.md (command naming convention enforcement)
 - install.sh (CLAUDE.md template with command listings)
 
@@ -116,7 +116,7 @@ These files reference all standards by design and don't need updating for indivi
 ## ISSUE-STANDARDS.md
 
 **Enforced by:**
-- commands/workflows-feature.md (issue creation format)
+- commands/workflow-feature.md (issue creation format)
 
 **Referenced by:**
 - .github/ISSUE_TEMPLATE/bug_report.md (follows template)
