@@ -4,6 +4,15 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-24
+
+### Added
+- **Centralized Learnings Repository** - Created `whitedoeinn/learnings` to aggregate cross-project learnings. Features two-tier architecture (incoming/ → curated/), central pull sync script, comprehensive taxonomy (universal/frontend/backend/lob), and full documentation. Initial sync pulled 17 learnings from business-ops and dev-plugins-workflow. Addresses #80
+- **Learnings Architecture in CLAUDE.md** - Documented the sync/triage flow and linked to central learnings repo
+- **Plan file for #79** - Added `plans/feat-auto-search-learnings-in-plan-phase.md` for the learnings search feature (stashed pending central repo)
+
+---
+
 ## 2026-01-23
 
 ### Breaking Changes

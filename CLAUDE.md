@@ -10,6 +10,8 @@ This is the source repository for the `wdi` Claude Code plugin. It provides:
 
 **Architecture:** See `docs/standards/PLUGIN-ARCHITECTURE.md` for the one-plugin policy and naming conventions.
 
+**Learnings:** Cross-project learnings are aggregated in [whitedoeinn/learnings](https://github.com/whitedoeinn/learnings). Learnings documented here via `/workflows:compound` are synced to the central repo for organization-wide discovery.
+
 ## Shell Functions
 
 ### `ip` - Improve Prompt
@@ -245,6 +247,30 @@ When promoting, the workflow reads context from:
 ```
 
 > **Planned:** PR-based Review phase is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33). Currently all commits go directly to main with quality gates.
+
+## Learnings Architecture
+
+Learnings documented via `/workflows:compound` flow through a two-tier system:
+
+```
+Source Repos                    Central Repo
+─────────────                   ────────────
+docs/solutions/  ──sync──►  whitedoeinn/learnings
+                               ├── incoming/     (raw sync)
+                               └── curated/      (triaged)
+                                   ├── universal/
+                                   ├── frontend/
+                                   ├── backend/
+                                   └── lob/{domain}/
+```
+
+**Sync:** Run `./scripts/sync-all.sh` in the learnings repo to pull from all configured source repos.
+
+**Triage:** Move files from `incoming/` to appropriate `curated/` directory based on taxonomy.
+
+**Search:** The Learnings Search phase (coming: #79) will query both local `docs/solutions/` and central `learnings/curated/`.
+
+See [whitedoeinn/learnings](https://github.com/whitedoeinn/learnings) for full documentation.
 
 ## Environment Validation
 
