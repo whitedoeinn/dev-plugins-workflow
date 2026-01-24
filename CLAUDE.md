@@ -53,11 +53,16 @@ dev-plugins/
 │   ├── validate-env.sh              # Environment validation
 │   ├── run-tests.sh                 # Run unit + integration tests
 │   └── ...
+├── assets/                          # Portable design assets
+│   └── tokens/                      # Design tokens
+│       ├── tokens.css               # CSS custom properties (import in projects)
+│       └── tokens.json              # Machine-readable tokens
 ├── env-baseline.json                # Environment baseline definition
 ├── docs/
 │   ├── standards/                   # Development standards
 │   │   ├── PLUGIN-ARCHITECTURE.md   # One-plugin policy
-│   │   ├── REPO-STANDARDS.md
+│   │   ├── REPO-STANDARDS.md        # Repository conventions
+│   │   ├── FRONTEND-STANDARDS.md    # UI/component standards
 │   │   └── ...
 │   ├── templates/
 │   └── ...
@@ -283,8 +288,21 @@ When working in WDI projects, follow these conventions:
 | Mono-repos | `{cluster}-ops` (marketing-ops, business-ops) |
 | Branches | `feature/`, `fix/`, `hotfix/`, `docs/`, `experiment/` |
 | Commits | `feat:`, `fix:`, `docs:`, `refactor:`, `chore:` |
+| Frontend | `docs/standards/FRONTEND-STANDARDS.md` |
 
-Full details in `docs/standards/` and `docs/standards/PLUGIN-ARCHITECTURE.md`.
+**Standards Documents:**
+- Repository: `docs/standards/REPO-STANDARDS.md`
+- Plugin architecture: `docs/standards/PLUGIN-ARCHITECTURE.md`
+- Frontend (UI, components, tokens): `docs/standards/FRONTEND-STANDARDS.md`
+- Design tokens: `assets/tokens/tokens.css`, `assets/tokens/tokens.json`
+
+**Frontend Development:** When building UI components, reference `FRONTEND-STANDARDS.md` for:
+- JSON Schema-first data patterns
+- Design token usage
+- Typography and spacing scales
+- Component architecture (shadcn/ui)
+- Accessibility requirements (WCAG 2.1 AA)
+- Theme selection guidance
 
 ## How It Works
 

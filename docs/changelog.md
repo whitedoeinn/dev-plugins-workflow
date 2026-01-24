@@ -7,6 +7,8 @@ All notable changes documented here.
 ## 2026-01-23
 
 ### Added
+- **Frontend Standards** - Comprehensive `docs/standards/FRONTEND-STANDARDS.md` documenting JSON Schema-first development, design tokens, typography/spacing scales, component architecture, form patterns, accessibility (WCAG 2.1 AA), and theme system. Addresses #65-#75
+- **Design Tokens** - Portable `assets/tokens/tokens.css` and `tokens.json` with 6 minimal themes (precision, warmth, sophistication, boldness, utility, data). Extracted from google-ads, filtered to proven patterns only
 - **`scripts/get-google-drive-path.sh`** - Cross-platform Google Drive path detection utility. Detects WSL vs Mac/Linux and returns the correct base path. Accepts optional relative path argument. Promoted from idea #64
 - **Auto-fix `.gitignore` pattern in consuming projects** - `validate-env.sh` now detects and fixes broken `.claude/` patterns on session start, propagating the #59 fix to all wdi projects automatically
 - **`check-deps.bats`** - Unit tests for auto-update order (marketplace refresh before plugin update), maintainer mode detection, and error handling

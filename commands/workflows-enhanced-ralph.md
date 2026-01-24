@@ -146,16 +146,31 @@ For each task:
 
 ### UI Task Workflow (Enhanced)
 
-UI tasks get special treatment with multiple skill/plugin integrations:
+UI tasks get special treatment with multiple skill/plugin integrations.
+
+**Reference:** All UI tasks must follow `docs/standards/FRONTEND-STANDARDS.md` which defines:
+- JSON Schema-first data patterns (derive types from schema)
+- Design tokens (`assets/tokens/tokens.css`)
+- Typography and spacing scales (4px base unit)
+- Component architecture (shadcn/ui, Radix primitives)
+- Accessibility requirements (WCAG 2.1 AA)
+- Theme selection (6 minimal themes)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ UI TASK DETECTED                                            │
 ├─────────────────────────────────────────────────────────────┤
+│ 0. REFERENCE STANDARDS                                      │
+│    └─ Read: docs/standards/FRONTEND-STANDARDS.md            │
+│       • Check design token usage                            │
+│       • Verify JSON Schema-first pattern                    │
+│       • Confirm accessibility requirements                  │
+├─────────────────────────────────────────────────────────────┤
 │ 1. IMPLEMENTATION                                           │
 │    └─ Invoke: frontend-design skill                         │
 │       • Creates distinctive, production-grade UI            │
 │       • Avoids generic AI aesthetics                        │
+│       • Uses shadcn/ui components per standards             │
 ├─────────────────────────────────────────────────────────────┤
 │ 2. BROWSER VERIFICATION                                     │
 │    └─ Run: playwright-test                                  │
@@ -166,7 +181,7 @@ UI tasks get special treatment with multiple skill/plugin integrations:
 │ 3. DESIGN REVIEW                                            │
 │    └─ Invoke: design-implementation-reviewer agent          │
 │       • Verify UI matches spec                              │
-│       • Check accessibility                                 │
+│       • Check accessibility (WCAG 2.1 AA)                   │
 │       • Identify visual issues                              │
 ├─────────────────────────────────────────────────────────────┤
 │ 4. ITERATION (if review fails)                              │
