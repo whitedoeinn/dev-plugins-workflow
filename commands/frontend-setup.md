@@ -93,7 +93,7 @@ If `tokens.css` already exists in target directory:
 
 2. **Fetch remote version** from GitHub:
    ```bash
-   REMOTE_VERSION=$(curl -fsSL "https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/.claude-plugin/plugin.json" | jq -r '.version')
+   REMOTE_VERSION=$(curl -fsSL "https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/.claude-plugin/plugin.json" | jq -r '.version')
    ```
 
 3. **Compare versions:**
@@ -142,9 +142,9 @@ Download both token files from GitHub raw URLs:
 
 ```bash
 # URLs (note: repository name is dev-plugins-workflows with 's')
-CSS_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/assets/tokens/tokens.css"
-JSON_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/assets/tokens/tokens.json"
-VERSION_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/.claude-plugin/plugin.json"
+CSS_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.css"
+JSON_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.json"
+VERSION_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/.claude-plugin/plugin.json"
 
 # Create secure temp directory (if not already created in Phase 3)
 if [[ -z "$TEMP_DIR" ]]; then
@@ -191,7 +191,7 @@ cat > "$TARGET_DIR/tokens.css" << EOF
 /**
  * WDI Design Tokens v$VERSION
  * Downloaded: $(date +%Y-%m-%d)
- * Source: https://github.com/whitedoeinn/dev-plugins-workflows
+ * Source: https://github.com/whitedoeinn/dev-plugins-workflow
  *
  * To update: run /wdi:frontend-setup
  * Documentation: docs/standards/FRONTEND-STANDARDS.md
@@ -206,7 +206,7 @@ cat "$TEMP_DIR/tokens.css" >> "$TARGET_DIR/tokens.css"
 ```bash
 # Use portable date format (works on both GNU and BSD date)
 jq --arg v "$VERSION" --arg d "$(date +%Y-%m-%dT%H:%M:%S%z)" \
-  '. + {"_wdiMeta": {"version": $v, "downloadedAt": $d, "source": "https://github.com/whitedoeinn/dev-plugins-workflows"}}' \
+  '. + {"_wdiMeta": {"version": $v, "downloadedAt": $d, "source": "https://github.com/whitedoeinn/dev-plugins-workflow"}}' \
   "$TEMP_DIR/tokens.json" > "$TARGET_DIR/tokens.json"
 ```
 

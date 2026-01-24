@@ -46,8 +46,8 @@ Implemented `/wdi:frontend-setup` command following shadcn pattern:
 ### 1. GitHub Raw URLs as Source
 
 ```bash
-CSS_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/assets/tokens/tokens.css"
-JSON_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflows/main/assets/tokens/tokens.json"
+CSS_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.css"
+JSON_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.json"
 ```
 
 **Why GitHub raw URLs?**
