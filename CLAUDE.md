@@ -82,7 +82,7 @@ dev-plugins-workflow/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflow-feature` | Full feature workflow (interview → pre-flight → plan → work → review → compound) |
+| `/wdi:workflow-feature` | Full feature workflow (interview → pre-flight → learnings search → plan → work → review → compound) |
 | `/wdi:workflow-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
 | `/wdi:workflow-feature --plan` | Stop after planning phase |
 | `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
@@ -268,7 +268,7 @@ docs/solutions/  ──sync──►  whitedoeinn/learnings
 
 **Triage:** Move files from `incoming/` to appropriate `curated/` directory based on taxonomy.
 
-**Search:** The Learnings Search phase (coming: #79) will query both local `docs/solutions/` and central `learnings/curated/`.
+**Search:** The Learnings Search phase queries both local `docs/solutions/` and central `learnings/curated/` before planning.
 
 See [whitedoeinn/learnings](https://github.com/whitedoeinn/learnings) for full documentation.
 

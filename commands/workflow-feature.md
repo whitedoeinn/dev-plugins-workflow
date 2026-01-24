@@ -27,10 +27,10 @@ Full feature development workflow using an interview-driven approach to tailor r
 
 ### Full Workflow (default)
 ```
-Interview → Pre-flight → Plan → Work → Review → Compound
+Interview → Pre-flight → Learnings Search → Plan → Work → Review → Compound
 ```
 
-**Note:** Research is now included within `/workflows:plan` (compound-engineering runs research agents automatically).
+**Note:** Research is now included within `/workflows:plan` (compound-engineering runs research agents automatically). The Learnings Search phase surfaces previously documented solutions from `docs/solutions/` before planning begins.
 
 Each phase pauses for approval unless `--yes` is passed.
 
@@ -455,6 +455,201 @@ fi
 
 ---
 
+## Phase 2.5: Learnings Search
+
+Before invoking `/workflows:plan`, search for previously documented learnings that might be relevant to this feature. This closes the compounding feedback loop by surfacing solutions from past work.
+
+### Step 1: Check for Learnings Sources
+
+Check for both local and central learnings:
+
+```bash
+# Local learnings (repo-specific)
+LOCAL_LEARNINGS=""
+if [ -d "docs/solutions" ]; then
+  LOCAL_LEARNINGS="docs/solutions"
+fi
+
+# Central learnings repo (cross-project)
+CENTRAL_LEARNINGS=""
+CENTRAL_PATH="$HOME/github/whitedoeinn/learnings/curated"
+if [ -d "$CENTRAL_PATH" ]; then
+  CENTRAL_LEARNINGS="$CENTRAL_PATH"
+fi
+```
+
+**Behavior:**
+- If neither exists, skip this phase silently
+- If only local exists, search local only
+- If only central exists, search central only
+- If both exist, search both (local results shown first)
+
+### Step 2: Extract Search Terms
+
+#### 2a: Extract Keywords
+
+From the feature description (interview answer), extract search keywords:
+- Technology names (react, rails, zustand, stimulus, etc.)
+- Pattern/component types (form, modal, list, edit, crud, etc.)
+- Problem indicators (stale, bug, error, cache, state, etc.)
+
+Use simple word extraction - no NLP required.
+
+#### 2b: Extract Issue References
+
+Parse the feature description and current issue body for issue references:
+- `#123` - Same-repo issue reference
+- `org/repo#123` - Cross-repo issue reference
+- `related to #123`, `see #123`, `from #123` - Explicit relationships
+
+```bash
+# Extract issue references from description
+echo "{feature-description}" | grep -oE '#[0-9]+' | sort -u
+echo "{feature-description}" | grep -oE '[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+#[0-9]+' | sort -u
+```
+
+### Step 3: Search Learnings
+
+Search both local (`docs/solutions/`) and central (`learnings/curated/`) sources.
+
+#### 3a: Keyword Search (Local)
+
+If local learnings exist, search YAML frontmatter:
+
+```bash
+# Search for matching tags
+grep -r -l "tags:.*{keyword}" docs/solutions/ 2>/dev/null | head -5
+
+# Search for matching symptoms
+grep -r -l "symptom:.*{keyword}" docs/solutions/ 2>/dev/null | head -5
+
+# Search titles
+grep -r -l "^title:.*{keyword}" docs/solutions/ 2>/dev/null | head -5
+```
+
+#### 3b: Keyword Search (Central)
+
+If central learnings exist, search the curated directory:
+
+```bash
+CENTRAL_PATH="$HOME/github/whitedoeinn/learnings/curated"
+
+# Search for matching tags
+grep -r -l "tags:.*{keyword}" "$CENTRAL_PATH" 2>/dev/null | head -5
+
+# Search for matching symptoms
+grep -r -l "symptom:.*{keyword}" "$CENTRAL_PATH" 2>/dev/null | head -5
+
+# Search titles
+grep -r -l "^title:.*{keyword}" "$CENTRAL_PATH" 2>/dev/null | head -5
+```
+
+#### 3c: Issue-Based Search
+
+Search for learnings linked to referenced issues (both sources):
+
+```bash
+# Local
+grep -r -l "related_issues:.*{issue-ref}" docs/solutions/ 2>/dev/null
+
+# Central
+grep -r -l "related_issues:.*{issue-ref}" "$CENTRAL_PATH" 2>/dev/null
+```
+
+This surfaces learnings from directly related prior work, not just keyword matches.
+
+#### 3d: Combine Results
+
+Combine results from both sources:
+1. Local issue-based matches (highest priority - direct lineage)
+2. Central issue-based matches
+3. Local keyword matches
+4. Central keyword matches (broadest - cross-project patterns)
+
+Deduplicate by filename (same learning may exist in both places during sync).
+
+### Step 4: Present Findings
+
+**If matches found:**
+
+```
+Related Learnings Found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Found {n} related learnings:
+
+From this repo (docs/solutions/):
+  • local-pattern.md (linked to #45)
+    Symptom: "specific issue"
+    Tags: local, context
+
+From central repo (learnings/curated/):
+  • react-form-key-pattern.md [frontend]
+    Symptom: "form shows stale data"
+    Tags: react, forms, state
+
+  • plugin-version-caching.md [backend]
+    Tags: plugins, caching
+
+These will be included in the plan context.
+```
+
+Read each matched file and extract:
+- `title` from frontmatter
+- `symptom` from frontmatter (if present)
+- `tags` from frontmatter
+- `related_issues` from frontmatter (to show lineage)
+- First paragraph of solution section (brief summary)
+- **Source:** local vs central (and scope for central: universal/frontend/backend/lob)
+
+**Display priority:**
+1. Local issue-based matches (most relevant - same repo lineage)
+2. Central issue-based matches
+3. Local keyword matches
+4. Central keyword matches (broadest discovery)
+
+**If no matches:**
+
+```
+No related learnings found
+  Local: docs/solutions/ not found
+  Central: ~/github/whitedoeinn/learnings/curated/ checked
+
+Proceeding to plan phase...
+```
+
+### Step 5: Include in Plan Context
+
+Pass the found learnings to `/workflows:plan` as additional context. Format as:
+
+```
+## Prior Art
+
+The following previously documented solutions may be relevant:
+
+### From This Repo
+
+#### {learning-title-1}
+**File:** `docs/solutions/{category}/{filename}.md`
+**Symptom:** {symptom}
+**Summary:** {first paragraph of solution}
+
+### From Central Learnings Repo
+
+#### {learning-title-2} [frontend]
+**File:** `learnings/curated/frontend/{filename}.md`
+**Symptom:** {symptom}
+**Summary:** {first paragraph of solution}
+
+#### {learning-title-3} [universal]
+**File:** `learnings/curated/universal/{filename}.md`
+**Summary:** {first paragraph of solution}
+```
+
+This context helps research agents avoid re-solving documented problems and build on existing patterns.
+
+---
+
 ## Phase 3: Plan (Delegated)
 
 **Note:** Research is handled by `/workflows:plan` - it automatically runs research agents (repo-research-analyst, best-practices-researcher, framework-docs-researcher) as part of planning.
@@ -826,6 +1021,19 @@ Pre-flight: ✓ All checks passed
   Mono-repo detected: packages/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+→ Learnings Search
+  Found 2 related learnings for "real-time analytics dashboard":
+
+  From central repo:
+    • websocket-reconnection-pattern.md [frontend]
+      Symptom: "WebSocket connection drops silently"
+      Tags: websocket, realtime, state
+
+    • react-form-key-pattern.md [frontend]
+      Tags: react, state-management
+
+  Included in plan context.
+
 → Plan Phase (delegated to /workflows:plan)
   Running research agents...
   • repo-research-analyst: Chart.js in packages/dashboard
@@ -947,6 +1155,7 @@ if not promoted to permanent feature.
 ## Notes
 
 - All phases delegate to compound-engineering workflows (`/workflows:plan`, `/workflows:work`, `/workflows:review`, `/workflows:compound`)
+- **Learnings Search** runs before planning to surface previously documented solutions from `docs/solutions/`
 - Research is included in `/workflows:plan` - no separate research phase
 - Use `--yes` for experienced users who know the codebase
 - All phases can be aborted without side effects (except created branches/issues)
