@@ -42,7 +42,8 @@ dev-plugins/
 │   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
 │   ├── standards-check.md           # /wdi:standards-check
 │   ├── standards-update.md          # /wdi:standards-update
-│   └── standards-new-command.md     # /wdi:standards-new-command
+│   ├── standards-new-command.md     # /wdi:standards-new-command
+│   └── frontend-setup.md            # /wdi:frontend-setup
 ├── .claude-plugin/                  # Plugin configuration
 │   ├── plugin.json                  # Plugin metadata (name: "wdi")
 │   └── marketplace.json             # Local marketplace config
@@ -97,6 +98,12 @@ dev-plugins/
 | `/wdi:standards-check` | Validate current repo against standards |
 | `/wdi:standards-update` | Impact analysis and guided updates for standard changes |
 | `/wdi:standards-new-command` | Create a new command and update all dependent files |
+
+### Frontend Commands
+
+| Command | Description |
+|---------|-------------|
+| `/wdi:frontend-setup` | Install WDI design tokens to project (shadcn copy pattern) |
 
 ### Skills (Auto-Invoked)
 

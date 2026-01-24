@@ -7,6 +7,7 @@ All notable changes documented here.
 ## 2026-01-23
 
 ### Added
+- **`/wdi:frontend-setup` command** - Install WDI design tokens to consuming projects following the shadcn copy pattern. Downloads from GitHub raw URLs (stable, version-agnostic), copies to project with version metadata, shows diff before updates. Includes security fixes: secure temp file handling with mktemp, portable date format. Addresses #77
 - **Frontend Standards** - Comprehensive `docs/standards/FRONTEND-STANDARDS.md` documenting JSON Schema-first development, design tokens, typography/spacing scales, component architecture, form patterns, accessibility (WCAG 2.1 AA), and theme system. Addresses #65-#75
 - **Design Tokens** - Portable `assets/tokens/tokens.css` and `tokens.json` with 6 minimal themes (precision, warmth, sophistication, boldness, utility, data). Extracted from google-ads, filtered to proven patterns only
 - **`scripts/get-google-drive-path.sh`** - Cross-platform Google Drive path detection utility. Detects WSL vs Mac/Linux and returns the correct base path. Accepts optional relative path argument. Promoted from idea #64

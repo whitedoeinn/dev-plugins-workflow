@@ -56,6 +56,12 @@ cd dev-plugins-workflow
 | `/wdi:standards-update` | Impact analysis and guided updates when changing development standards |
 | `/wdi:standards-new-command` | Create a new command and update all dependent files |
 
+### Frontend Commands
+
+| Command | Description |
+|---------|-------------|
+| `/wdi:frontend-setup` | Install WDI design tokens to project (shadcn copy pattern) |
+
 ## Requirements
 
 - Claude Code CLI
