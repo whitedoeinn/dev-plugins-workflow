@@ -100,11 +100,13 @@ You interact with wdi commands. They call compound-engineering under the hood.
 `/wdi:workflow-feature` runs these phases:
 
 ```
-Interview → Pre-flight → Plan → Work → Review → Compound
-    wdi         wdi       c-e    c-e     c-e       c-e
+Interview → Pre-flight → Learnings Search → Plan → Work → Review → Compound
+    wdi         wdi            wdi           c-e    c-e     c-e       c-e
 ```
 
 *c-e = compound-engineering (delegated)*
+
+📊 **Visual diagram:** [docs/workflows/feature-workflow-diagram.md](workflows/feature-workflow-diagram.md) — shows the complete learnings ecosystem and compounding feedback loop.
 
 ### Phase Breakdown
 
@@ -112,6 +114,7 @@ Interview → Pre-flight → Plan → Work → Review → Compound
 |-------|--------------|------------|
 | **Interview** | Gathers feature type, description | wdi |
 | **Pre-flight** | Validates repo status, detects mono-repo structure | wdi |
+| **Learnings Search** | Searches local + central learnings for prior solutions | wdi |
 | **Plan** | Runs research agents, creates GitHub issue + feature spec | compound-engineering |
 | **Work** | Implements changes with todo tracking | compound-engineering |
 | **Review** | Runs 12+ review agents in parallel | compound-engineering |
@@ -342,6 +345,8 @@ Run `gh auth login` and follow prompts.
 | Topic | Document |
 |-------|----------|
 | System architecture | [docs/architecture.md](architecture.md) |
+| Workflow diagram | [docs/workflows/feature-workflow-diagram.md](workflows/feature-workflow-diagram.md) |
+| Learnings architecture | See CLAUDE.md "Learnings Architecture" section |
 | Auto-docs capability | [docs/auto-docs.md](auto-docs.md) |
 | Branch naming | [docs/drafts/BRANCH-NAMING.md](drafts/BRANCH-NAMING.md) *(draft - see #44)* |
 | Commit conventions | [docs/standards/COMMIT-STANDARDS.md](standards/COMMIT-STANDARDS.md) |

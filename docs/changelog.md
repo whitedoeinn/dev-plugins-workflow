@@ -10,6 +10,7 @@ All notable changes documented here.
 - **Learnings Search Phase (#79)** - New phase between Pre-flight and Plan that searches for relevant learnings before planning begins. Queries both local `docs/solutions/` and central `learnings/curated/` repo. Supports keyword search (tags, symptom, title) and issue-based search (related_issues field). Closes the compounding feedback loop by surfacing prior solutions automatically
 - **Centralized Learnings Repository (#80)** - Created `whitedoeinn/learnings` to aggregate cross-project learnings. Features two-tier architecture (incoming/ → curated/), central pull sync script, comprehensive taxonomy (universal/frontend/backend/lob), and full documentation. Initial sync pulled 17 learnings from business-ops and dev-plugins-workflow
 - **Learnings Architecture in CLAUDE.md** - Documented the sync/triage flow and linked to central learnings repo
+- **Workflow Diagram** - Added `docs/workflows/feature-workflow-diagram.md` showing complete compounding feedback loop, learnings ecosystem, and implementation status. Linked from GETTING-STARTED.md and README.md
 
 ---
 

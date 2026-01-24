@@ -129,11 +129,13 @@ See [troubleshooting.md](docs/troubleshooting.md) for more details.
 
 Orchestrates the complete feature development cycle:
 
-1. **Research** - Smart-selects research agents based on feature context
-2. **Plan** - Creates GitHub Issue + local plan file with requirements
+1. **Learnings Search** - Searches local + central repos for prior solutions
+2. **Plan** - Research agents + GitHub Issue + local plan file
 3. **Work** - Implementation and tests (on main)
 4. **Review** - Multi-agent code review (architecture, security, performance)
 5. **Compound** - Changelog, document learnings
+
+📊 **Detailed diagram:** [docs/workflows/feature-workflow-diagram.md](docs/workflows/feature-workflow-diagram.md)
 
 **Note:** The workflow commits directly to main with quality gates. Feature branches are not used by design ([#44](https://github.com/whitedoeinn/dev-plugins-workflow/issues/44)). Individuals may use feature branches manually for their own purposes.
 
