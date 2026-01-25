@@ -39,7 +39,6 @@ dev-plugins-workflow/
 │   ├── workflow-milestone.md        # /wdi:workflow-milestone
 │   ├── workflow-setup.md            # /wdi:workflow-setup
 │   ├── triage-ideas.md              # /wdi:triage-ideas
-│   ├── shape-idea.md                # /wdi:shape-idea
 │   ├── standards-new-repo.md        # /wdi:standards-new-repo
 │   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
 │   ├── standards-check.md           # /wdi:standards-check
@@ -82,14 +81,12 @@ dev-plugins-workflow/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflow-feature` | Full feature workflow (interview → pre-flight → learnings search → plan → work → review → compound) |
-| `/wdi:workflow-feature --idea` | Quick idea capture (creates GitHub issue, no implementation) |
-| `/wdi:workflow-feature --plan` | Stop after planning phase |
+| `/wdi:workflow-feature` | Feature workflow - quick idea OR full build (Plan → Work → Review → Compound) |
+| `/wdi:workflow-feature #N` | Continue existing issue from where it left off |
 | `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflow-milestone` | Create and execute milestone-based feature groupings |
 | `/wdi:workflow-setup` | Verify dependencies and installation status |
-| `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
-| `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
+| `/wdi:triage-ideas` | Review idea backlog, identify clusters, prioritize |
 
 ### Standards Commands
 
@@ -163,90 +160,93 @@ wdi config           # Configure org, domains, project location
 wdi update           # Update CLI to latest version
 ```
 
-## Idea Capture Workflow
+## Feature Workflow
 
-Use `--idea` mode to quickly capture ideas without implementing them:
-
-```bash
-/wdi:workflow-feature --idea
-```
-
-**Creates:** GitHub issue with `idea` label and `status:needs-shaping`
-
-Ideas flow through these stages:
-- **Capture:** Issue body contains problem, appetite, rough solution, open questions
-- **Shape:** Use `/wdi:shape-idea` for iterative exploration (or add comments with prefixes)
-- **Triage:** Periodically run `/wdi:triage-ideas` to review unshaped ideas
-- **Promote:** When ready, run `/wdi:workflow-feature --promote #123`
-
-### Shaping with Plan Files (Recommended)
-
-For ideas that need exploration before implementation, use iterative shaping sessions:
+One command for the entire feature lifecycle:
 
 ```bash
-# Explore from business perspective
-/wdi:shape-idea #45 --perspective business
-
-# Later, explore from technical perspective
-/wdi:shape-idea #45 --perspective technical
-
-# Optionally, explore UX implications
-/wdi:shape-idea #45 --perspective ux
+/wdi:workflow-feature              # Start something new
+/wdi:workflow-feature #45          # Continue existing issue
 ```
 
-**What happens:**
-1. Claude enters plan mode to explore the idea from the chosen perspective
-2. Produces a committed plan file: `.claude/plans/idea-{n}-{perspective}-{date}.md`
-3. Adds a summary comment to the GitHub issue linking to the plan file
+### Two Entry Points
 
-**Perspectives:**
-| Perspective | Focus Areas |
-|-------------|-------------|
-| `business` | Value proposition, appetite, ROI, business risks |
-| `technical` | Feasibility, architecture, complexity, technical risks |
-| `ux` | User needs, workflows, accessibility, edge cases |
+| Mode | Usage | What Happens |
+|------|-------|--------------|
+| **Quick idea** | "I have a thought" | One sentence → Issue created → Done (30 seconds) |
+| **Build something** | "Let's do this" | Full workflow: Plan → Work → Review → Compound |
 
-Each session produces a separate file, building rich context for promotion.
+### The Issue IS the Document
 
-### Shaping Comment Prefixes (Lightweight)
+No separate plan files or feature specs. The GitHub issue accumulates everything:
 
-For simple shaping, add comments directly to the issue with recognized prefixes:
+- **Body:** Updated with problem, solution, and plan
+- **Comments:** Progress at each phase (learnings, plan, work, review, compound)
+- **Labels:** Current phase (`phase:planning`, `phase:working`, etc.)
+- **Close comment:** Final outcome and summary
 
-| Prefix | Maps to | Example |
-|--------|---------|---------|
-| `Decision:` | Research context | "Decision: Use YAML frontmatter" |
-| `Test:` | Acceptance criteria | "Test: Verify API returns 200" |
-| `Blocked:` | Dependencies | "Blocked: Waiting on #45" |
+### Continue From Where You Left Off
 
-Comments without prefixes are for human discussion and are ignored.
+Resume any issue with `/wdi:workflow-feature #N`. The workflow reads the phase label and picks up where it stopped.
 
-**Conflict detection:** If two `Decision:` comments contradict each other, promotion halts and requires human resolution.
+### Shaping Ideas
 
-### Promotion as Onramp
+To add context to an idea before building:
+1. Add comments to the issue (just regular comments)
+2. When ready: `/wdi:workflow-feature #N` → "Start building"
 
-`--promote` is an **onramp** to the full workflow, not a bypass. The idea content pre-populates context, but all phases still run:
+No special prefixes or syntax. Just write what you're thinking.
+
+## GitHub Issue Progress Sync
+
+During `/wdi:workflow-feature`, the GitHub issue is updated at each significant milestone. This provides stakeholder visibility and creates an audit trail.
+
+### Phase Labels
+
+Issues are labeled with their current workflow phase for at-a-glance visibility:
+
+| Label | Phase | Color |
+|-------|-------|-------|
+| `phase:planning` | Plan | Blue |
+| `phase:working` | Work | Green |
+| `phase:reviewing` | Review | Yellow |
+| `phase:compounding` | Compound | Purple |
+
+Labels are automatically added/removed as the workflow progresses. Filter issues by phase using `label:phase:planning`, etc.
+
+### Milestone Updates
+
+| Phase | Update Content |
+|-------|----------------|
+| **Learnings Search** | Related learnings found (or "novel work" if none) |
+| **Plan** | Research summary, key decisions, risks, files to modify |
+| **Work** | Implementation summary, test status, deviations from plan |
+| **Review** | P1/P2/P3 counts with linked issues, blocking status |
+| **Close** | Outcome (completed/modified/partial/abandoned), summary |
+
+### Outcome Types
+
+The close comment captures what actually happened:
+
+| Outcome | When to Use |
+|---------|-------------|
+| ✓ **Completed as planned** | No P1s, no deviations |
+| ✓ **Completed with modifications** | P1s resolved, or Work noted deviations |
+| ⚠️ **Partially completed** | Some criteria unmet, follow-up issue created |
+| ✗ **Abandoned** | Research/Review revealed "don't build this" |
+
+### Example Issue Timeline
 
 ```
-Promote → Interview (pre-filled) → Pre-flight → Plan → Work → Review → Compound
+#123: Feature X
+├── [Created] Plan phase
+├── [Comment] Learnings Search - 2 related learnings
+├── [Comment] Plan - research summary, 3 decisions
+├── [Comment] Work - implemented, tests passing
+├── [Comment] Review - 0 P1s, 2 P2s
+├── [Comment] Compound - learnings documented
+└── [Closed] Outcome: Completed as planned
 ```
-
-When promoting, the workflow reads context from:
-1. **Issue body** - Original problem, appetite, rough solution
-2. **Shaping plan files** - Decisions, risks, scope from `.claude/plans/idea-{n}-*.md`
-3. **Issue comments** - `Decision:`, `Test:`, `Blocked:` prefixes
-
-| Status | Location | Next Step |
-|--------|----------|-----------|
-| Idea | GitHub Issue | Shape with `/wdi:shape-idea` or comments |
-| Feature | Full workflow with pre-populated context | All phases run |
-| Complete | Merged to main | - |
-
-**Promote an idea to a feature:**
-```bash
-/wdi:workflow-feature --promote #123
-```
-
-> **Planned:** PR-based Review phase is being shaped in [#33](https://github.com/whitedoeinn/dev-plugins-workflow/issues/33). Currently all commits go directly to main with quality gates.
 
 ## Learnings Architecture
 
@@ -444,7 +444,7 @@ This catches issues even if the pre-commit hook isn't installed locally.
 See [Plugin Version Propagation Troubleshooting](docs/troubleshooting.md#plugin-updates-not-propagating-to-other-projects).
 
 Recent changes:
-- Added `/wdi:shape-idea` for iterative idea shaping with committed plan files
-- Enhanced `--promote` to synthesize context from shaping plan files and issue comments
-- **#40:** Aligned wdi workflow with compound-engineering (removed duplicate research, delegated to /workflows:plan, /workflows:work, /workflows:review, /workflows:compound)
-- **#30:** Added idea promotion workflow with prescriptive comment prefixes and conflict detection
+- **Simplified workflow** - Removed --idea/--promote/shape-idea complexity. Now: quick idea OR build something, continue any issue with `#N`
+- **#83:** Phase labels for at-a-glance visibility (`phase:planning/working/reviewing/compounding`)
+- **#81:** Milestone comments at each phase for journey documentation
+- **#40:** Delegated to compound-engineering (`/workflows:plan`, `/workflows:work`, `/workflows:review`, `/workflows:compound`)
