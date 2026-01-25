@@ -106,6 +106,22 @@ When invoked with an issue number: `/wdi:workflow-feature #45`
 gh issue view {issue-number} --json title,body,labels,state,comments
 ```
 
+### Step 1.5: Validate Issue Exists
+
+If the `gh issue view` command fails (issue doesn't exist), show a helpful error:
+
+```
+Issue Not Found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Issue #{number} does not exist in this repository.
+
+To see your ideas: gh issue list --label idea
+To create new: /wdi:workflow-feature
+```
+
+**Exit without proceeding.**
+
 ### Step 2: Determine Current Phase
 
 Check labels to understand where we are:
