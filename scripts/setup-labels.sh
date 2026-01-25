@@ -30,14 +30,12 @@ gh label create "chore" --color "bfdadc" --description "Maintenance, cleanup, de
 
 echo ""
 
-# Status labels (lifecycle)
-echo "Creating status labels..."
-gh label create "status:needs-shaping" --color "FBCA04" --description "Raw idea, needs shaping" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-shaping" || echo "  - status:needs-shaping (exists)"
-gh label create "status:needs-design" --color "FBCA04" --description "Problem clear, solution unclear" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-design" || echo "  - status:needs-design (exists)"
-gh label create "status:needs-research" --color "FBCA04" --description "Needs technical investigation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:needs-research" || echo "  - status:needs-research (exists)"
-gh label create "status:ready" --color "0E8A16" --description "Ready for implementation" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:ready" || echo "  - status:ready (exists)"
-gh label create "status:in-progress" --color "1D76DB" --description "Actively being worked" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:in-progress" || echo "  - status:in-progress (exists)"
-gh label create "status:ready-to-promote" --color "0E8A16" --description "Triaged, ready for promotion" 2>/dev/null && echo -e "  ${GREEN}✓${NC} status:ready-to-promote" || echo "  - status:ready-to-promote (exists)"
+# Phase labels (workflow progress - from /wdi:workflow-feature)
+echo "Creating phase labels..."
+gh label create "phase:planning" --color "1D76DB" --description "In planning phase" 2>/dev/null && echo -e "  ${GREEN}✓${NC} phase:planning" || echo "  - phase:planning (exists)"
+gh label create "phase:working" --color "0E8A16" --description "In work phase" 2>/dev/null && echo -e "  ${GREEN}✓${NC} phase:working" || echo "  - phase:working (exists)"
+gh label create "phase:reviewing" --color "FBCA04" --description "In review phase" 2>/dev/null && echo -e "  ${GREEN}✓${NC} phase:reviewing" || echo "  - phase:reviewing (exists)"
+gh label create "phase:compounding" --color "6F42C1" --description "Capturing learnings" 2>/dev/null && echo -e "  ${GREEN}✓${NC} phase:compounding" || echo "  - phase:compounding (exists)"
 
 echo ""
 
@@ -68,7 +66,7 @@ echo -e "${GREEN}Labels setup complete!${NC}"
 echo ""
 echo "Label scheme:"
 echo "  Type labels - What the issue IS (bug, feature, idea, chore, etc.)"
-echo "  status:*    - Lifecycle state (needs-shaping → ready → in-progress)"
+echo "  phase:*     - Workflow phase (planning → working → reviewing → compounding)"
 echo "  triage:*    - Triage actions (quick-decision)"
 echo "  blocked:*   - Blockers (research)"
 echo "  needs:*     - Blockers (info, decision, discussion)"

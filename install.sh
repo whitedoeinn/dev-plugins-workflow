@@ -74,8 +74,8 @@ if [ "$1" = "--show-commands" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflow-feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi:workflow-feature --idea` - Quick idea capture (creates idea file + draft issue)
+- `/wdi:workflow-feature` - Feature workflow (quick idea OR full build with Plan → Work → Review → Compound)
+- `/wdi:workflow-feature #N` - Continue existing issue from where it left off
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
@@ -235,8 +235,8 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflow-feature` - Full feature workflow (research → plan → work → review → compound)
-- `/wdi:workflow-feature --idea` - Quick idea capture (creates idea file + draft issue)
+- `/wdi:workflow-feature` - Feature workflow (quick idea OR full build with Plan → Work → Review → Compound)
+- `/wdi:workflow-feature #N` - Continue existing issue from where it left off
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
@@ -279,8 +279,8 @@ fi
 echo ""
 echo "Available commands:"
 echo "  Workflow:"
-echo "    /wdi:workflow-feature         - Full feature workflow"
-echo "    /wdi:workflow-feature --idea  - Quick idea capture"
+echo "    /wdi:workflow-feature         - Quick idea OR full build workflow"
+echo "    /wdi:workflow-feature #N      - Continue existing issue"
 echo "    /wdi:workflow-enhanced-ralph  - Quality-gated feature execution"
 echo "    /wdi:workflow-milestone       - Create/execute milestone groupings"
 echo "  Skills (auto-invoked):"

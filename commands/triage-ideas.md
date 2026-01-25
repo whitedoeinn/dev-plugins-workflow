@@ -4,7 +4,7 @@ description: Review unshaped ideas, identify clusters, recommend shaping approac
 
 # /wdi:triage-ideas - Periodic Idea Triage
 
-Review `status:needs-shaping` ideas, identify clusters, and recommend the right shaping approach for each.
+Review `idea` issues, identify clusters, and recommend actions for each.
 
 ## Flags
 
@@ -17,11 +17,11 @@ Review `status:needs-shaping` ideas, identify clusters, and recommend the right 
 
 ## Phase 1: Fetch Ideas
 
-Query GitHub for all unshaped ideas:
+Query GitHub for all idea issues:
 
 ```bash
 gh issue list \
-  --label "status:needs-shaping" \
+  --label "idea" \
   --json number,title,body,labels,createdAt,comments \
   --limit 100
 ```
@@ -31,10 +31,10 @@ gh issue list \
 If no issues found:
 
 ```
-No Unshaped Ideas
+No Ideas to Triage
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-No issues with status:needs-shaping label found.
+No issues with idea label found.
 
 To capture a new idea: /wdi:workflow-feature → "Quick idea"
 ```
@@ -228,7 +228,6 @@ Run without --plan to execute these actions.
 Before executing, create any missing labels:
 
 ```bash
-gh label create "status:ready-to-promote" --color "0E8A16" --description "Triaged, ready for promotion" 2>/dev/null || true
 gh label create "triage:quick-decision" --color "1D76DB" --description "Needs brief investigation" 2>/dev/null || true
 gh label create "blocked:research" --color "D93F0B" --description "Waiting on parent research" 2>/dev/null || true
 gh label create "research" --color "5319E7" --description "Research initiative" 2>/dev/null || true
@@ -268,14 +267,7 @@ For issues marked `quick-decision`:
 
 For issues marked `individual-promote`:
 
-1. Update labels:
-   ```bash
-   gh issue edit {number} \
-     --remove-label "status:needs-shaping" \
-     --add-label "status:ready-to-promote"
-   ```
-
-2. Add comment with promotion command:
+1. Add comment with build command:
    ```bash
    gh issue comment {number} --body "$(cat <<'EOF'
    ## Ready to Build
@@ -301,7 +293,6 @@ For clusters marked `needs-research`:
    gh issue create \
      --title "Research: {cluster-name}" \
      --label "research" \
-     --label "status:needs-research" \
      --body "$(cat <<'EOF'
    ## Research Initiative: {cluster-name}
 
