@@ -5,7 +5,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.4.6 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.4.8 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -180,6 +180,7 @@ The plugin builds on top of `compound-engineering` which provides:
 - **Research agents** for codebase analysis
 - **Review agents** for code quality checks
 - **Workflow skills** for planning and documentation
+- **Frontend skills** for UI implementation (`frontend-design`, `design-iterator`)
 
 See [docs/architecture.md](docs/architecture.md) for detailed diagrams.
 
@@ -238,6 +239,7 @@ This plugin enforces WDI development standards. Key conventions:
 | Branch naming | [BRANCH-NAMING.md](docs/drafts/BRANCH-NAMING.md) *(draft - not implemented)* |
 | Commit messages | [COMMIT-STANDARDS.md](docs/standards/COMMIT-STANDARDS.md) |
 | Claude Code plugins | [CLAUDE-CODE-STANDARDS.md](docs/standards/CLAUDE-CODE-STANDARDS.md) |
+| Frontend development | [FRONTEND-STANDARDS.md](docs/standards/FRONTEND-STANDARDS.md) |
 
 Quick reference: [knowledge/standards-summary.md](knowledge/standards-summary.md)
 

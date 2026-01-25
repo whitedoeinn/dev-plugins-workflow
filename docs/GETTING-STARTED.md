@@ -88,10 +88,22 @@ This clears caches, removes stale entries, and reinstalls fresh. See [troublesho
 
 | Plugin | Role | What It Provides |
 |--------|------|------------------|
-| **compound-engineering** | The engine | Research agents, review agents, workflow primitives |
-| **wdi** | The driver | Orchestrates compound-engineering for our conventions |
+| **compound-engineering** | The engine | Research agents, review agents, workflow primitives, frontend-design |
+| **wdi** | The driver | Orchestrates compound-engineering for our conventions, provides standards |
 
 You interact with wdi commands. They call compound-engineering under the hood.
+
+### compound-engineering Capabilities
+
+Beyond the workflow primitives, compound-engineering provides specialized skills:
+
+| Skill | When It's Used | What It Does |
+|-------|----------------|--------------|
+| **frontend-design** | UI implementation | Generates polished, production-grade UI with high design quality |
+| **design-iterator** | Iterative refinement | Takes screenshots, analyzes, improves - repeats N times |
+| **figma-design-sync** | Design matching | Compares implementation to Figma, fixes differences |
+
+These are invoked automatically when relevant, or you can request them explicitly (e.g., "refine this with frontend-design").
 
 ---
 
@@ -159,6 +171,59 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 **How it works:** `/workflows:review` (compound-engineering) automatically runs all relevant agents in parallel. Findings are prioritized (P1/P2/P3) and converted to GitHub issues. No manual agent selection needed.
 
 **Why this matters:** A single reviewer can't hold all these perspectives. Parallel agents catch more issues with no additional time cost.
+
+---
+
+## Frontend Development
+
+When building UI, two resources work together:
+
+| Resource | What It Provides |
+|----------|------------------|
+| **wdi** | Design tokens (`/wdi:frontend-setup`), standards (`FRONTEND-STANDARDS.md`) |
+| **compound-engineering** | `frontend-design` skill for implementation |
+
+### Design Tokens
+
+Install WDI design tokens to your project:
+
+```
+/wdi:frontend-setup
+```
+
+This copies `tokens.css` and `tokens.json` to your project (shadcn-style copy pattern). Tokens include:
+- Color palette with semantic naming
+- Typography scale
+- Spacing scale
+- 6 proven themes (default, forest, ocean, sunset, midnight, minimal)
+
+See: [FRONTEND-STANDARDS.md](standards/FRONTEND-STANDARDS.md)
+
+### frontend-design Skill
+
+For UI implementation, compound-engineering's `frontend-design` skill generates polished, production-grade interfaces:
+
+```
+Create a dashboard with user stats and recent activity
+```
+
+Or explicitly request design refinement:
+
+```
+Refine this component with frontend-design
+```
+
+The skill avoids generic AI aesthetics and generates distinctive, professional UI.
+
+### Iterative Design
+
+For designs that need multiple passes:
+
+```
+Iterate on this hero section 5 times
+```
+
+This invokes `design-iterator` which takes screenshots, analyzes what's not working, improves, and repeats.
 
 ---
 
@@ -337,6 +402,8 @@ Run `gh auth login` and follow prompts.
 | System architecture | [docs/architecture.md](architecture.md) |
 | Workflow diagram | [docs/workflows/feature-workflow-diagram.md](workflows/feature-workflow-diagram.md) |
 | Learnings architecture | See CLAUDE.md "Learnings Architecture" section |
+| Frontend standards | [docs/standards/FRONTEND-STANDARDS.md](standards/FRONTEND-STANDARDS.md) |
+| Design tokens | [assets/tokens/](../assets/tokens/) |
 | Auto-docs capability | [docs/auto-docs.md](auto-docs.md) |
 | Branch naming | [docs/drafts/BRANCH-NAMING.md](drafts/BRANCH-NAMING.md) *(draft - see #44)* |
 | Commit conventions | [docs/standards/COMMIT-STANDARDS.md](standards/COMMIT-STANDARDS.md) |
@@ -355,4 +422,4 @@ Run `gh auth login` and follow prompts.
 
 ---
 
-*This guide covers wdi v0.4.6. For compound-engineering capabilities, see their documentation.*
+*This guide covers wdi v0.4.8. For compound-engineering capabilities, see their documentation.*
