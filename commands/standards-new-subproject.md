@@ -256,8 +256,11 @@ Analyze if exception suggests a standard update:
 **If triggered, create GitHub Issue:**
 
 ```bash
+# Use detected org from Phase 0 of /wdi:new-repo, or detect here
+ORG=$(./scripts/get-org.sh)
+
 gh issue create \
-  --repo whitedoeinn/dev-plugins-workflow \
+  --repo ${ORG}/dev-plugins-workflow \
   --title "Consider subproject naming standard update: {pattern}" \
   --body "$(cat <<'EOF'
 ## Package Naming Exception Detected
@@ -301,7 +304,7 @@ EOF
 
 ```
 📋 Created issue to review naming standard:
-   https://github.com/whitedoeinn/dev-plugins-workflow/issues/{number}
+   https://github.com/${ORG}/dev-plugins-workflow/issues/{number}
 
 Your feedback helps improve our standards!
 ```
