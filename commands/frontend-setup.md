@@ -93,7 +93,13 @@ If `tokens.css` already exists in target directory:
 
 2. **Fetch remote version** from GitHub:
    ```bash
-   REMOTE_VERSION=$(curl -fsSL "https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/.claude-plugin/plugin.json" | jq -r '.version')
+   # Use same TOKEN_SOURCE logic as Phase 4
+   TOKEN_SOURCE="${WDI_TOKEN_SOURCE:-whitedoeinn/dev-plugins-workflow}"
+   if [[ -f ".wdi.json" ]] && command -v jq &>/dev/null; then
+     CUSTOM_SOURCE=$(jq -r '.token_source // empty' .wdi.json 2>/dev/null)
+     [[ -n "$CUSTOM_SOURCE" ]] && TOKEN_SOURCE="$CUSTOM_SOURCE"
+   fi
+   REMOTE_VERSION=$(curl -fsSL "https://raw.githubusercontent.com/${TOKEN_SOURCE}/main/.claude-plugin/plugin.json" | jq -r '.version')
    ```
 
 3. **Compare versions:**
@@ -141,10 +147,17 @@ If `tokens.css` already exists in target directory:
 Download both token files from GitHub raw URLs:
 
 ```bash
-# URLs (note: repository name is dev-plugins-workflows with 's')
-CSS_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.css"
-JSON_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/assets/tokens/tokens.json"
-VERSION_URL="https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/.claude-plugin/plugin.json"
+# Token source - defaults to canonical repo, can be overridden via .wdi.json
+# Note: Forks should typically use canonical source unless maintaining custom tokens
+TOKEN_SOURCE="${WDI_TOKEN_SOURCE:-whitedoeinn/dev-plugins-workflow}"
+if [[ -f ".wdi.json" ]] && command -v jq &>/dev/null; then
+  CUSTOM_SOURCE=$(jq -r '.token_source // empty' .wdi.json 2>/dev/null)
+  [[ -n "$CUSTOM_SOURCE" ]] && TOKEN_SOURCE="$CUSTOM_SOURCE"
+fi
+
+CSS_URL="https://raw.githubusercontent.com/${TOKEN_SOURCE}/main/assets/tokens/tokens.css"
+JSON_URL="https://raw.githubusercontent.com/${TOKEN_SOURCE}/main/assets/tokens/tokens.json"
+VERSION_URL="https://raw.githubusercontent.com/${TOKEN_SOURCE}/main/.claude-plugin/plugin.json"
 
 # Create secure temp directory (if not already created in Phase 3)
 if [[ -z "$TEMP_DIR" ]]; then
@@ -191,7 +204,7 @@ cat > "$TARGET_DIR/tokens.css" << EOF
 /**
  * WDI Design Tokens v$VERSION
  * Downloaded: $(date +%Y-%m-%d)
- * Source: https://github.com/whitedoeinn/dev-plugins-workflow
+ * Source: https://github.com/${TOKEN_SOURCE}
  *
  * To update: run /wdi:frontend-setup
  * Documentation: docs/standards/FRONTEND-STANDARDS.md
@@ -205,8 +218,8 @@ cat "$TEMP_DIR/tokens.css" >> "$TARGET_DIR/tokens.css"
 
 ```bash
 # Use portable date format (works on both GNU and BSD date)
-jq --arg v "$VERSION" --arg d "$(date +%Y-%m-%dT%H:%M:%S%z)" \
-  '. + {"_wdiMeta": {"version": $v, "downloadedAt": $d, "source": "https://github.com/whitedoeinn/dev-plugins-workflow"}}' \
+jq --arg v "$VERSION" --arg d "$(date +%Y-%m-%dT%H:%M:%S%z)" --arg s "https://github.com/${TOKEN_SOURCE}" \
+  '. + {"_wdiMeta": {"version": $v, "downloadedAt": $d, "source": $s}}' \
   "$TEMP_DIR/tokens.json" > "$TARGET_DIR/tokens.json"
 ```
 

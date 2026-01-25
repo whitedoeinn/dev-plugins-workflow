@@ -240,14 +240,18 @@ Surface relevant prior work before planning.
 LOCAL=""
 CENTRAL=""
 [ -d "docs/solutions" ] && LOCAL="docs/solutions"
-[ -d "$HOME/github/whitedoeinn/learnings/curated" ] && CENTRAL="$HOME/github/whitedoeinn/learnings/curated"
+
+# Detect org for learnings path (falls back to whitedoeinn if not detected)
+ORG=$(./scripts/get-org.sh)
+ORG="${ORG:-whitedoeinn}"
+[ -d "$HOME/github/${ORG}/learnings/curated" ] && CENTRAL="$HOME/github/${ORG}/learnings/curated"
 ```
 
 ### Step 2: Search
 
 Extract keywords from issue title/body, search for matches in:
 - Local: `docs/solutions/`
-- Central: `~/github/whitedoeinn/learnings/curated/`
+- Central: `~/github/{ORG}/learnings/curated/`
 
 ```bash
 grep -r -l -i "{keyword}" docs/solutions/ 2>/dev/null | head -5
