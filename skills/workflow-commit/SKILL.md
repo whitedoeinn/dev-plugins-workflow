@@ -145,9 +145,19 @@ Skip this step if `.claude-plugin/plugin.json` doesn't exist or has no `version`
 
 | Signal | Action |
 |--------|--------|
+| Message starts with `feat!:` or contains `BREAKING CHANGE:` | Prompt (see below) |
 | Message starts with `feat:` | Prompt (minor or patch) |
-| Message body contains `BREAKING CHANGE:` | Prompt (major or minor) |
 | All other commits | Auto-bump patch |
+
+### Pre-1.0 vs Post-1.0 Handling
+
+**Pre-1.0 projects (0.x.y):** Breaking changes bump MINOR, not MAJOR. The 1.0.0 milestone should be a deliberate decision, not triggered by a commit convention.
+
+| Commit Type | Pre-1.0 (0.x.y) | Post-1.0 (1.0.0+) |
+|-------------|-----------------|-------------------|
+| `feat!:` / BREAKING | Minor (0.1.0 → 0.2.0) | Major (1.0.0 → 2.0.0) |
+| `feat:` | Minor or Patch | Minor or Patch |
+| Other | Patch | Patch |
 
 ### Auto-bump (no prompt)
 
@@ -158,7 +168,7 @@ Version: 0.1.0 → 0.1.1 (patch)
 
 ### Prompt when needed
 
-For features:
+**For features:**
 ```
 Version bump for feature commit.
 Current: 0.1.0
@@ -169,7 +179,29 @@ Current: 0.1.0
 Choice [m/p]:
 ```
 
-With `--yes`: Default to patch for features.
+**For breaking changes (pre-1.0):**
+```
+Breaking change detected (feat!: or BREAKING CHANGE:)
+Current: 0.1.7 (pre-1.0)
+
+Pre-1.0 projects bump MINOR for breaking changes.
+  → 0.2.0
+
+Confirm [y/n]:
+```
+
+**For breaking changes (post-1.0):**
+```
+Breaking change detected (feat!: or BREAKING CHANGE:)
+Current: 1.2.3
+
+  [M] Major (2.0.0) - Breaking API change
+  [m] Minor (1.3.0) - Breaking but contained
+
+Choice [M/m]:
+```
+
+With `--yes`: Default to minor for pre-1.0 breaking, patch for features.
 
 ### Apply bump
 
