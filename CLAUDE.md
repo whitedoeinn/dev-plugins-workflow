@@ -368,6 +368,11 @@ Tests include:
 - **Unit tests** (BATS) - Test individual script functions
 - **Integration tests** - Validate plugin structure and command parsing
 
+**Prerequisite:** BATS (Bash Automated Testing System) must be installed:
+```bash
+brew install bats-core  # macOS
+```
+
 CI runs these automatically on every push/PR. No Docker or E2E infrastructure needed - keep it simple.
 
 ### Testing Hooks
