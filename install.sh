@@ -40,7 +40,7 @@ if [[ -f ".claude-plugin/plugin.json" ]] && \
   fi
 fi
 
-SCOPE="${1:-project}"
+SCOPE="${1:-user}"
 
 # Handle update flag
 if [ "$1" = "update" ]; then
