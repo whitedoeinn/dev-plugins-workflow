@@ -149,10 +149,14 @@ fi
 echo "Platform: $PLATFORM"
 echo ""
 
-# Verify Claude Code is installed
-if ! command -v claude >/dev/null 2>&1; then
-  echo -e "${RED}Error: Claude Code CLI not found${NC}"
-  echo "Visit: https://code.claude.com to install"
+# Verify Claude Code is installed by delegating to scripts/ensure-claude.sh
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "Checking for Claude Code CLI..."
+# Run the helper in automated mode and allow it to remove GUI shim if present.
+# These env vars enable non-interactive install and automatic replacement of
+# a Homebrew cask shim that points at the desktop app.
+if ! CLAUDE_FORCE_REPLACE=1 CLAUDE_AUTO_INSTALL=1 CLAUDE_ALLOW_REMOTE_INSTALL=1 bash "$SCRIPT_DIR/scripts/ensure-claude.sh"; then
+  echo -e "${RED}Claude Code CLI required. Aborting.${NC}"
   exit 1
 fi
 
