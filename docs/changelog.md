@@ -9,6 +9,7 @@ All notable changes documented here.
 ### Added
 - **Developer Onboarding Guide (#87)** - Created `docs/COLLABORATOR-GUIDE.md` for new contributors. Features progressive disclosure hierarchy (README → Guide → Standards), 10-minute Hello World for quick setup validation, ecosystem-as-story explanation of wdi/compound-engineering/learnings, first contribution walkthrough, and common gotchas table. Added prominent "New Contributor? Start Here" link in README
 - **Progressive Disclosure Learning** - Documented onboarding patterns in `docs/solutions/developer-experience/progressive-disclosure-onboarding.md`
+- **Sub-Issues & Living Epics (#65)** - Updated ISSUE-STANDARDS.md with GitHub's native sub-issues feature documentation and "living epics" pattern for ongoing work streams. Reopened Frontend Design Epic as a living epic
 
 ---
 

@@ -125,20 +125,52 @@ An issue can have both:
 3. **Features/Bugs/Spikes** are the typical working level
 4. **Tasks** are optional - use for breaking down features if helpful
 
-### Parent-Child Relationships
+### Parent-Child Relationships (Sub-Issues)
 
-Use issue body to link scope relationships:
+Use GitHub's native **sub-issues** feature for parent-child relationships:
 
+1. Open the parent issue
+2. Click **Create sub-issue** in the issue sidebar (or use `#` in the issue body)
+3. Sub-issues appear nested under the parent with progress tracking
+
+**Limits:**
+- 50 sub-issues per parent
+- 8 levels of nesting
+- Cross-repo support available
+
+Sub-issues provide:
+- Visual nesting in issue lists
+- Automatic progress tracking (`sub-issue progress` field in Projects)
+- Clear hierarchy without manual linking
+
+> **Reference:** [GitHub Sub-Issues Documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues)
+
+### Living Epics
+
+Some epics represent **ongoing work streams** rather than time-bounded projects. These "living epics" stay open as long as the domain is active.
+
+**Pattern:**
+- Epic stays open indefinitely
+- New work becomes sub-issues, not separate issues
+- Progress tracked via GitHub Projects' `sub-issue progress` field
+- Historical completion notes preserved in the epic body
+
+**When to use:**
+- Design systems (ongoing refinement)
+- Infrastructure improvements (continuous)
+- Documentation initiatives (never "done")
+
+**Example:** Frontend Design Epic (#65) - new design work becomes sub-issues rather than standalone issues, keeping all frontend design work organized under one parent.
+
+**Epic body format:**
 ```markdown
-## Parent
-- #57 (Epic: Adopt Branching & PR Workflow)
+> **Living Epic:** This epic remains open for ongoing [domain] work.
+> New work should be added as sub-issues. See [ISSUE-STANDARDS.md](docs/standards/ISSUE-STANDARDS.md#living-epics) for the pattern.
 
-## Children
-- [ ] #58 - Update workflow-feature.md
-- [ ] #59 - Update commit skill
+[Historical completion summary preserved below]
 ```
 
-Child issues should be assigned to the parent's **milestone** for tracking.
+Child issues should still be assigned to the parent's **milestone** for tracking.
 
 ### Epics and Milestones
 

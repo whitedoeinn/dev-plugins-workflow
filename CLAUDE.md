@@ -328,6 +328,7 @@ When working in WDI projects, follow these conventions:
 
 **Standards Documents:**
 - Repository: `docs/standards/REPO-STANDARDS.md`
+- Issues (labels, sub-issues, living epics): `docs/standards/ISSUE-STANDARDS.md`
 - Plugin architecture: `docs/standards/PLUGIN-ARCHITECTURE.md`
 - Frontend (UI, components, tokens): `docs/standards/FRONTEND-STANDARDS.md`
 - Design tokens: `assets/tokens/tokens.css`, `assets/tokens/tokens.json`
