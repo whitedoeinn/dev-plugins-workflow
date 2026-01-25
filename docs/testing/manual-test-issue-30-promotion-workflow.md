@@ -1,10 +1,12 @@
 # Manual Testing: Issue #30 - Promotion Workflow
 
+> **OBSOLETE:** This test document covers the old `--idea`/`--promote` workflow which was removed in v0.4.6. The workflow was simplified to two entry points: "Quick idea" and "Build something". See #81, #83, #85.
+
 **Feature:** Idea capture and promotion workflow (hybrid model)
 **Issue:** #30
 **Date:** 2026-01-17
 
-Use this checklist to manually verify the promotion workflow works as designed.
+~~Use this checklist to manually verify the promotion workflow works as designed.~~
 
 ---
 

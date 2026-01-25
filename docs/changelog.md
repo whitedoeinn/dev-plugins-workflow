@@ -6,6 +6,19 @@ All notable changes documented here.
 
 ## 2026-01-24
 
+### Breaking Changes
+- **Simplified workflow-feature (#81, #83, #85)** - Complete rewrite of `/wdi:workflow-feature` with two entry points instead of flags:
+  - **Quick idea**: One sentence → Issue → Done (30 seconds)
+  - **Build something**: Full workflow with all phases
+  - Continue any issue with `/wdi:workflow-feature #N`
+  - Removed `--idea`, `--promote` flags
+  - Deleted `/wdi:shape-idea` command
+  - Added phase labels (`phase:planning/working/reviewing/compounding`) for at-a-glance visibility
+  - Added milestone comments at each phase for journey documentation
+  - Added input validation for non-existent issues
+
+  **Migration:** The old flags no longer exist. Use the two entry points instead. To continue an idea, use `#N` syntax.
+
 ### Added
 - **Learnings Search Phase (#79)** - New phase between Pre-flight and Plan that searches for relevant learnings before planning begins. Queries both local `docs/solutions/` and central `learnings/curated/` repo. Supports keyword search (tags, symptom, title) and issue-based search (related_issues field). Closes the compounding feedback loop by surfacing prior solutions automatically
 - **Centralized Learnings Repository (#80)** - Created `whitedoeinn/learnings` to aggregate cross-project learnings. Features two-tier architecture (incoming/ → curated/), central pull sync script, comprehensive taxonomy (universal/frontend/backend/lob), and full documentation. Initial sync pulled 17 learnings from business-ops and dev-plugins-workflow

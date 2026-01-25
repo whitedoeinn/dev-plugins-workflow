@@ -20,6 +20,5 @@ Any early thinking on approach?
 ---
 
 **Next steps:**
-- Shape this idea: `/wdi:shape-idea #{issue-number} --perspective business`
-- Or add comments with `Decision:`, `Test:`, `Blocked:` prefixes
-- When ready: `/wdi:workflow-feature --promote #{issue-number}`
+- Add context as comments (just regular comments)
+- When ready to build: `/wdi:workflow-feature #{issue-number}`

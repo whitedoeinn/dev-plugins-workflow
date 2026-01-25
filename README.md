@@ -5,7 +5,7 @@
 
 Claude Code plugin providing compound-engineering workflows, development standards, and project scaffolding for White Doe Inn projects.
 
-**Version:** 0.3.16 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
+**Version:** 0.4.6 | **License:** MIT | [Architecture](docs/architecture.md) | [Troubleshooting](docs/troubleshooting.md) | [Contributing](CONTRIBUTING.md) | [Standards](docs/standards/)
 
 ## Quick Start
 
@@ -29,14 +29,12 @@ cd dev-plugins-workflow
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflow-feature` | Full feature workflow: pre-flight → research → plan → work → review → compound |
-| `/wdi:workflow-feature --idea` | Quick idea capture: creates idea file + draft issue, no implementation |
-| `/wdi:workflow-feature --plan` | Stop after planning phase |
+| `/wdi:workflow-feature` | Feature workflow - quick idea OR full build (Plan → Work → Review → Compound) |
+| `/wdi:workflow-feature #N` | Continue existing issue from where it left off |
 | `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflow-milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi:workflow-setup` | Set up and verify plugin dependencies |
-| `/wdi:triage-ideas` | Review unshaped ideas, identify clusters, recommend shaping approach |
-| `/wdi:shape-idea` | Iterative shaping session for an idea (produces committed plan file) |
+| `/wdi:triage-ideas` | Review idea backlog, identify clusters, prioritize |
 
 ### Skills (Auto-Invoked)
 
@@ -127,23 +125,32 @@ See [troubleshooting.md](docs/troubleshooting.md) for more details.
 
 ### /wdi:workflow-feature
 
-Orchestrates the complete feature development cycle:
+One command for the entire feature lifecycle:
 
-1. **Learnings Search** - Searches local + central repos for prior solutions
-2. **Plan** - Research agents + GitHub Issue + local plan file
-3. **Work** - Implementation and tests (on main)
-4. **Review** - Multi-agent code review (architecture, security, performance)
-5. **Compound** - Changelog, document learnings
+```bash
+/wdi:workflow-feature              # Start something new
+/wdi:workflow-feature #45          # Continue existing issue
+```
+
+**Two entry points:**
+| Mode | What Happens |
+|------|--------------|
+| **Quick idea** | One sentence → Issue created → Done (30 seconds) |
+| **Build something** | Full workflow: Pre-flight → Learnings Search → Plan → Work → Review → Compound |
+
+**The issue IS the document.** No separate plan files. The GitHub issue accumulates everything:
+- Body: Problem, solution, plan
+- Comments: Progress at each phase
+- Labels: Current phase (`phase:planning`, `phase:working`, etc.)
+- Close comment: Outcome and summary
 
 📊 **Detailed diagram:** [docs/workflows/feature-workflow-diagram.md](docs/workflows/feature-workflow-diagram.md)
 
-**Note:** The workflow commits directly to main with quality gates. Feature branches are not used by design ([#44](https://github.com/whitedoeinn/dev-plugins-workflow/issues/44)). Individuals may use feature branches manually for their own purposes.
+**Note:** The workflow commits directly to main with quality gates. Feature branches are not used by design ([#44](https://github.com/whitedoeinn/dev-plugins-workflow/issues/44)).
 
 Flags:
 - `--yes` / `-y` - Auto-continue through phases
-- `--plan` - Stop after planning
-- `--idea` - Quick idea capture mode (minimal structure, no implementation)
-- `--skip-research` - Skip research agents
+- `--plan` - Stop after planning phase
 
 ### workflow-commit skill
 

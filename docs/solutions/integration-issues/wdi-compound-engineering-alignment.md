@@ -16,6 +16,8 @@ commit: 2fac8f2
 
 # WDI and Compound-Engineering Alignment
 
+> **Historical Note:** This documents the v0.3.x solution. The `--promote` workflow was further simplified in v0.4.6 (#81, #83, #85) - the flag was removed entirely in favor of two entry points: "Quick idea" and "Build something".
+
 ## Problem
 
 The wdi plugin was built by cherry-picking compound-engineering capabilities without understanding its prescriptive workflow. This created:

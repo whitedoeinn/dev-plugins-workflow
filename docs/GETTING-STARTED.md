@@ -97,11 +97,17 @@ You interact with wdi commands. They call compound-engineering under the hood.
 
 ## The Full Feature Workflow
 
-`/wdi:workflow-feature` runs these phases:
+`/wdi:workflow-feature` offers two entry points:
+
+| Mode | What Happens |
+|------|--------------|
+| **Quick idea** | One sentence → Issue created → Done (30 seconds) |
+| **Build something** | Full workflow: Pre-flight → Learnings Search → Plan → Work → Review → Compound |
 
 ```
-Interview → Pre-flight → Learnings Search → Plan → Work → Review → Compound
-    wdi         wdi            wdi           c-e    c-e     c-e       c-e
+Quick idea:     Sentence → Issue → Done
+Build:          Pre-flight → Learnings → Plan → Work → Review → Compound
+                    wdi         wdi        c-e    c-e     c-e       c-e
 ```
 
 *c-e = compound-engineering (delegated)*
@@ -158,39 +164,28 @@ Additional language-specific reviewers run based on file types changed (Rails, P
 
 ## Which Command Do I Use?
 
-| Situation | Command | Prerequisite | What Runs |
-|-----------|---------|--------------|-----------|
-| Vague idea, not ready to build | `--idea` | None | Creates issue only, no implementation |
-| Idea needs exploration | `/wdi:shape-idea #N` | Idea issue | Plan mode exploration, produces committed plan file |
-| Clear idea, ready to implement | (default) | None | Full workflow: all 6 phases |
-| Existing idea issue to promote | `--promote #123` | Issue with shaping (plan files or comments) | Full workflow with pre-filled context |
-| Just need the plan, not implementation | `--plan` | None | Pre-flight → Research → Plan, then stops |
-| Tiny fix, no tracking needed | Just ask Claude | None | No workflow—direct changes |
-| Research only, no implementation | Just ask Claude | None | No workflow—conversation only |
+| Situation | Command | What Happens |
+|-----------|---------|--------------|
+| Quick thought to capture | `/wdi:workflow-feature` → "Quick idea" | One sentence → Issue → Done (30 seconds) |
+| Ready to build something | `/wdi:workflow-feature` → "Build something" | Full workflow: all phases |
+| Continue existing issue | `/wdi:workflow-feature #N` | Resumes from where it left off |
+| Just need the plan | `/wdi:workflow-feature` → "Build" + `--plan` | Pre-flight → Learnings → Plan, then stops |
+| Tiny fix, no tracking needed | Just ask Claude | No workflow—direct changes |
 
 ### Command Examples
 
 ```bash
-# Capture an idea quickly
-/wdi:workflow-feature --idea
-
-# Shape an idea from business perspective
-/wdi:shape-idea #45 --perspective business
-
-# Shape from technical perspective (adds to shaping context)
-/wdi:shape-idea #45 --perspective technical
-
-# Full workflow (most common)
+# Start something new
 /wdi:workflow-feature
 
-# Promote a shaped idea to implementation
-/wdi:workflow-feature --promote #123
-
-# Get a plan but don't implement yet
-/wdi:workflow-feature --plan
+# Continue existing issue
+/wdi:workflow-feature #45
 
 # Auto-continue without pauses (experienced users)
 /wdi:workflow-feature --yes
+
+# Stop after planning
+/wdi:workflow-feature --plan
 ```
 
 ---
@@ -219,21 +214,18 @@ We use **issues for lifecycle** (status labels, comments, closing) and **specs f
 
 See: [#30](https://github.com/whitedoeinn/dev-plugins-workflow/issues/30), [#21](https://github.com/whitedoeinn/dev-plugins-workflow/issues/21)
 
-### Why the idea → shape → promote flow?
+### Why quick idea vs build something?
 
-Ideas captured in the moment are rarely implementation-ready. The flow:
+Ideas range from "a sentence that will remind me" to "ready to implement now." The two entry points handle both:
 
-1. **Capture** (`--idea`) — Get it out of your head before you forget
-2. **Shape** (`/wdi:shape-idea #N`) — Explore from business/technical/UX perspectives
-3. **Promote** (`--promote #123`) — Convert to spec with all shaping context
+1. **Quick idea** — Capture a thought in one sentence before it escapes (30 seconds)
+2. **Build something** — Full workflow when you're ready to implement
 
-This separates "having ideas" from "building things."
+**Shaping happens naturally:**
+- Add comments to the issue over time
+- When ready: `/wdi:workflow-feature #N` → "Start building"
 
-**Shaping options:**
-- **Quick shaping:** Add comments with `Decision:`, `Test:`, `Blocked:` prefixes
-- **Deep shaping:** Use `/wdi:shape-idea #N --perspective business` (or technical/ux) for iterative exploration sessions that produce committed plan files
-
-See: [#30](https://github.com/whitedoeinn/dev-plugins-workflow/issues/30)
+No special syntax or prefixes. Just write what you're thinking.
 
 ### Why work directly on main?
 
@@ -329,11 +321,9 @@ Run `gh auth login` and follow prompts.
 
 | Task | Command |
 |------|---------|
-| Capture idea | `/wdi:workflow-feature --idea` |
-| Shape idea | `/wdi:shape-idea #N --perspective business` |
-| Full workflow | `/wdi:workflow-feature` |
+| Start new (idea or build) | `/wdi:workflow-feature` |
+| Continue issue | `/wdi:workflow-feature #N` |
 | Plan only | `/wdi:workflow-feature --plan` |
-| Promote idea | `/wdi:workflow-feature --promote #123` |
 | Commit changes | "commit these changes" |
 | Check standards | `/wdi:standards-check` |
 | New repo | `/wdi:standards-new-repo` |
@@ -359,10 +349,10 @@ Run `gh auth login` and follow prompts.
 ## What's Next?
 
 1. **Try the walkthrough** above on a real (small) change
-2. **Capture an idea** with `--idea` to see the flow
+2. **Capture a quick idea** to see how fast idea capture works
 3. **Read the architecture doc** when you want to understand the system
 4. **Check issue #42** for capabilities we haven't adopted yet
 
 ---
 
-*This guide covers wdi v0.3.16. For compound-engineering capabilities, see their documentation.*
+*This guide covers wdi v0.4.6. For compound-engineering capabilities, see their documentation.*

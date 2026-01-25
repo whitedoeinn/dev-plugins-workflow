@@ -137,7 +137,7 @@ Plugins follow a specific pattern for Claude Code integration:
 └── CONTRIBUTING.md             # Contribution guide
 ```
 
-**Note:** `.claude/` is generally gitignored (machine-specific settings), but `.claude/plans/idea-*.md` files are tracked via gitignore exception. These are shaping artifacts from `/wdi:shape-idea` sessions that should persist across collaborators.
+**Note:** `.claude/` is generally gitignored (machine-specific settings). Plan files in `.claude/plans/` are working artifacts and typically not tracked.
 
 ---
 

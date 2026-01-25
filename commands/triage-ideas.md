@@ -36,7 +36,7 @@ No Unshaped Ideas
 
 No issues with status:needs-shaping label found.
 
-To capture a new idea: /wdi:workflow-feature --idea
+To capture a new idea: /wdi:workflow-feature → "Quick idea"
 ```
 
 **Exit here if no ideas to triage.**
@@ -278,13 +278,13 @@ For issues marked `individual-promote`:
 2. Add comment with promotion command:
    ```bash
    gh issue comment {number} --body "$(cat <<'EOF'
-   ## Ready to Promote
+   ## Ready to Build
 
-   This idea has been triaged and is ready for promotion to a feature.
+   This idea has been triaged and is ready to build.
 
-   **Promote with:**
+   **Start building with:**
    ```
-   /wdi:workflow-feature --promote #{number}
+   /wdi:workflow-feature #{number}
    ```
 
    *Tagged by `/wdi:triage-ideas`*
@@ -389,9 +389,9 @@ Next Steps by Category:
   #15 - Cache API responses
     → Answer: which caching strategy?
 
-✅ Ready to Promote (run promotion command):
-  #20 - /wdi:workflow-feature --promote #20
-  #21 - /wdi:workflow-feature --promote #21
+✅ Ready to Build (start building):
+  #20 - /wdi:workflow-feature #20
+  #21 - /wdi:workflow-feature #21
 
 📚 Research Initiatives (structured investigation):
   #99 - Research: Authentication improvements
@@ -488,10 +488,10 @@ Triage Complete
 ## Integration Points
 
 ### Input From
-- `/wdi:workflow-feature --idea` - Creates ideas that get triaged here
+- `/wdi:workflow-feature` → "Quick idea" - Creates ideas that get triaged here
 
 ### Output To
-- `/wdi:workflow-feature --promote` - Promotes ready ideas to features
+- `/wdi:workflow-feature #N` - Continues ready ideas into build workflow
 - `/compound-engineering:workflows:plan` - Kicks off research for research initiatives
 
 ---
