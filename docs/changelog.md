@@ -4,6 +4,14 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-25
+
+### Added
+- **Developer Onboarding Guide (#87)** - Created `docs/COLLABORATOR-GUIDE.md` for new contributors. Features progressive disclosure hierarchy (README → Guide → Standards), 10-minute Hello World for quick setup validation, ecosystem-as-story explanation of wdi/compound-engineering/learnings, first contribution walkthrough, and common gotchas table. Added prominent "New Contributor? Start Here" link in README
+- **Progressive Disclosure Learning** - Documented onboarding patterns in `docs/solutions/developer-experience/progressive-disclosure-onboarding.md`
+
+---
+
 ## 2026-01-24
 
 ### Breaking Changes

@@ -61,6 +61,9 @@ dev-plugins-workflow/
 │       └── tokens.json              # Machine-readable tokens
 ├── env-baseline.json                # Environment baseline definition
 ├── docs/
+│   ├── COLLABORATOR-GUIDE.md        # New contributor onboarding (start here!)
+│   ├── architecture.md              # System design diagrams
+│   ├── troubleshooting.md           # Problem resolution
 │   ├── standards/                   # Development standards
 │   │   ├── PLUGIN-ARCHITECTURE.md   # One-plugin policy
 │   │   ├── REPO-STANDARDS.md        # Repository conventions
