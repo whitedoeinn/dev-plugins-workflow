@@ -5,37 +5,37 @@
 ## The Big Picture
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#fff', 'primaryBorderColor': '#4f46e5', 'lineColor': '#94a3b8', 'secondaryColor': '#f0fdf4', 'tertiaryColor': '#fef3c7'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0f172a', 'primaryTextColor': '#f8fafc', 'primaryBorderColor': '#334155', 'lineColor': '#475569', 'secondaryColor': '#f1f5f9', 'tertiaryColor': '#fef3c7', 'fontFamily': 'ui-monospace, monospace'}}}%%
 flowchart TB
-    subgraph entry ["🚀 START HERE"]
-        cmd["/wdi:workflow-feature"]
+    subgraph entry [" "]
+        cmd[["wdi:workflow-feature"]]
     end
 
-    cmd --> choice{"What do you<br/>want to do?"}
+    cmd --> choice{"Quick idea<br/>or build?"}
 
-    choice -->|"💡 Quick idea"| quick["✨ Capture thought<br/>One sentence<br/>30 seconds"]
-    choice -->|"🔨 Build something"| full["Full Workflow"]
+    choice -->|"idea"| quick["Capture in 30s"]
+    choice -->|"build"| full["Start Journey"]
 
-    quick --> issue["📋 GitHub Issue #N<br/>label: idea"]
-    issue -.->|"Continue anytime"| continue["/wdi:workflow-feature #N"]
+    quick --> issue["Issue #N created"]
+    issue -.->|"#N"| continue["Continue anytime"]
     continue --> full
 
-    subgraph workflow ["THE JOURNEY"]
+    subgraph workflow ["  THE JOURNEY  "]
         direction TB
-        full --> preflight["🛫 Pre-flight<br/>Validate environment"]
-        preflight --> search["🔍 Learnings Search<br/>Surface prior solutions"]
-        search --> plan["📐 Plan<br/>Research → Design → Decide"]
-        plan --> work["⚡ Work<br/>Build with quality gates"]
-        work --> review["🔬 Review<br/>12+ agents in parallel"]
-        review --> compound["🧠 Compound<br/>Document learnings"]
-        compound --> done["✅ Complete"]
+        full --> preflight["Pre-flight"]
+        preflight --> search["Learnings Search"]
+        search --> plan["Plan"]
+        plan --> work["Work"]
+        work --> review["Review"]
+        review --> compound["Compound"]
+        compound --> done["Done"]
     end
 
-    subgraph labels ["PHASE VISIBILITY"]
-        l1["🔵 phase:planning"]
-        l2["🟢 phase:working"]
-        l3["🟡 phase:reviewing"]
-        l4["🟣 phase:compounding"]
+    subgraph labels ["  PHASE LABELS  "]
+        l1["planning"]
+        l2["working"]
+        l3["reviewing"]
+        l4["compounding"]
     end
 
     plan -.-> l1
@@ -43,18 +43,30 @@ flowchart TB
     review -.-> l3
     compound -.-> l4
 
-    done --> solutions[("📚 docs/solutions/<br/>Learnings")]
-    solutions -->|"Feeds next session"| search
+    done --> solutions[("Learnings")]
+    solutions -->|"feeds next"| search
 
-    style cmd fill:#6366f1,stroke:#4f46e5,color:#fff
-    style quick fill:#10b981,stroke:#059669,color:#fff
-    style issue fill:#f0fdf4,stroke:#86efac
-    style done fill:#10b981,stroke:#059669,color:#fff
-    style solutions fill:#fef3c7,stroke:#fcd34d
-    style l1 fill:#1D76DB,color:#fff
-    style l2 fill:#0E8A16,color:#fff
-    style l3 fill:#FBCA04,color:#000
-    style l4 fill:#6F42C1,color:#fff
+    style entry fill:none,stroke:none
+    style cmd fill:#0f172a,stroke:#0f172a,color:#f8fafc
+    style choice fill:#1e293b,stroke:#334155,color:#f8fafc
+    style quick fill:#059669,stroke:#047857,color:#fff
+    style issue fill:#f1f5f9,stroke:#cbd5e1,color:#1e293b
+    style continue fill:#f1f5f9,stroke:#cbd5e1,color:#1e293b
+    style full fill:#1e293b,stroke:#334155,color:#f8fafc
+    style workflow fill:#f8fafc,stroke:#e2e8f0,color:#0f172a
+    style preflight fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style search fill:#fef3c7,stroke:#fcd34d,color:#78350f
+    style plan fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style work fill:#d1fae5,stroke:#10b981,color:#064e3b
+    style review fill:#fce7f3,stroke:#ec4899,color:#831843
+    style compound fill:#ede9fe,stroke:#8b5cf6,color:#4c1d95
+    style done fill:#0f172a,stroke:#0f172a,color:#f8fafc
+    style labels fill:#f8fafc,stroke:#e2e8f0
+    style l1 fill:#3b82f6,stroke:#2563eb,color:#fff
+    style l2 fill:#10b981,stroke:#059669,color:#fff
+    style l3 fill:#f59e0b,stroke:#d97706,color:#fff
+    style l4 fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style solutions fill:#fef3c7,stroke:#f59e0b,color:#78350f
 ```
 
 ---
@@ -64,40 +76,47 @@ flowchart TB
 Every feature you ship makes the next one easier.
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#8b5cf6'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0f172a', 'fontFamily': 'ui-monospace, monospace'}}}%%
 flowchart LR
-    subgraph session1 ["SESSION 1"]
+    subgraph session1 ["  TODAY  "]
         direction TB
-        p1["😤 Problem:<br/>Form shows stale data"]
-        s1["💡 Solution:<br/>Use key={id}"]
-        d1["📝 Document it"]
+        p1["Problem: stale data"]
+        s1["Solution: key=id"]
+        d1["Document"]
     end
 
-    subgraph central ["LEARNINGS HUB"]
+    subgraph central ["  HUB  "]
         direction TB
-        sync["🔄 Sync"]
-        repo["whitedoeinn/learnings"]
-        curated["📚 Curated by topic"]
+        sync["Sync"]
+        repo["learnings/"]
+        curated["Curated"]
     end
 
-    subgraph session2 ["SESSION 2"]
+    subgraph session2 ["  TOMORROW  "]
         direction TB
-        p2["🤔 New task:<br/>Add edit form"]
-        search2["🔍 Learnings Search"]
-        found["✨ Found it!<br/>2 min vs 30 min"]
+        p2["Task: edit form"]
+        search2["Search"]
+        found["Found: 2m vs 30m"]
     end
 
     p1 --> s1 --> d1
-    d1 -->|"/workflows:compound"| sync
+    d1 -->|"compound"| sync
     sync --> repo --> curated
-    curated -->|"Auto-surfaces"| search2
+    curated -->|"auto"| search2
     p2 --> search2 --> found
 
-    style p1 fill:#fecaca,stroke:#f87171
-    style s1 fill:#bbf7d0,stroke:#4ade80
-    style d1 fill:#e0e7ff,stroke:#a5b4fc
-    style found fill:#bbf7d0,stroke:#4ade80
-    style repo fill:#fef3c7,stroke:#fcd34d
+    style session1 fill:#f8fafc,stroke:#e2e8f0
+    style session2 fill:#f8fafc,stroke:#e2e8f0
+    style central fill:#fef3c7,stroke:#f59e0b
+    style p1 fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+    style s1 fill:#d1fae5,stroke:#10b981,color:#064e3b
+    style d1 fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style sync fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style repo fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style curated fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style p2 fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style search2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style found fill:#d1fae5,stroke:#10b981,color:#064e3b
 ```
 
 ---
@@ -107,38 +126,35 @@ flowchart LR
 The GitHub issue becomes a living document of the journey.
 
 ```mermaid
-%%{init: {'theme': 'base'}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'cScale0': '#dbeafe', 'cScale1': '#fef3c7', 'cScale2': '#d1fae5', 'cScale3': '#fce7f3', 'cScale4': '#ede9fe', 'cScale5': '#d1fae5', 'cScaleLabel0': '#1e3a8a', 'cScaleLabel1': '#78350f', 'cScaleLabel2': '#064e3b', 'cScaleLabel3': '#831843', 'cScaleLabel4': '#4c1d95', 'cScaleLabel5': '#064e3b'}}}%%
 timeline
-    title Issue #85: Validate issue exists in continue mode
+    title Issue #85 · Validate issue exists
 
     section Created
-        Quick idea captured : 30 seconds
+        Idea captured : 30 seconds
 
-    section Learnings Search
-        Searched local + central : No prior art found
-        : This is novel work
+    section Search
+        Local + central : No prior art
+        : Novel work
 
     section Plan
-        Research summary : gh returns exit code 1
-        Decision : Add validation inline
-        Risk : None identified
+        Research : gh exit code 1
+        Decision : Inline validation
 
     section Work
-        Implementation : Added Step 1.5
-        Tests : All passing
-        Deviations : None
+        Built : Step 1.5 added
+        Tests : Passing
 
     section Review
-        12+ agents : 0 P1, 0 P2, 0 P3
-        Status : No blocking issues
+        Agents : 0 P1 · 0 P2 · 0 P3
+        Status : Clear
 
     section Compound
-        Learnings documented : validate-inputs-at-boundaries.md
-        Key insight : Error messages should suggest actions
+        Documented : validate-inputs.md
+        Insight : Suggest actions in errors
 
-    section Closed
-        Outcome : ✓ Completed as planned
-        Commit : 8ce4fc7
+    section Done
+        Outcome : Completed as planned
 ```
 
 ---
@@ -148,48 +164,65 @@ timeline
 12+ specialized agents catch what humans miss.
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0f172a', 'fontFamily': 'ui-monospace, monospace'}}}%%
 flowchart TB
-    subgraph code ["YOUR CODE"]
-        changes["📝 Changes"]
+    subgraph code [" "]
+        changes["Your Changes"]
     end
 
-    changes --> review["🔬 /workflows:review"]
+    changes --> review[["workflows:review"]]
 
-    subgraph agents ["PARALLEL AGENT SWARM"]
+    subgraph agents ["  12+ AGENTS IN PARALLEL  "]
         direction LR
-        a1["🏛️ Architecture"]
-        a2["🔒 Security"]
-        a3["⚡ Performance"]
-        a4["🎯 Simplicity"]
-        a5["💾 Data Integrity"]
-        a6["🔄 Patterns"]
-        a7["🛤️ Rails"]
-        a8["🐍 Python"]
-        a9["📘 TypeScript"]
-        a10["🚀 Deployment"]
-        a11["🤖 Agent-Native"]
-        a12["📊 More..."]
+        a1["Architecture"]
+        a2["Security"]
+        a3["Performance"]
+        a4["Simplicity"]
+        a5["Data"]
+        a6["Patterns"]
+        a7["Rails"]
+        a8["Python"]
+        a9["TypeScript"]
+        a10["Deploy"]
+        a11["Agent"]
+        a12["..."]
     end
 
     review --> agents
 
-    agents --> findings["📋 Prioritized Findings"]
+    agents --> findings["Prioritized Findings"]
 
-    subgraph priority ["PRIORITY TRIAGE"]
-        p1["🔴 P1: Blocking"]
-        p2["🟡 P2: Important"]
-        p3["🔵 P3: Nice-to-have"]
+    subgraph priority ["  TRIAGE  "]
+        p1["P1 Blocking"]
+        p2["P2 Important"]
+        p3["P3 Consider"]
     end
 
     findings --> priority
-    priority --> issues["🎫 GitHub Issues Created"]
+    priority --> issues["Issues Created"]
 
-    style changes fill:#e0e7ff,stroke:#a5b4fc
-    style review fill:#6366f1,stroke:#4f46e5,color:#fff
-    style p1 fill:#fecaca,stroke:#f87171
-    style p2 fill:#fef3c7,stroke:#fcd34d
-    style p3 fill:#dbeafe,stroke:#93c5fd
+    style code fill:none,stroke:none
+    style changes fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style review fill:#0f172a,stroke:#0f172a,color:#f8fafc
+    style agents fill:#fce7f3,stroke:#ec4899
+    style a1 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a2 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a3 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a4 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a5 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a6 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a7 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a8 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a9 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a10 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a11 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style a12 fill:#fce7f3,stroke:#f9a8d4,color:#831843
+    style findings fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style priority fill:#f8fafc,stroke:#e2e8f0
+    style p1 fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+    style p2 fill:#fef3c7,stroke:#f59e0b,color:#78350f
+    style p3 fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style issues fill:#d1fae5,stroke:#10b981,color:#064e3b
 ```
 
 ---
@@ -199,36 +232,43 @@ flowchart TB
 Knowledge organized for instant discovery.
 
 ```mermaid
-%%{init: {'theme': 'base'}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0f172a', 'fontFamily': 'ui-monospace, monospace'}}}%%
 flowchart TB
-    subgraph repos ["SOURCE REPOS"]
-        r1["📦 business-ops<br/>docs/solutions/"]
-        r2["📦 dev-plugins<br/>docs/solutions/"]
-        r3["📦 marketing-ops<br/>docs/solutions/"]
+    subgraph repos ["  SOURCE REPOS  "]
+        r1["business-ops/"]
+        r2["dev-plugins/"]
+        r3["marketing-ops/"]
     end
 
-    repos -->|"./scripts/sync-all.sh"| central
+    repos -->|"sync"| central
 
-    subgraph central ["CENTRAL: whitedoeinn/learnings"]
+    subgraph central ["  CENTRAL HUB  "]
         direction TB
-        incoming["📥 incoming/<br/>Raw sync"]
-        incoming -->|"Triage"| curated
+        incoming["incoming/"]
+        incoming -->|"triage"| curated
 
-        subgraph curated ["📚 curated/"]
-            universal["🌍 universal/<br/>Any stack"]
-            frontend["⚛️ frontend/<br/>React, CSS, UI"]
-            backend["💎 backend/<br/>Ruby, Rails, APIs"]
-            lob["🏢 lob/<br/>Business domains"]
+        subgraph curated ["  curated/  "]
+            universal["universal/"]
+            frontend["frontend/"]
+            backend["backend/"]
+            lob["lob/"]
         end
     end
 
-    curated -->|"Learnings Search"| sessions["🔮 Future Sessions"]
+    curated -->|"search"| sessions["Future Sessions"]
 
-    style incoming fill:#fef3c7,stroke:#fcd34d
-    style universal fill:#e0e7ff,stroke:#a5b4fc
-    style frontend fill:#dbeafe,stroke:#93c5fd
-    style backend fill:#fce7f3,stroke:#f9a8d4
-    style lob fill:#d1fae5,stroke:#6ee7b7
+    style repos fill:#f8fafc,stroke:#e2e8f0
+    style r1 fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style r2 fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style r3 fill:#f1f5f9,stroke:#cbd5e1,color:#334155
+    style central fill:#fef3c7,stroke:#f59e0b
+    style incoming fill:#fef3c7,stroke:#fcd34d,color:#78350f
+    style curated fill:#fff7ed,stroke:#fdba74
+    style universal fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    style frontend fill:#fce7f3,stroke:#ec4899,color:#831843
+    style backend fill:#ede9fe,stroke:#8b5cf6,color:#4c1d95
+    style lob fill:#d1fae5,stroke:#10b981,color:#064e3b
+    style sessions fill:#0f172a,stroke:#0f172a,color:#f8fafc
 ```
 
 ---
@@ -238,24 +278,24 @@ flowchart TB
 How issues flow through the system.
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#6366f1'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#0f172a', 'primaryTextColor': '#f8fafc', 'primaryBorderColor': '#334155', 'lineColor': '#64748b', 'fontFamily': 'ui-monospace, monospace'}}}%%
 stateDiagram-v2
-    [*] --> Idea: Quick idea
-    [*] --> Planning: Build something
+    [*] --> Idea: quick idea
+    [*] --> Planning: build
 
-    Idea --> Planning: Start building
-    Idea --> [*]: Close (not pursuing)
+    Idea --> Planning: start
+    Idea --> [*]: close
 
-    Planning --> Working: Plan approved
-    Planning --> Planning: Edit plan
+    Planning --> Working: approved
+    Planning --> Planning: edit
 
-    Working --> Reviewing: Tests pass
-    Working --> Working: Continue working
+    Working --> Reviewing: tests pass
+    Working --> Working: continue
 
-    Reviewing --> Compounding: No P1s
-    Reviewing --> Working: Fix P1s
+    Reviewing --> Compounding: no P1s
+    Reviewing --> Working: fix P1s
 
-    Compounding --> Closed: Learnings captured
+    Compounding --> Closed: documented
 
     Closed --> [*]
 
@@ -267,8 +307,8 @@ stateDiagram-v2
     }
 
     state Reviewing {
-        [*] --> AgentSwarm
-        AgentSwarm --> Triage
+        [*] --> Swarm
+        Swarm --> Triage
         Triage --> [*]
     }
 ```
@@ -277,30 +317,28 @@ stateDiagram-v2
 
 ## Quick Reference
 
-| Command | What Happens |
-|---------|--------------|
-| `/wdi:workflow-feature` | Start new (asks: quick idea or build?) |
-| `/wdi:workflow-feature #45` | Continue existing issue |
-| `/wdi:workflow-feature --yes` | Auto-continue through phases |
-| `/wdi:workflow-feature --plan` | Stop after planning |
+| Command | Description |
+|---------|-------------|
+| `wdi:workflow-feature` | Start new |
+| `wdi:workflow-feature #45` | Continue issue |
+| `wdi:workflow-feature --yes` | Auto-continue |
+| `wdi:workflow-feature --plan` | Plan only |
 
 ---
 
 ## Real Example
 
-**See the workflow in action:** [Issue #85](https://github.com/whitedoeinn/dev-plugins-workflow/issues/85)
-
-A complete journey from idea to shipped feature, with every phase documented.
+[Issue #85](https://github.com/whitedoeinn/dev-plugins-workflow/issues/85) shows the complete journey.
 
 ```
-#85: Validate issue exists in continue mode
-├── [Body] Problem, Solution, Plan
-├── [Comment] Learnings Search - "No prior art found"
-├── [Comment] Plan - Research: gh returns exit code 1...
-├── [Comment] Work - Added Step 1.5, tests passing
-├── [Comment] Review - 0 P1s, 0 P2s, 0 P3s
-├── [Comment] Compound - Learnings documented
-└── [Closed] ✓ Completed as planned, commit 8ce4fc7
+#85: Validate issue exists
+  Body      Problem, Solution, Plan
+  Search    No prior art found
+  Plan      gh returns exit code 1
+  Work      Step 1.5 added, tests passing
+  Review    0 P1, 0 P2, 0 P3
+  Compound  Learnings documented
+  Closed    Completed as planned
 ```
 
 ---
@@ -308,33 +346,34 @@ A complete journey from idea to shipped feature, with every phase documented.
 ## Why This Matters
 
 ```mermaid
-%%{init: {'theme': 'base'}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'quadrant1Fill': '#d1fae5', 'quadrant2Fill': '#fef3c7', 'quadrant3Fill': '#fecaca', 'quadrant4Fill': '#fee2e2', 'quadrant1TextFill': '#064e3b', 'quadrant2TextFill': '#78350f', 'quadrant3TextFill': '#7f1d1d', 'quadrant4TextFill': '#7f1d1d', 'quadrantPointFill': '#0f172a', 'quadrantPointTextFill': '#0f172a', 'fontFamily': 'ui-monospace, monospace'}}}%%
 quadrantChart
     title Developer Experience vs Knowledge Capture
     x-axis Low Friction --> High Friction
     y-axis Knowledge Lost --> Knowledge Compounds
-    quadrant-1 "🎯 THE GOAL"
-    quadrant-2 "Traditional docs"
-    quadrant-3 "No process"
-    quadrant-4 "Heavy process"
-    "wdi workflow": [0.2, 0.85]
-    "Confluence": [0.7, 0.5]
-    "Just code": [0.1, 0.15]
-    "Jira + PRs + Docs": [0.9, 0.6]
+    quadrant-1 "THE GOAL"
+    quadrant-2 "Docs decay"
+    quadrant-3 "Tribal knowledge"
+    quadrant-4 "Process overhead"
+    wdi: [0.2, 0.85]
+    Confluence: [0.7, 0.5]
+    Just code: [0.1, 0.15]
+    Enterprise: [0.9, 0.6]
 ```
 
-**We're in the sweet spot:** Low friction, high knowledge retention.
+**The sweet spot:** Low friction, high knowledge retention.
 
 ---
 
 ## Get Started
 
 ```bash
-# Install
 curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash
+```
 
-# Your first feature
-/wdi:workflow-feature
+Then run:
+```
+wdi:workflow-feature
 ```
 
 ---
@@ -342,7 +381,7 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/mai
 <p align="center">
   <strong>One command. Complete journey. Knowledge compounds.</strong>
   <br><br>
-  <a href="https://github.com/whitedoeinn/dev-plugins-workflow">GitHub</a> •
-  <a href="https://github.com/whitedoeinn/dev-plugins-workflow/issues/85">Real Example</a> •
-  <a href="https://github.com/whitedoeinn/learnings">Learnings Repo</a>
+  <a href="https://github.com/whitedoeinn/dev-plugins-workflow">GitHub</a> ·
+  <a href="https://github.com/whitedoeinn/dev-plugins-workflow/issues/85">Example</a> ·
+  <a href="https://github.com/whitedoeinn/learnings">Learnings</a>
 </p>
