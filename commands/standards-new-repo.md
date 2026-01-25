@@ -17,6 +17,56 @@ Create a new GitHub repository using an interview-driven workflow that enforces 
 
 ## Workflow
 
+### Phase 0: Detect Organization
+
+Determine the target GitHub organization or user namespace for repository creation.
+
+#### Step 1: Auto-detect
+
+```bash
+ORG=$(./scripts/get-org.sh)
+```
+
+**If org detected from git remote or config:**
+
+```
+Organization detected: {ORG}
+```
+
+Proceed to Phase 1.
+
+#### Step 2: User Selection (if not auto-detected)
+
+If no org detected, fetch user's available namespaces:
+
+```bash
+./scripts/get-org.sh --list
+```
+
+Use `AskUserQuestion`:
+
+```
+Where should this repository be created?
+```
+
+| Option | Description |
+|--------|-------------|
+| **{username} (personal)** | Your personal GitHub namespace |
+| **{org1}** | Organization you belong to |
+| **{org2}** | Another organization you belong to |
+| Other | Enter a different organization or username |
+
+**Store selection for future use:**
+
+```bash
+# If user wants to save (optional prompt)
+echo "{\"org\": \"{selected}\"}" > .wdi.json
+```
+
+**Note:** The selected organization/user is stored in `{ORG}` variable and used throughout this workflow.
+
+---
+
 ### Phase 1: Interview
 
 Use `AskUserQuestion` to gather context. Questions adapt based on answers.
@@ -199,7 +249,7 @@ Analyze if exception suggests a standard update:
 
 ```bash
 gh issue create \
-  --repo whitedoeinn/dev-plugins-workflow \
+  --repo ${ORG}/dev-plugins-workflow \
   --title "Consider naming standard update: {pattern}" \
   --body "$(cat <<'EOF'
 ## Naming Exception Detected
@@ -242,7 +292,7 @@ EOF
 
 ```
 📋 Created issue to review naming standard:
-   https://github.com/whitedoeinn/dev-plugins-workflow/issues/{number}
+   https://github.com/${ORG}/dev-plugins-workflow/issues/{number}
 
 Your feedback helps improve our standards!
 ```
@@ -252,7 +302,7 @@ Your feedback helps improve our standards!
 ### Phase 5: Create Repository
 
 ```bash
-gh repo create whitedoeinn/{name} --private --description "{description}"
+gh repo create ${ORG}/{name} --private --description "{description}"
 ```
 
 ### Phase 6: Initialize Structure
@@ -374,7 +424,7 @@ git push origin main
 ### Phase 8: Output
 
 ```
-✓ Repository created: https://github.com/whitedoeinn/{name}
+✓ Repository created: https://github.com/${ORG}/{name}
 
 Structure:
 {tree output}
@@ -411,7 +461,7 @@ Recommended name: dev-plugins-analytics
 ? Accept this name?
   → Accept
 
-✓ Created: https://github.com/whitedoeinn/dev-plugins-analytics
+✓ Created: https://github.com/${ORG}/dev-plugins-analytics
 ```
 
 ### Custom name with exception
@@ -449,7 +499,7 @@ Recommended name: dev-plugins-frontend
      for external package consumers."
 
 📋 Created issue #47 to review naming standard
-✓ Created: https://github.com/whitedoeinn/claude-ui-toolkit
+✓ Created: https://github.com/${ORG}/claude-ui-toolkit
 ```
 
 ### Quick mono-repo creation
