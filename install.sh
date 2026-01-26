@@ -149,15 +149,26 @@ fi
 echo "Platform: $PLATFORM"
 echo ""
 
-# Verify Claude Code is installed by delegating to scripts/ensure-claude.sh
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-echo "Checking for Claude Code CLI..."
-# Run the helper in automated mode and allow it to remove GUI shim if present.
-# These env vars enable non-interactive install and automatic replacement of
-# a Homebrew cask shim that points at the desktop app.
-if ! CLAUDE_FORCE_REPLACE=1 CLAUDE_AUTO_INSTALL=1 CLAUDE_ALLOW_REMOTE_INSTALL=1 bash "$SCRIPT_DIR/scripts/ensure-claude.sh"; then
-  echo -e "${RED}Claude Code CLI required. Aborting.${NC}"
+# Verify Claude Code is installed
+if ! command -v claude >/dev/null 2>&1; then
+  echo -e "${RED}Error: Claude Code CLI not found${NC}"
+  echo "Install from: https://code.claude.com"
   exit 1
+fi
+
+# Check for GUI symlink conflict (Homebrew cask installs GUI, not CLI)
+CLAUDE_PATH=$(command -v claude)
+if [[ -L "$CLAUDE_PATH" ]]; then
+  LINK_TARGET=$(readlink "$CLAUDE_PATH" 2>/dev/null || true)
+  if [[ "$LINK_TARGET" == *"/Applications/Claude.app"* ]]; then
+    echo -e "${RED}Error: Found Claude GUI app, not CLI${NC}"
+    echo "The 'claude' command points to the desktop app, not the CLI."
+    echo ""
+    echo "To fix:"
+    echo "  brew uninstall --cask claude"
+    echo "  # Then install CLI from: https://code.claude.com"
+    exit 1
+  fi
 fi
 
 echo "Claude Code found"
