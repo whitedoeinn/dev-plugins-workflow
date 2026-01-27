@@ -38,16 +38,50 @@ foreach ($path in $cachePaths) {
 }
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 2: Update marketplaces
+# Step 2: Add marketplaces (if not already added)
 Write-Host ""
-Write-Host "Step 2: Updating marketplaces..." -ForegroundColor Yellow
-try { claude plugin marketplace update wdi-marketplace 2>$null } catch {}
-try { claude plugin marketplace update every-marketplace 2>$null } catch {}
+Write-Host "Step 2: Adding marketplaces..." -ForegroundColor Yellow
+
+$marketplaces = @(
+    @{
+        name = "every-marketplace"
+        url = "https://github.com/EveryInc/compound-engineering-plugin.git"
+    },
+    @{
+        name = "wdi-marketplace"
+        url = "https://github.com/whitedoeinn/dev-plugins-workflow.git"
+    }
+)
+
+foreach ($mp in $marketplaces) {
+    try {
+        $existingList = claude plugin marketplace list --json 2>$null | ConvertFrom-Json
+        $exists = @($existingList | Where-Object { $_.name -eq $mp.name }).Count -gt 0
+    } catch {
+        $exists = $false
+    }
+
+    if (-not $exists) {
+        Write-Host "  Adding $($mp.name)..." -ForegroundColor Gray
+        claude plugin marketplace add $mp.name $mp.url
+    } else {
+        Write-Host "  $($mp.name) already exists, updating..." -ForegroundColor Gray
+        try { claude plugin marketplace update $mp.name 2>$null } catch {}
+    }
+}
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 3: Clean installed_plugins.json
+# Step 3: Update marketplaces
 Write-Host ""
-Write-Host "Step 3: Cleaning plugin registry..." -ForegroundColor Yellow
+Write-Host "Step 3: Updating marketplaces..." -ForegroundColor Yellow
+foreach ($mp in $marketplaces) {
+    try { claude plugin marketplace update $mp.name 2>$null } catch {}
+}
+Write-Host "  Done" -ForegroundColor Green
+
+# Step 4: Clean installed_plugins.json
+Write-Host ""
+Write-Host "Step 4: Cleaning plugin registry..." -ForegroundColor Yellow
 $installedPlugins = "$pluginsDir\installed_plugins.json"
 
 if (Test-Path $installedPlugins) {
@@ -77,9 +111,9 @@ if (Test-Path $installedPlugins) {
     Write-Host "  No existing registry (fresh install)" -ForegroundColor Green
 }
 
-# Step 4: Remove project-scope settings files
+# Step 5: Remove project-scope settings files
 Write-Host ""
-Write-Host "Step 4: Removing stale project settings files..." -ForegroundColor Yellow
+Write-Host "Step 5: Removing stale project settings files..." -ForegroundColor Yellow
 $projectPaths = @(
     "$env:USERPROFILE\github\whitedoeinn\dev-plugins-workflow",
     "$env:USERPROFILE\github\whitedoeinn\events",
@@ -96,9 +130,9 @@ foreach ($project in $projectPaths) {
 }
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 5: Ensure plugins are installed at user scope
+# Step 6: Ensure plugins are installed at user scope
 Write-Host ""
-Write-Host "Step 5: Ensuring plugins at user scope..." -ForegroundColor Yellow
+Write-Host "Step 6: Ensuring plugins at user scope..." -ForegroundColor Yellow
 
 $pluginsToInstall = @(
     "compound-engineering@every-marketplace",
@@ -125,9 +159,9 @@ foreach ($plugin in $pluginsToInstall) {
 }
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 6: Create settings.json
+# Step 7: Create settings.json
 Write-Host ""
-Write-Host "Step 6: Creating settings.json..." -ForegroundColor Yellow
+Write-Host "Step 7: Creating settings.json..." -ForegroundColor Yellow
 
 $settingsContent = @'
 {
@@ -145,9 +179,9 @@ $settingsContent = @'
 $settingsContent | Set-Content "$claudeDir\settings.json" -Encoding UTF8
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 7: Create global CLAUDE.md
+# Step 8: Create global CLAUDE.md
 Write-Host ""
-Write-Host "Step 7: Creating global CLAUDE.md..." -ForegroundColor Yellow
+Write-Host "Step 8: Creating global CLAUDE.md..." -ForegroundColor Yellow
 
 $claudeMdContent = @'
 # Global Claude Code Settings
@@ -326,9 +360,9 @@ If any workflow or script attempts to modify these settings, warn me before proc
 $claudeMdContent | Set-Content "$claudeDir\CLAUDE.md" -Encoding UTF8
 Write-Host "  Done" -ForegroundColor Green
 
-# Step 8: Verify installation
+# Step 9: Verify installation
 Write-Host ""
-Write-Host "Step 8: Verifying installation..." -ForegroundColor Yellow
+Write-Host "Step 9: Verifying installation..." -ForegroundColor Yellow
 Write-Host ""
 
 try {
