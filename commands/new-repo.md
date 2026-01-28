@@ -17,7 +17,7 @@ Create a new GitHub repository with WDI standard structure.
 | Argument | Default | Description |
 |----------|---------|-------------|
 | `name` | **required** | Repository name (lowercase, hyphens) |
-| `--type` | `standalone` | `standalone`, `plugin`, `mono`, `experiment` |
+| `--type` | `standalone` | `standalone`, `plugin`, `mono`, `knowledge`, `experiment` |
 | `--desc` | auto | One-line description |
 | `--org` | `whitedoeinn` | GitHub organization or username |
 | `--public` | `false` | Make repository public (default: private) |
@@ -26,7 +26,9 @@ Create a new GitHub repository with WDI standard structure.
 ## Examples
 
 ```
-/wdi:new-repo foundation --desc "Human 3.0 methodology" --public --clone
+/wdi:new-repo foundation --type knowledge --desc "Human 3.0 methodology" --public --clone
+/wdi:new-repo enterprise --type knowledge --desc "Corporate identity and governance" --public
+/wdi:new-repo portfolio --type knowledge --desc "Software strategy and capabilities" --public
 /wdi:new-repo dev-plugins-analytics --type plugin --clone
 /wdi:new-repo marketing-ops --type mono
 /wdi:new-repo experiment-graphql --type experiment
@@ -48,7 +50,7 @@ Extract from command:
 
 **Validation:**
 - Name must be lowercase with hyphens only
-- Type must be one of: `standalone`, `plugin`, `mono`, `experiment`
+- Type must be one of: `standalone`, `plugin`, `mono`, `knowledge`, `experiment`
 
 If validation fails:
 ```
@@ -138,6 +140,22 @@ Based on TYPE, create directories and files:
 ├── CLAUDE.md
 └── .gitignore
 ```
+
+#### Knowledge Structure
+
+For methodology, documentation, and knowledge repos (not code):
+
+```
+{repo}/
+├── docs/
+│   └── changelog.md
+├── scripts/
+├── README.md
+├── CLAUDE.md
+└── .gitignore
+```
+
+**Note:** Knowledge repos get minimal structure. Add domain-specific directories after creation (e.g., `telos/`, `decisions/`, `playbooks/`).
 
 #### Experiment Structure
 ```
@@ -281,5 +299,6 @@ To clone locally:
 
 - All repos get CLAUDE.md for Claude Code context
 - All repos follow WDI standards by default
+- Use `--type knowledge` for documentation/methodology repos (no src/tests)
 - Use `--type experiment` for spikes with 90-day lifecycle
 - Private by default; use `--public` for open repos

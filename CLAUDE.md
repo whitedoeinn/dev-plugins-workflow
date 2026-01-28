@@ -96,7 +96,7 @@ dev-plugins-workflow/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:new-repo <name>` | Create WDI-standard repository (parameterized, scriptable) |
+| `/wdi:new-repo <name>` | Create WDI-standard repository (types: standalone, plugin, mono, knowledge, experiment) |
 | `/wdi:standards-new-repo` | *(deprecated)* Interview-driven repo creation |
 | `/wdi:standards-new-subproject` | Add subproject to mono-repo following standards |
 | `/wdi:standards-check` | Validate current repo against standards |
