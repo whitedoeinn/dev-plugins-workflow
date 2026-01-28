@@ -39,7 +39,8 @@ dev-plugins-workflow/
 │   ├── workflow-milestone.md        # /wdi:workflow-milestone
 │   ├── workflow-setup.md            # /wdi:workflow-setup
 │   ├── triage-ideas.md              # /wdi:triage-ideas
-│   ├── standards-new-repo.md        # /wdi:standards-new-repo
+│   ├── new-repo.md                  # /wdi:new-repo (simplified)
+│   ├── standards-new-repo.md        # /wdi:standards-new-repo (deprecated)
 │   ├── standards-new-subproject.md  # /wdi:standards-new-subproject
 │   ├── standards-check.md           # /wdi:standards-check
 │   ├── standards-update.md          # /wdi:standards-update
@@ -95,7 +96,8 @@ dev-plugins-workflow/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:standards-new-repo` | Create repository following WDI naming standards |
+| `/wdi:new-repo <name>` | Create WDI-standard repository (parameterized, scriptable) |
+| `/wdi:standards-new-repo` | *(deprecated)* Interview-driven repo creation |
 | `/wdi:standards-new-subproject` | Add subproject to mono-repo following standards |
 | `/wdi:standards-check` | Validate current repo against standards |
 | `/wdi:standards-update` | Impact analysis and guided updates for standard changes |
