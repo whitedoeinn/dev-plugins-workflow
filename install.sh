@@ -5,7 +5,53 @@ set -e
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
+
+print_usage() {
+  cat << 'EOF'
+Usage: ./install.sh [command] [options]
+
+Commands:
+  (none)          Install plugins (default)
+  update          Update plugins to latest version
+  --reset         Nuclear cleanup: clear caches, fix registry, reinstall fresh
+  --show-commands Show available commands for CLAUDE.md
+  --show-dev-workflow  Show development workflow info
+  --help          Show this help
+
+Options:
+  user            Install at user scope (default, recommended)
+  project         Install at project scope (not recommended)
+
+Examples:
+  ./install.sh              # Normal install at user scope
+  ./install.sh --reset      # Fix broken state, reinstall fresh
+  ./install.sh update       # Update to latest versions
+EOF
+}
+
+# Parse flags
+RESET_MODE=false
+SCOPE="user"
+
+for arg in "$@"; do
+  case "$arg" in
+    --reset)
+      RESET_MODE=true
+      ;;
+    --help|-h)
+      print_usage
+      exit 0
+      ;;
+    update|--show-commands|--show-dev-workflow)
+      # Handled below
+      ;;
+    user|project)
+      SCOPE="$arg"
+      ;;
+  esac
+done
 
 # Auto-detect maintainer mode when running from plugin source
 IS_MAINTAINER=false
@@ -13,12 +59,6 @@ PLUGIN_NAME=""
 MARKETPLACE_NAME=""
 REMOTE_MARKETPLACE_NAME=""
 
-# Maintainer mode requires the FULL plugin source structure:
-# - .claude-plugin/plugin.json (plugin config)
-# - .claude-plugin/marketplace.json (local marketplace definition)
-# - commands/ directory (command definitions)
-# - skills/ directory (skill definitions)
-# This prevents false positives on vendored projects or wrong directories.
 if [[ -f ".claude-plugin/plugin.json" ]] && \
    [[ -f ".claude-plugin/marketplace.json" ]] && \
    [[ -d "commands" ]] && \
@@ -27,20 +67,15 @@ if [[ -f ".claude-plugin/plugin.json" ]] && \
     PLUGIN_NAME=$(jq -r '.name' .claude-plugin/plugin.json)
     MARKETPLACE_NAME=$(jq -r '.name' .claude-plugin/marketplace.json)
   else
-    # Fallback: extract name without jq
     PLUGIN_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/plugin.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
     MARKETPLACE_NAME=$(grep -o '"name": *"[^"]*"' .claude-plugin/marketplace.json | head -1 | sed 's/"name": *"\([^"]*\)"/\1/')
   fi
 
-  # Validate extraction succeeded
   if [[ -n "$PLUGIN_NAME" && "$PLUGIN_NAME" != "null" ]]; then
-    # Track remote marketplace name for conflict handling
     REMOTE_MARKETPLACE_NAME="${PLUGIN_NAME}-marketplace"
     IS_MAINTAINER=true
   fi
 fi
-
-SCOPE="${1:-user}"
 
 # Handle update flag
 if [ "$1" = "update" ]; then
@@ -51,19 +86,11 @@ if [ "$1" = "update" ]; then
     exit 0
   fi
 
-  # Detect existing plugin scope (use wdi as reference)
-  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  if [[ -x "${SCRIPT_DIR}/scripts/get-plugin-scope.sh" ]]; then
-    UPDATE_SCOPE=$("${SCRIPT_DIR}/scripts/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
-  elif [[ -x "${SCRIPT_DIR}/get-plugin-scope.sh" ]]; then
-    UPDATE_SCOPE=$("${SCRIPT_DIR}/get-plugin-scope.sh" wdi 2>/dev/null || echo "project")
-  else
-    UPDATE_SCOPE="project"
-  fi
-
-  echo -e "${YELLOW}Updating plugins (scope: $UPDATE_SCOPE)...${NC}"
-  claude plugin update compound-engineering@every-marketplace --scope "$UPDATE_SCOPE"
-  claude plugin update wdi@wdi-marketplace --scope "$UPDATE_SCOPE"
+  echo -e "${YELLOW}Updating plugins...${NC}"
+  claude plugin marketplace update wdi-marketplace 2>/dev/null || true
+  claude plugin marketplace update every-marketplace 2>/dev/null || true
+  claude plugin update compound-engineering@every-marketplace 2>/dev/null || true
+  claude plugin update wdi@wdi-marketplace 2>/dev/null || true
   echo -e "${GREEN}Update complete!${NC}"
   exit 0
 fi
@@ -130,6 +157,122 @@ EOF
   exit 0
 fi
 
+# ============================================================================
+# RESET MODE: Nuclear cleanup
+# ============================================================================
+if [[ "$RESET_MODE" == true ]]; then
+  echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo -e "${CYAN}  Reset Mode: Clearing caches and fixing registry${NC}"
+  echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo ""
+
+  # Check prerequisites
+  if ! command -v claude &>/dev/null; then
+    echo -e "${RED}ERROR: Claude Code CLI not found${NC}"
+    exit 1
+  fi
+
+  if ! command -v jq &>/dev/null; then
+    echo -e "${RED}ERROR: jq not found. Install it first:${NC}"
+    echo "  brew install jq  # macOS"
+    echo "  sudo apt install jq  # Ubuntu/Debian"
+    exit 1
+  fi
+
+  # Ensure ~/.claude directory exists
+  mkdir -p ~/.claude/plugins
+
+  # Step 1: Clear plugin caches
+  echo -e "${YELLOW}Step 1: Clearing plugin caches...${NC}"
+  rm -rf ~/.claude/plugins/cache/wdi-marketplace/ 2>/dev/null || true
+  rm -rf ~/.claude/plugins/cache/every-marketplace/ 2>/dev/null || true
+  echo "  Done"
+
+  # Step 2: Update marketplaces
+  echo ""
+  echo -e "${YELLOW}Step 2: Updating marketplaces...${NC}"
+  claude plugin marketplace update wdi-marketplace 2>/dev/null || true
+  claude plugin marketplace update every-marketplace 2>/dev/null || true
+  echo "  Done"
+
+  # Step 3: Clean installed_plugins.json
+  echo ""
+  echo -e "${YELLOW}Step 3: Cleaning plugin registry...${NC}"
+  INSTALLED_PLUGINS="$HOME/.claude/plugins/installed_plugins.json"
+
+  if [[ -f "$INSTALLED_PLUGINS" ]]; then
+    # Keep only the most recent user-scope entry for each plugin
+    jq '
+      .plugins["wdi@wdi-marketplace"] = (
+        [.plugins["wdi@wdi-marketplace"][]? | select(.scope == "user")]
+        | sort_by(.installedAt) | if length > 0 then [last] else [] end
+      ) |
+      .plugins["compound-engineering@every-marketplace"] = (
+        [.plugins["compound-engineering@every-marketplace"][]? | select(.scope == "user")]
+        | sort_by(.installedAt) | if length > 0 then [last] else [] end
+      )
+    ' "$INSTALLED_PLUGINS" > "${INSTALLED_PLUGINS}.tmp" && mv "${INSTALLED_PLUGINS}.tmp" "$INSTALLED_PLUGINS"
+    echo "  Cleaned registry (kept most recent user-scope entry per plugin)"
+  else
+    echo "  No existing registry (fresh install)"
+  fi
+
+  # Step 4: Remove project-scope settings.json in current directory
+  echo ""
+  echo -e "${YELLOW}Step 4: Removing stale project settings...${NC}"
+  if [[ -f ".claude/settings.json" ]]; then
+    rm -f ".claude/settings.json"
+    echo "  Removed: .claude/settings.json"
+  else
+    echo "  No stale settings found"
+  fi
+
+  # Step 5: Reinstall plugins at user scope
+  echo ""
+  echo -e "${YELLOW}Step 5: Reinstalling plugins at user scope...${NC}"
+
+  # Uninstall first to ensure clean state
+  claude plugin uninstall compound-engineering@every-marketplace --scope user 2>/dev/null || true
+  claude plugin uninstall wdi@wdi-marketplace --scope user 2>/dev/null || true
+
+  # Fresh install
+  claude plugin install compound-engineering@every-marketplace --scope user
+  claude plugin install wdi@wdi-marketplace --scope user
+  echo "  Done"
+
+  # Step 6: Verify
+  echo ""
+  echo -e "${YELLOW}Step 6: Verifying installation...${NC}"
+  PLUGIN_JSON=$(claude plugin list --json 2>/dev/null || echo "[]")
+
+  WDI_USER=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "wdi@wdi-marketplace" and .scope == "user")] | length')
+  WDI_VERSION=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "wdi@wdi-marketplace" and .scope == "user")][0].version // "none"')
+  CE_USER=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "compound-engineering@every-marketplace" and .scope == "user")] | length')
+  CE_VERSION=$(echo "$PLUGIN_JSON" | jq -r '[.[] | select(.id == "compound-engineering@every-marketplace" and .scope == "user")][0].version // "none"')
+
+  if [[ "$WDI_USER" == "1" ]]; then
+    echo -e "  ${GREEN}✓${NC} wdi: v$WDI_VERSION (user scope)"
+  else
+    echo -e "  ${RED}✗${NC} wdi: installation problem"
+  fi
+
+  if [[ "$CE_USER" == "1" ]]; then
+    echo -e "  ${GREEN}✓${NC} compound-engineering: v$CE_VERSION (user scope)"
+  else
+    echo -e "  ${RED}✗${NC} compound-engineering: installation problem"
+  fi
+
+  echo ""
+  echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo -e "${GREEN}  Reset complete! Restart Claude Code to activate.${NC}"
+  echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  exit 0
+fi
+
+# ============================================================================
+# NORMAL INSTALL MODE
+# ============================================================================
+
 if [[ "$IS_MAINTAINER" == true ]]; then
   echo -e "${YELLOW}Detected plugin source: $PLUGIN_NAME${NC}"
   echo "Installing in maintainer mode (live edits enabled)"
@@ -195,8 +338,6 @@ echo ""
 # Step 3: Add plugin marketplace (local or remote)
 if [[ "$IS_MAINTAINER" == true ]]; then
   echo -e "${YELLOW}Step 3: Adding local marketplace...${NC}"
-  # Remove existing marketplace first if names conflict (local and remote use same name in marketplace.json)
-  # This ensures local directory takes precedence over remote GitHub URL
   if ! claude plugin marketplace add "$(pwd)" 2>/dev/null; then
     echo -e "${YELLOW}Marketplace '$MARKETPLACE_NAME' exists, replacing with local...${NC}"
     claude plugin marketplace remove "$MARKETPLACE_NAME" 2>/dev/null || true
@@ -222,8 +363,6 @@ echo ""
 # Step 4: Install plugin
 if [[ "$IS_MAINTAINER" == true ]]; then
   echo -e "${YELLOW}Step 4: Installing $PLUGIN_NAME from local...${NC}"
-  # Disable any orphaned plugin entries from previous installations
-  # This handles cases where marketplace was removed but plugin entry persists
   claude plugin disable "${PLUGIN_NAME}@${REMOTE_MARKETPLACE_NAME}" --scope "$SCOPE" 2>/dev/null || true
   claude plugin disable "${PLUGIN_NAME}@${PLUGIN_NAME}-local" --scope "$SCOPE" 2>/dev/null || true
   if claude plugin install "${PLUGIN_NAME}@${MARKETPLACE_NAME}" --scope "$SCOPE"; then
@@ -272,6 +411,7 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 
 These commands require the `wdi` and `compound-engineering` plugins.
 To reinstall or update, run: `./install.sh` or `./install.sh update`
+For problems, run: `./install.sh --reset`
 EOF
   echo -e "${GREEN}Created CLAUDE.md${NC}"
 else
@@ -287,26 +427,15 @@ if [[ "$IS_MAINTAINER" == true ]]; then
   echo "Mode: Maintainer (live edits enabled)"
   echo "  Changes to commands/*.md and skills/*/SKILL.md take effect immediately."
   echo "  Restart Claude Code after modifying hooks/hooks.json."
-  echo ""
 else
   echo -e "${GREEN}Setup complete!${NC}"
 fi
 echo ""
-echo "Available commands:"
-echo "  Workflow:"
-echo "    /wdi:workflow-feature         - Quick idea OR full build workflow"
-echo "    /wdi:workflow-feature #N      - Continue existing issue"
-echo "    /wdi:workflow-enhanced-ralph  - Quality-gated feature execution"
-echo "    /wdi:workflow-milestone       - Create/execute milestone groupings"
-echo "  Skills (auto-invoked):"
-echo "    workflow-commit                - Say 'commit these changes' to trigger"
-echo "    workflow-auto-docs             - Say 'update the docs' to trigger"
-echo "    config-sync                    - Say 'check my config' to trigger"
-echo "  Standards:"
-echo "    /wdi:standards-new-repo        - Create new repository"
-echo "    /wdi:standards-new-subproject  - Add subproject to mono-repo"
-echo "    /wdi:standards-check           - Validate against standards"
-echo "    /wdi:standards-update          - Update standard dependencies"
-echo "    /wdi:standards-new-command     - Create new command"
+echo "Commands:"
+echo "  /wdi:workflow-feature      - Quick idea OR full build workflow"
+echo "  /wdi:workflow-commit       - Say 'commit these changes'"
+echo "  /wdi:standards-new-repo    - Create new repository"
 echo ""
-echo "To update plugins later: ./install.sh update"
+echo "Troubleshooting:"
+echo "  ./install.sh update        - Update to latest versions"
+echo "  ./install.sh --reset       - Nuclear fix for broken state"

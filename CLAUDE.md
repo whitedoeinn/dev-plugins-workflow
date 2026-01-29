@@ -308,8 +308,8 @@ Say "check my config" to run validation manually (useful after fixing issues).
 For new machines or to reset a broken installation:
 
 ```bash
-./scripts/machine-setup.sh
-# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+./install.sh --reset
+# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash -s -- --reset
 ```
 
 This clears caches, removes stale project-scope entries, installs plugins at user scope, and creates `~/.claude/CLAUDE.md`. Safe to re-run.

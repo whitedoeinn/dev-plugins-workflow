@@ -2,16 +2,16 @@
 
 ## New Machine Setup / Nuclear Reset
 
-Use `machine-setup.sh` to bootstrap a new development machine or reset a broken installation to a known good state.
+Use `install.sh --reset` to bootstrap a new development machine or reset a broken installation to a known good state.
 
 ```bash
 # From the repo (if cloned)
 cd ~/github/whitedoeinn/dev-plugins-workflow
 git pull
-./scripts/machine-setup.sh
+./install.sh --reset
 
 # Or via curl (new machines without the repo)
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash -s -- --reset
 ```
 
 **What it does:**

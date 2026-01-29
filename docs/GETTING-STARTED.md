@@ -17,7 +17,7 @@ This guide gets you productive in 15 minutes. It explains what commands to use, 
 For a fresh development machine, use the comprehensive setup script:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash -s -- --reset
 ```
 
 This installs plugins at **user scope** (global), creates `~/.claude/CLAUDE.md` with environment standards, and verifies the installation.
@@ -40,7 +40,7 @@ If you work across multiple machines, run the setup script on each:
 # If you have the repo cloned
 cd ~/github/whitedoeinn/dev-plugins-workflow
 git pull
-./scripts/machine-setup.sh
+./install.sh --reset
 ```
 
 The script ensures consistent configuration across all your development machines.
@@ -74,8 +74,8 @@ curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/mai
 Run the machine setup script to reset to a known good state:
 
 ```bash
-./scripts/machine-setup.sh
-# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/scripts/machine-setup.sh | bash
+./install.sh --reset
+# Or: curl -sSL https://raw.githubusercontent.com/whitedoeinn/dev-plugins-workflow/main/install.sh | bash -s -- --reset
 ```
 
 This clears caches, removes stale entries, and reinstalls fresh. See [troubleshooting.md](troubleshooting.md) for more details.
