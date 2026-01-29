@@ -10,8 +10,9 @@ Context-aware help for WDI development workflows.
 
 ```
 /wdi:help              — Show all topics
+/wdi:help status       — Current session & cost info
 /wdi:help cost         — Cost-aware AI usage
-/wdi:help models       — Model selection guidance  
+/wdi:help models       — Model selection guidance
 /wdi:help workflow     — Feature workflow phases
 /wdi:help commands     — All WDI commands
 /wdi:help thinking     — Thinking/reasoning toggle
@@ -20,6 +21,97 @@ Context-aware help for WDI development workflows.
 ## Behavior
 
 Based on the topic requested, provide the relevant help section below.
+
+---
+
+## Topic: status
+
+### Current Session & Cost Info
+
+When this topic is requested, gather live data and present it.
+
+**Step 1: Detect Environment**
+
+```bash
+# Claude Code stats
+STATS_FILE="$HOME/.claude/stats-cache.json"
+
+# Clawdbot session data
+CLAWDBOT_SESSIONS="$HOME/.clawdbot/agents/*/sessions/"
+```
+
+**Step 2: Display Session Status**
+
+```
+Session Status
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  CURRENT SESSION
+  ───────────────
+  Environment:  Claude Code (Max plan — flat rate)
+  Model:        {detect from conversation context}
+  Thinking:     {on/off if detectable, otherwise "N/A"}
+
+  RECENT ACTIVITY (from stats-cache.json)
+  ───────────────────────────────────────
+  Today:     {messages} messages, {sessions} sessions, {tool_calls} tool calls
+  Yesterday: {messages} messages, {sessions} sessions, {tool_calls} tool calls
+  This week: {messages} messages across {sessions} sessions
+
+  COST CONTEXT
+  ────────────
+  Claude Code:  Flat $200/mo Max plan — no per-token cost
+  Clawdbot:     Pay-per-token (check dashboard for usage)
+
+  QUICK ACTIONS
+  ─────────────
+  /wdi:help cost      — Detailed cost optimization tips
+  /wdi:help models    — Model selection guidance
+  /wdi:help thinking  — Thinking toggle & cost impact
+```
+
+**Step 3: Read Stats Data**
+
+Read `~/.claude/stats-cache.json` and extract:
+- Today's entry from `dailyActivity` array (match by date)
+- Yesterday's entry
+- Sum of last 7 days for weekly totals
+
+If the file doesn't exist or has no data for today, show "No data yet" for that row.
+
+**Step 4: Clawdbot Cost Estimate (if available)**
+
+If `~/.clawdbot/agents/` exists, check for session data:
+
+```bash
+# Find today's sessions
+find ~/.clawdbot/agents/*/sessions/ -name "*.jsonl" -newer /tmp/today-marker 2>/dev/null
+```
+
+If Clawdbot session data is available, add a section:
+
+```
+  CLAWDBOT USAGE (estimated)
+  ──────────────────────────
+  Sessions today:  {count}
+  See dashboard for exact costs: http://localhost:3000/usage
+```
+
+If not available, omit this section silently.
+
+**Step 5: Cost Optimization Tips**
+
+Always append:
+
+```
+  OPTIMIZATION TIPS
+  ─────────────────
+  • Heavy coding/building → Use Claude Code (flat rate)
+  • Strategic planning    → Use Clawdbot with Opus (worth the cost)
+  • Quick questions       → Use Clawdbot with Sonnet (default)
+  • Bulk simple tasks     → Use Clawdbot with Haiku (cheapest)
+  • Thinking tokens       → Keep OFF unless debugging complex issues
+```
 
 ---
 
@@ -225,6 +317,7 @@ Keep OFF by default, enable when you need to see/improve reasoning.
 │                                                     │
 │  HELP TOPICS                                        │
 │  ────────────                                       │
+│  /wdi:help status    — Session info & costs        │
 │  /wdi:help cost      — Billing & cost tips         │
 │  /wdi:help models    — When to use which model     │
 │  /wdi:help workflow  — Feature workflow phases     │

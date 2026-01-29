@@ -4,6 +4,13 @@ All notable changes documented here.
 
 ---
 
+## 2026-01-29
+
+### Added
+- **`/wdi:help status` topic (#111)** - New help topic showing current session info, recent activity stats from stats-cache.json, cost context (Claude Code flat rate vs Clawdbot per-token), Clawdbot usage when available, and optimization tips
+
+---
+
 ## 2026-01-25
 
 ### Added

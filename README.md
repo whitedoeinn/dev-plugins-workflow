@@ -65,6 +65,7 @@ cd dev-plugins-workflow
 | Command | Description |
 |---------|-------------|
 | `/wdi:help` | Quick reference card for all topics |
+| `/wdi:help status` | Current session info, activity stats, and cost context |
 | `/wdi:help cost` | Cost-aware AI usage (Clawdbot vs Claude Code billing) |
 | `/wdi:help models` | Model selection guidance (when to use Opus/Sonnet/Haiku) |
 | `/wdi:help workflow` | Feature workflow phases and handoff patterns |
