@@ -212,6 +212,43 @@ This splits strategic thinking (pay-per-token, use Opus when needed) from execut
 2. Switch to Claude Code → Execute the build
 3. Return to Reid → "Done, pushed. Can you review?"
 
+### Scoped Handoff Prompts (Critical!)
+
+**Problem:** Open-ended workflow commands cause Claude Code to proceed through ALL phases without stopping at human decision gates.
+
+**Solution:** Use **scoped prompts** with explicit boundaries:
+
+```
+FIRST: Make sure repo is current
+- git pull
+- git status (confirm clean)
+
+THEN: Execute ONLY the [specific phase]
+- [Task 1]
+- [Task 2]
+
+STOP BEFORE:
+- Committing
+- Pushing  
+- Closing the issue
+
+REPORT BACK:
+- What was implemented
+- Test results
+- Any decisions made
+- Ready for review
+```
+
+**Human Decision Gates:**
+| Gate | When | Who Decides |
+|------|------|-------------|
+| Plan Review | After planning | Human approves scope |
+| P1/P2/P3 Triage | After code review | Human prioritizes fixes |
+| Commit | Before committing | Human approves changes |
+| Deploy | Before deploying | Human approves release |
+
+**Key Insight:** Clawdbot = state machine (controls flow). Claude Code = scoped executor (does exactly what's asked, stops, reports back).
+
 ---
 
 ## Topic: commands
