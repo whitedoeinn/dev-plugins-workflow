@@ -60,6 +60,17 @@ cd dev-plugins-workflow
 |---------|-------------|
 | `/wdi:frontend-setup` | Install WDI design tokens to project (shadcn copy pattern) |
 
+### Help Commands
+
+| Command | Description |
+|---------|-------------|
+| `/wdi:help` | Quick reference card for all topics |
+| `/wdi:help cost` | Cost-aware AI usage (Clawdbot vs Claude Code billing) |
+| `/wdi:help models` | Model selection guidance (when to use Opus/Sonnet/Haiku) |
+| `/wdi:help workflow` | Feature workflow phases and handoff patterns |
+| `/wdi:help thinking` | Thinking/reasoning toggle explained |
+| `/wdi:help commands` | All WDI commands listed |
+
 ## Requirements
 
 - Claude Code CLI
