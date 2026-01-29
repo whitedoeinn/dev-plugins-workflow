@@ -61,9 +61,11 @@ The `workflow-commit` skill (Step 6) handles version bumps automatically:
 - Creates git tag automatically (Step 10)
 - Updates changelog with version reference
 
-### Layer 2: Pre-Commit Hook (Safety Net)
+### Layer 2: Pre-Commit Hook (Safety Net) — REMOVED
 
-For when developers bypass the commit skill (direct `git commit`), add a pre-commit hook:
+> **Note (Jan 2026):** This layer has been removed. The pre-commit hook required manual installation and added complexity for minimal benefit. The commit skill is now the sole mechanism for version bumps. If someone bypasses it with `git commit`, they'll learn quickly when changes don't propagate.
+
+~~For when developers bypass the commit skill (direct `git commit`), add a pre-commit hook:~~
 
 ```bash
 #!/bin/bash

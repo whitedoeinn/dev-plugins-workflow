@@ -119,10 +119,10 @@ Added sync requirement notice:
 - Commit skill Step 0 checks branch sync before any operations
 - Hard abort if behind - not a warning that can be dismissed
 
-### Layer 2: Pre-Commit Hook (Safety Net)
-- Script at `scripts/pre-commit-version-check.sh`
-- Catches direct `git commit` usage that bypasses the skill
-- Install: `cp scripts/pre-commit-version-check.sh .git/hooks/pre-commit`
+### Layer 2: Pre-Commit Hook (Safety Net) — REMOVED
+- ~~Script at `scripts/pre-commit-version-check.sh`~~ (deleted Jan 2026)
+- The commit skill is now the sole mechanism for version bumps
+- Rationale: The hook required manual installation and added complexity for minimal benefit
 
 ### Layer 3: CI/CD Enforcement (Catch-All)
 - GitHub Action `.github/workflows/version-bump-check.yml`

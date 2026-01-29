@@ -52,7 +52,7 @@ dev-plugins-workflow/
 ├── hooks/                           # Claude Code hooks
 │   └── hooks.json                   # SessionStart hook config
 ├── scripts/                         # Helper scripts
-│   ├── check-deps.sh                # Dependency checker + auto-update
+│   ├── check-deps.sh                # SessionStart hook: auto-updates plugin
 │   ├── validate-env.sh              # Environment validation
 │   ├── run-tests.sh                 # Run unit + integration tests
 │   └── ...
@@ -146,7 +146,7 @@ claude plugin install compound-engineering@every-marketplace --scope user
 claude plugin install wdi@wdi-marketplace --scope user
 ```
 
-Scripts like `check-deps.sh` and `validate-env.sh` automatically detect your installation scope and use it for updates and remediation. See [Troubleshooting: Installation Scopes](docs/troubleshooting.md#installation-scopes) for details.
+The `validate-env.sh` script validates your environment against `env-baseline.json`. Run it via the config-sync skill ("check my config") or directly. For installation issues, use `./install.sh --reset`.
 
 > **DRIFT PREVENTION:** Never create `.claude/settings.json` files in project directories. If `claude plugin list` shows duplicate installations (same plugin at both user and project scope), the SessionStart hook will auto-remove the project-scope one. All plugins should be user-scope only.
 
@@ -416,17 +416,6 @@ Current version: See `.claude-plugin/plugin.json`
 | `docs:`, `chore:`, `refactor:`, `test:`, `style:` | Patch |
 
 The commit skill automatically handles version bumps. Always use the commit skill for plugin changes.
-
-### Pre-Commit Hook (Optional Safety Net)
-
-Install the pre-commit hook to catch version bump issues locally:
-
-```bash
-cp scripts/pre-commit-version-check.sh .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
-```
-
-This blocks commits that don't include a version bump, reminding you to use the commit skill.
 
 ### CI Enforcement (Required)
 
