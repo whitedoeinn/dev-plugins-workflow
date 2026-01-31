@@ -23,27 +23,14 @@ cd dev-plugins-workflow
 ./install.sh
 ```
 
-## Two Workflow Paradigms
-
-**🔒 Constrained (`/wdi:workflow-feature`)** - Traditional phased workflow  
-Best for: Known solutions, clear requirements, budget-conscious development  
-Philosophy: Human specifies, AI implements, human verifies
-
-**🚀 Unleashed (`/wdi:workflow-unleashed`)** - Exploration workflow *(NEW - Experimental)*  
-Best for: Unknown solutions, "make it better" goals, discovery-driven development  
-Philosophy: AI explores multiple approaches, discovers possibilities, human curates results  
-**[Read the manifesto →](docs/UNLEASHED.md)**
-
 ## Commands
 
 ### Workflow Commands
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflow-feature` | **Constrained workflow** - quick idea OR full build (Plan → Work → Review → Compound) |
+| `/wdi:workflow-feature` | Feature workflow - quick idea OR full build (Plan → Work → Review → Compound) |
 | `/wdi:workflow-feature #N` | Continue existing issue from where it left off |
-| `/wdi:workflow-unleashed` | **Unleashed workflow** - AI explores solution space, discovers possibilities (see [UNLEASHED.md](docs/UNLEASHED.md)) |
-| `/wdi:workflow-curate` | Help curate discoveries from unleashed exploration |
 | `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflow-milestone` | Create and manage milestones that group related features for delivery |
 | `/wdi:workflow-setup` | Set up and verify plugin dependencies |
