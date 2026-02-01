@@ -106,11 +106,15 @@ if [ "$1" = "--show-commands" ]; then
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
+- `/wdi:wdi-workflow-unleashed` - Exploration methodology: AI discovers approaches through perspective shifts
+- `/wdi:wdi-workflow-curate` - Curate discoveries from unleashed exploration
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
 - `workflow-auto-docs` - Detect and fix documentation drift (say "update the docs")
 - `config-sync` - Validate environment (say "check my config")
+- `discovery-capture` - Document unexpected findings during unleashed exploration
+- `exploration-reflection` - Learn from exploration outcomes
 
 ### Standards Commands
 - `/wdi:standards-new-repo` - Create a new repository following naming and structure standards
@@ -394,11 +398,15 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
+- `/wdi:wdi-workflow-unleashed` - Exploration methodology: AI discovers approaches through perspective shifts
+- `/wdi:wdi-workflow-curate` - Curate discoveries from unleashed exploration
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
 - `workflow-auto-docs` - Detect and fix documentation drift (say "update the docs")
 - `config-sync` - Validate environment (say "check my config")
+- `discovery-capture` - Document unexpected findings during unleashed exploration
+- `exploration-reflection` - Learn from exploration outcomes
 
 ### Standards Commands
 - `/wdi:standards-new-repo` - Create a new repository following naming and structure standards
