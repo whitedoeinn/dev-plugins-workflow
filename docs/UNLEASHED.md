@@ -164,11 +164,20 @@ Requirements are limited by knowledge. The point of exploration is to discover w
 ### 4. Refinement ≠ Failure
 Incorporating a discovery from one approach into another isn't rework. It's polishing the solution.
 
-## Integration with Existing Workflows
+## Full Lifecycle
 
-1. **Unleashed → Constrained:** Explore approaches, curate, then execute chosen approach with full workflow discipline
-2. **Constrained → Unleashed:** Ship MVP, then explore enhancements
-3. **Hybrid:** Start unleashed, switch to constrained when direction is clear
+Unleashed is a complete workflow. After curation:
+
+1. **Review** — Multi-agent review via compound-engineering (P1s must be fixed)
+2. **Compound** — Capture learnings, commit, close issue
+3. **Platform Learning Template** — If dogfooding (`docs/UNLEASHED-BRIEF.md` exists), fill out the template
+
+Every shipped feature gets reviewed and compounded. No exceptions.
+
+## Integration with Other Workflows
+
+1. **Constrained → Unleashed:** Ship MVP with constrained, then explore enhancements via unleashed
+2. **Hybrid:** Start unleashed, switch to constrained when direction is clear
 
 ## Cost Awareness
 

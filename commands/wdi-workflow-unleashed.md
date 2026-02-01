@@ -6,7 +6,7 @@
 
 Traditional: Human defines requirements → AI implements → Human verifies
 
-**Unleashed:** Human defines goals → AI explores through multiple lenses → AI presents discoveries → Human curates
+**Unleashed:** Human defines goals → AI explores through multiple lenses → AI presents discoveries → Human curates → Review → Compound
 
 ## How It Works
 
@@ -94,7 +94,46 @@ Human says:
 
 **The human curates, doesn't constrain.**
 
-### 7. Failure Handling
+### 7. Review
+
+After the curated approach is implemented, run multi-agent review. This is NOT optional.
+
+Delegate to compound-engineering:
+
+```
+/compound-engineering:workflows:review
+```
+
+**P1 (Blocking):** Fix before continuing. No exceptions.
+**P2/P3:** Create issues for later, don't block.
+
+If P1s are found, fix them and re-run review until clean.
+
+### 8. Compound and Complete
+
+Capture learnings from the entire exploration + build cycle.
+
+Delegate to compound-engineering:
+
+```
+/compound-engineering:workflows:compound
+```
+
+This creates a learning doc in `docs/solutions/`. Commit everything. Close the issue.
+
+**Issue close comment should include:**
+- Which lens was selected (and why)
+- Key discoveries across all lenses
+- Review findings and what was fixed
+- Learnings captured
+
+### 9. Platform Learning Template (If Dogfooding)
+
+If `docs/UNLEASHED-BRIEF.md` exists in the repo, fill out the Platform Learning Template from that document. This captures meta-learnings about what specs were needed, where the AI struggled, and what gaps exist in the platform vision.
+
+**This step is required when dogfooding. Skip only if no brief exists.**
+
+### Failure Handling
 
 **All approaches fail:**
 Document what was tried, why each failed, what constraints might need loosening. Escalate to human.
