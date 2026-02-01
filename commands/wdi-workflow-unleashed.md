@@ -12,12 +12,14 @@ Traditional: Human defines requirements → AI implements → Human verifies
 
 ### 1. Intent Capture (Minimal)
 
-Ask the human:
+Ask the human (if not already provided in the prompt):
 - **What problem** are you solving? (one sentence)
 - **What constraints** matter? (technical, UX, business)
 - **What's off-limits?** (things you definitely DON'T want)
 
 That's it. No implementation details. No "how". Just "what" and "why not".
+
+**If the prompt already provides all three, acknowledge them and proceed to exploration. Do NOT skip exploration and jump to implementation — even if the problem seems obvious.**
 
 ### 2. Sequential Exploration with Perspective Shifts
 
@@ -39,6 +41,8 @@ Work through three deliberate lenses, one at a time. Commit fully to each before
 - Ask: "If I built this from scratch with only the stated constraints, what would I do?"
 
 **Guard against premature convergence.** If conservative works, still explore balanced and radical fully. The point is to discover alternatives, not confirm the obvious.
+
+**⚠️ MANDATORY: Do NOT write any implementation code during exploration.** Research, prototype mentally, document approaches — but do not commit to an approach until the human curates. Exploration is analysis and design, not implementation.
 
 ### 3. Self-Discovery Process
 
@@ -83,6 +87,8 @@ Show the human **all three approaches** with:
 ```
 
 No recommendations. Present options. Let the human curate.
+
+**⚠️ MANDATORY: You MUST present all three lenses and STOP here.** Do not proceed to implementation until the human explicitly tells you which approach (or combination) to build. This is a hard gate — no exceptions, even if the prompt provided detailed context. The human curates. Always.
 
 ### 6. Human Curation
 
