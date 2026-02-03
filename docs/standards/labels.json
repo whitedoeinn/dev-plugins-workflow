@@ -1,0 +1,34 @@
+[
+  {"name": "type:bug", "color": "d73a4a", "description": "Something broken, unexpected behavior"},
+  {"name": "type:feature", "color": "0e8a16", "description": "New or improved capability"},
+  {"name": "type:chore", "color": "6c757d", "description": "Maintenance, refactoring, deps, tech debt"},
+  
+  {"name": "priority:critical", "color": "b60205", "description": "Drop everything — production down, security hole, data loss"},
+  {"name": "priority:high", "color": "d93f0b", "description": "This sprint — blocking release or significant user pain"},
+  {"name": "priority:medium", "color": "fbca04", "description": "Soon — real issue but not blocking"},
+  
+  {"name": "area:frontend", "color": "1d76db", "description": "Web app, React components, stores, UI"},
+  {"name": "area:api", "color": "5319e7", "description": "Backend, routes, database, validation"},
+  {"name": "area:infra", "color": "0e0e0e", "description": "Deployment, Docker, CI/CD, config"},
+  
+  {"name": "concern:a11y", "color": "0052cc", "description": "Accessibility — WCAG, screen readers, contrast"},
+  {"name": "concern:security", "color": "ee0701", "description": "Auth, permissions, vulnerabilities"},
+  {"name": "concern:mobile", "color": "c2e0c6", "description": "Responsive, touch, small screens"},
+  {"name": "concern:perf", "color": "bfd4f2", "description": "Speed, bundle size, caching"},
+  {"name": "concern:ux", "color": "d4c5f9", "description": "General UX polish, flows, clarity"},
+  {"name": "concern:docs", "color": "fef2c0", "description": "Documentation, READMEs, guides"},
+  {"name": "concern:testing", "color": "f9d0c4", "description": "Test coverage, flaky tests, harnesses"},
+  {"name": "concern:data", "color": "c5def5", "description": "Data integrity, migrations, schema, validation"},
+  {"name": "concern:dx", "color": "bfdadc", "description": "Developer experience, tooling, standards, conventions"},
+  
+  {"name": "state:needs-scoping", "color": "e6e6e6", "description": "Not yet planned — needs research/scoping"},
+  {"name": "state:ready", "color": "0e8a16", "description": "Scoped, ready to build"},
+  {"name": "state:in-progress", "color": "fbca04", "description": "Work underway"},
+  {"name": "state:needs-review", "color": "1d76db", "description": "Code done, needs review"},
+  {"name": "state:needs-compounding", "color": "5319e7", "description": "Reviewed, capture learnings"},
+  {"name": "state:blocked", "color": "b60205", "description": "Can't proceed — waiting on dependency"},
+  
+  {"name": "from:uat", "color": "c2b280", "description": "Found during UAT testing"},
+  {"name": "from:user", "color": "ff7619", "description": "Reported by end user"},
+  {"name": "from:review", "color": "ffefc6", "description": "Found during code review"}
+]

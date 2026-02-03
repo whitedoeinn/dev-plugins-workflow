@@ -14,7 +14,6 @@ Keep titles brief and descriptive. Use sentence case.
 - `Add dark mode toggle to settings`
 - `Fix mobile navigation highlighting`
 - `Campaign filter not saving selection`
-- `Consider adding GraphQL support`
 
 **Avoid:**
 - `Bug` (too vague)
@@ -23,393 +22,154 @@ Keep titles brief and descriptive. Use sentence case.
 
 ---
 
-## Labels
+## Label Taxonomy
 
-Use labels instead of title prefixes for categorization.
+Labels use **prefixed groups** for consistent filtering across all WDI repos.
 
-### Required Labels (Type)
-
-Every issue should have at least one type label describing the **nature** of the work:
+### `type:` — What kind of work? (mutually exclusive)
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `bug` | `#d73a4a` (red) | Defect or broken behavior |
-| `feature` | `#006B75` (teal) | User-facing capability |
-| `enhancement` | `#a2eeef` (cyan) | Improvement to existing functionality |
-| `documentation` | `#0075ca` (blue) | Documentation changes only |
-| `chore` | `#FEF2C0` (light yellow) | Maintenance, dependencies, CI, cleanup |
-| `spike` | `#1E90FF` (blue) | Research or investigation |
-| `idea` | `#0052CC` (blue) | Needs shaping before becoming a feature/epic |
-| `question` | `#d876e3` (purple) | Needs discussion or clarification |
+| `type:bug` | `#d73a4a` (red) | Something broken, unexpected behavior |
+| `type:feature` | `#0e8a16` (green) | New or improved capability |
+| `type:chore` | `#6c757d` (gray) | Maintenance, refactoring, deps, tech debt |
 
-### Optional Labels (Scope)
+Every issue should have exactly one `type:` label.
 
-Add a scope label to indicate position in the hierarchy (see [Scope Taxonomy](#scope-taxonomy) below):
+### `priority:` — How urgent? (mutually exclusive)
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `initiative` | `#5319E7` (dark purple) | Strategic goal spanning multiple epics |
-| `epic` | `#7057ff` (purple) | Multi-phase work coordinating several features |
-| `task` | `#C5DEF5` (light blue) | Single unit of work (child of feature) |
+| `priority:critical` | `#b60205` (dark red) | Drop everything — production down, security hole, data loss |
+| `priority:high` | `#d93f0b` (orange) | This sprint — blocking release or significant user pain |
+| `priority:medium` | `#fbca04` (yellow) | Soon — real issue but not blocking |
+| *(no label)* | — | Backlog — we'll get to it eventually |
 
-Note: `feature`, `bug`, and `spike` appear in both lists - they serve as both type and default scope.
+**Principle:** "Low priority is a joke — go label-less instead." If it's truly low priority, don't label it.
 
-### Optional Labels (Priority)
-
-Add when priority matters:
-
-| Label | Color | Description |
-|-------|-------|-------------|
-| `priority: high` | `#b60205` (dark red) | Needs attention soon |
-| `priority: low` | `#c5def5` (light blue) | Nice to have, when time permits |
-
-### Optional Labels (Status)
-
-Add to communicate state:
+### `area:` — Where in the codebase? (stackable)
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `blocked` | `#000000` (black) | Waiting on external dependency |
-| `needs-info` | `#fbca04` (yellow) | Requires more information |
-| `wontfix` | `#ffffff` (white) | Declined, with explanation |
-| `duplicate` | `#cfd3d7` (gray) | Duplicate of another issue |
+| `area:frontend` | `#1d76db` (blue) | Web app, React components, stores, UI |
+| `area:api` | `#5319e7` (purple) | Backend, routes, database, validation |
+| `area:infra` | `#0e0e0e` (black) | Deployment, Docker, CI/CD, config |
 
-### Optional Labels (Area)
+Issues can have multiple area labels if they span layers.
 
-For mono-repos or larger projects:
+### `concern:` — What aspect of quality? (stackable)
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `area: dashboard` | `#5319e7` (purple) | Affects dashboard package |
-| `area: api` | `#5319e7` (purple) | Affects API package |
-| `area: docs` | `#5319e7` (purple) | Affects documentation |
+| `concern:a11y` | `#0052cc` (blue) | Accessibility — WCAG, screen readers, contrast |
+| `concern:security` | `#ee0701` (red) | Auth, permissions, vulnerabilities |
+| `concern:mobile` | `#c2e0c6` (light green) | Responsive, touch, small screens |
+| `concern:perf` | `#bfd4f2` (light blue) | Speed, bundle size, caching |
+| `concern:ux` | `#d4c5f9` (lavender) | General UX polish, flows, clarity |
+| `concern:docs` | `#fef2c0` (cream) | Documentation, READMEs, guides |
+| `concern:testing` | `#f9d0c4` (peach) | Test coverage, flaky tests, harnesses |
+| `concern:data` | `#c5def5` (light blue) | Data integrity, migrations, schema, validation |
+| `concern:dx` | `#bfdadc` (teal) | Developer experience, tooling, standards, conventions |
+
+Issues can have multiple concern labels.
+
+### `state:` — Workflow status (mutually exclusive)
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `state:needs-scoping` | `#e6e6e6` (gray) | Not yet planned — needs research/scoping |
+| `state:ready` | `#0e8a16` (green) | Scoped, ready to build |
+| `state:in-progress` | `#fbca04` (yellow) | Work underway |
+| `state:needs-review` | `#1d76db` (blue) | Code done, needs review |
+| `state:needs-compounding` | `#5319e7` (purple) | Reviewed, capture learnings |
+| `state:blocked` | `#b60205` (red) | Can't proceed — waiting on dependency |
+
+State labels enable workflow automation (see WDI plugin integration).
+
+### `from:` — Issue origin (optional)
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `from:uat` | `#c2b280` (tan) | Found during UAT testing |
+| `from:user` | `#ff7619` (orange) | Reported by end user |
+| `from:review` | `#ffefc6` (cream) | Found during code review |
+
+Helps track where issues are discovered and prioritize accordingly.
 
 ---
 
-## Scope Taxonomy
-
-Issues are classified by **scope** to indicate their size and relationship to other work. This creates a hierarchy from strategic goals down to individual tasks.
-
-### Scope Hierarchy
+## Quick Reference
 
 ```
-Initiative
-    └── Epic
-            └── Feature / Bug / Spike
-                    └── Task
+type:     bug | feature | chore                          (pick one)
+priority: critical | high | medium | (unlabeled=backlog)  (pick one)
+area:     frontend | api | infra                          (stack if needed)
+concern:  a11y | security | mobile | perf | ux | docs | testing | data | dx
+state:    needs-scoping | ready | in-progress | needs-review | needs-compounding | blocked
+from:     uat | user | review                             (optional)
 ```
 
-| Label | Color | Description | Example |
-|-------|-------|-------------|---------|
-| `initiative` | `#5319E7` (dark purple) | Strategic goal spanning multiple epics | "Improve developer experience" |
-| `epic` | `#7057ff` (purple) | Multi-phase work coordinating several features | "Adopt branching & PR workflow" |
-| `feature` | `#006B75` (teal) | User-facing capability | "Add PR creation step" |
-| `bug` | `#d73a4a` (red) | Defect or broken behavior | "Plugin update not re-downloading" |
-| `spike` | `#1E90FF` (blue) | Research or investigation | "Research Claude Code issues" |
-| `task` | `#C5DEF5` (light blue) | Single unit of work | "Update CLAUDE.md" |
+---
 
-### Scope vs Type
+## Filtering Examples
 
-- **Scope** describes the size/hierarchy (initiative → epic → feature → task)
-- **Type** describes the nature of work (feature, bug, chore, docs, spike)
+| Want to see | Filter |
+|-------------|--------|
+| All accessibility work | `label:concern:a11y` |
+| High priority bugs | `label:type:bug label:priority:high` |
+| Frontend a11y specifically | `label:area:frontend label:concern:a11y` |
+| What's blocking release | `label:priority:critical,priority:high` |
+| UAT findings to triage | `label:from:uat` |
+| Security backlog | `label:concern:security -label:priority:critical -label:priority:high` |
+| Ready to pick up | `label:state:ready` |
 
-An issue can have both:
-- `epic` + `chore` = An epic focused on maintenance work
-- `feature` + `documentation` = A feature that's documentation-related
-- `spike` is both a scope and type (research is inherently scoped)
+---
 
-### Using Scope Labels
+## Scope Taxonomy (Epics)
 
-1. **Initiatives** are rare - strategic goals that span months
-2. **Epics** coordinate multiple features/bugs into a cohesive effort
-3. **Features/Bugs/Spikes** are the typical working level
-4. **Tasks** are optional - use for breaking down features if helpful
+For larger efforts, use GitHub's **sub-issues** feature rather than scope labels:
 
-### Parent-Child Relationships (Sub-Issues)
+1. Create parent issue (the "epic")
+2. Add sub-issues via **Create sub-issue** in sidebar
+3. Progress tracked automatically
 
-Use GitHub's native **sub-issues** feature for parent-child relationships:
+**When to create an epic:**
+- Work spans multiple PRs over days/weeks
+- Multiple people might contribute
+- Needs coordination across features
 
-1. Open the parent issue
-2. Click **Create sub-issue** in the issue sidebar (or use `#` in the issue body)
-3. Sub-issues appear nested under the parent with progress tracking
+**Simple issues don't need epics.** Most bugs and small features are standalone.
 
-**Limits:**
-- 50 sub-issues per parent
-- 8 levels of nesting
-- Cross-repo support available
+---
 
-Sub-issues provide:
-- Visual nesting in issue lists
-- Automatic progress tracking (`sub-issue progress` field in Projects)
-- Clear hierarchy without manual linking
+## Issue Lifecycle
 
-> **Reference:** [GitHub Sub-Issues Documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues)
-
-### Living Epics
-
-Some epics represent **ongoing work streams** rather than time-bounded projects. These "living epics" stay open as long as the domain is active.
-
-**Pattern:**
-- Epic stays open indefinitely
-- New work becomes sub-issues, not separate issues
-- Progress tracked via GitHub Projects' `sub-issue progress` field
-- Historical completion notes preserved in the epic body
-
-**When to use:**
-- Design systems (ongoing refinement)
-- Infrastructure improvements (continuous)
-- Documentation initiatives (never "done")
-
-**Example:** Frontend Design Epic (#65) - new design work becomes sub-issues rather than standalone issues, keeping all frontend design work organized under one parent.
-
-**Epic body format:**
-```markdown
-> **Living Epic:** This epic remains open for ongoing [domain] work.
-> New work should be added as sub-issues. See [ISSUE-STANDARDS.md](docs/standards/ISSUE-STANDARDS.md#living-epics) for the pattern.
-
-[Historical completion summary preserved below]
+```
+Created → state:needs-scoping → state:ready → state:in-progress → state:needs-review → Closed
 ```
 
-Child issues should still be assigned to the parent's **milestone** for tracking.
-
-### Epics and Milestones
-
-Every `epic` should have a corresponding **milestone**:
-- Milestone groups all child issues
-- Progress bar shows completion
-- Epic issue is pinned for visibility
-
-### When to Use What
-
-| Situation | Scope Label |
-|-----------|-------------|
-| "We need to improve X across the board" | `initiative` |
-| "This requires multiple coordinated changes" | `epic` |
-| "Add this specific capability" | `feature` |
-| "This is broken" | `bug` |
-| "We need to research/investigate" | `spike` |
-| "Do this one specific thing" | `task` |
-
----
-
-## Issue Templates
-
-Use templates in `.github/ISSUE_TEMPLATE/` for consistency.
-
-### Bug Report Template
-
-```markdown
----
-name: Bug Report
-about: Report something that isn't working correctly
-title: ''
-labels: bug
----
-
-## Description
-
-Brief description of the bug.
-
-## Steps to Reproduce
-
-1. Go to '...'
-2. Click on '...'
-3. See error
-
-## Expected Behavior
-
-What should happen.
-
-## Actual Behavior
-
-What actually happens.
-
-## Environment
-
-- Browser/OS:
-- Version/Commit:
-
-## Screenshots
-
-If applicable, add screenshots.
-
-## Additional Context
-
-Any other relevant information.
-```
-
-### Feature Request Template
-
-```markdown
----
-name: Feature Request
-about: Suggest new functionality
-title: ''
-labels: feature
----
-
-## Problem
-
-What problem does this solve? Why is it needed?
-
-## Proposed Solution
-
-Describe the feature you'd like.
-
-## Alternatives Considered
-
-Other approaches you've thought about.
-
-## Additional Context
-
-Mockups, examples, or references.
-```
-
-### Enhancement Template
-
-```markdown
----
-name: Enhancement
-about: Suggest an improvement to existing functionality
-title: ''
-labels: enhancement
----
-
-## Current Behavior
-
-How does it work now?
-
-## Proposed Improvement
-
-What should change?
-
-## Benefits
-
-Why is this improvement valuable?
-
-## Additional Context
-
-Any other relevant information.
-```
-
-### Idea Template
-
-```markdown
----
-name: Idea
-about: Capture a rough idea for later shaping
-title: 'Idea: '
-labels: idea
----
-
-## Idea
-
-What's the rough concept?
-
-## Problem/Opportunity
-
-What might this solve or enable?
-
-## Initial Thoughts
-
-Any early thinking on approach?
-```
-
-### Chore Template
-
-```markdown
----
-name: Chore
-about: Maintenance, cleanup, dependencies, or configuration
-title: ''
-labels: chore
----
-
-## Task
-
-What needs to be done?
-
-## Reason
-
-Why is this maintenance needed?
-
-## Scope
-
-What files/areas are affected?
-```
-
-### Documentation Template
-
-```markdown
----
-name: Documentation
-about: Documentation improvements or additions
-title: ''
-labels: documentation
----
-
-## What needs documenting?
-
-Describe what's missing or needs improvement.
-
-## Location
-
-Where should this documentation live?
-
-## Audience
-
-Who is this documentation for?
-```
-
-### Question Template
-
-```markdown
----
-name: Question
-about: Ask a question that needs discussion
-title: ''
-labels: question
----
-
-## Question
-
-What do you need clarification on?
-
-## Context
-
-What led to this question?
-
-## Options Considered
-
-Any approaches you've thought about?
-```
-
-### Experiment Template
-
-```markdown
----
-name: Experiment
-about: Exploratory work, spike, or proof of concept
-title: 'Experiment: '
-labels: experiment
----
-
-## Hypothesis
-
-What are you trying to learn or prove?
-
-## Approach
-
-How will you test this?
-
-## Success Criteria
-
-How will you know if the experiment succeeded?
-
-## Time Box
-
-Expected duration (max 90 days per standards).
-```
+### WDI Workflow Integration
+
+The WDI plugin reads `state:` labels to determine where to start:
+
+| State Label | Plugin Behavior |
+|-------------|-----------------|
+| `state:needs-scoping` | Start with planning phase |
+| `state:ready` | Start with implementation |
+| `state:in-progress` | Resume implementation |
+| `state:needs-review` | Run review phase |
+| `state:needs-compounding` | Run compounding phase |
+| `state:blocked` | Skip, surface blocker |
+
+The plugin updates state labels as work progresses.
+
+### Closing Issues
+
+Issues close when:
+- **Completed** — PR merged with `Fixes #123`
+- **Won't fix** — Declined with explanation in comment
+- **Duplicate** — Link to original, close as not planned
+- **Stale** — No longer relevant, explain why
 
 ---
 
@@ -417,114 +177,111 @@ Expected duration (max 90 days per standards).
 
 ### Do
 
-- **Be specific** - Include exact error messages, URLs, steps
-- **One issue per issue** - Don't bundle unrelated problems
-- **Link related issues** - Use `Related to #123` or `Depends on #456`
-- **Update as you learn** - Edit the issue with new information
-- **Close with context** - When closing, explain the resolution
+- **Be specific** — Include exact error messages, URLs, steps
+- **One issue per issue** — Don't bundle unrelated problems
+- **Link related issues** — Use `Related to #123` or `Depends on #456`
+- **Update as you learn** — Edit the issue with new information
+- **Close with context** — Explain the resolution
 
 ### Don't
 
-- **Assume context** - Others (or future you) won't remember
-- **Write novels** - Keep it concise, use formatting
-- **Leave stale issues** - Close or update issues that are outdated
-- **Duplicate** - Search before creating
+- **Assume context** — Others (or future you) won't remember
+- **Write novels** — Keep it concise, use formatting
+- **Leave stale issues** — Close or update outdated issues
+- **Duplicate** — Search before creating
 
 ---
 
-## Issue Lifecycle
+## Issue Templates
 
-```
-Open → In Progress → Review → Closed
-```
+Use templates in `.github/ISSUE_TEMPLATE/` for consistency.
 
-### Linking to Branches/PRs
+### Bug Report
 
-When starting work on an issue:
-- Branch name includes issue number: `fix/123-mobile-nav`
-- PR references issue: `Fixes #123` (auto-closes on merge)
-
-### Closing Issues
-
-Issues are closed when:
-- **Completed** - Feature shipped, bug fixed
-- **Won't fix** - Declined with explanation (add `wontfix` label)
-- **Duplicate** - Link to original issue (add `duplicate` label)
-- **Stale** - No longer relevant (explain why in comment)
-
+```markdown
 ---
-
-## Issue-Driven Development
-
-The `/wdi:feature` command creates issues automatically. This ensures:
-
-1. Every feature has a tracking issue
-2. Issues include requirements and acceptance criteria
-3. Issues link to implementation branches
-4. Issues close automatically when work merges
-
-**Manual issue creation** is still useful for:
-- Bug reports from users
-- Feature ideas to discuss before committing
-- Documentation improvements
-- Questions that need async discussion
-
+name: Bug Report
+about: Report something that isn't working correctly
+labels: type:bug
 ---
-
-## Examples
-
-### Good Bug Report
-
-```
-Title: Campaign filter not persisting after page refresh
-
-Labels: bug, area: dashboard
 
 ## Description
-The campaign status filter resets to "All" when refreshing the page.
+Brief description of the bug.
 
 ## Steps to Reproduce
-1. Go to /dashboard/campaigns
-2. Select "Active" from the status filter
-3. Refresh the page
-4. Filter is back to "All"
+1. Go to '...'
+2. Click on '...'
+3. See error
 
 ## Expected Behavior
-Filter selection should persist (localStorage or URL param).
+What should happen.
+
+## Actual Behavior
+What actually happens.
 
 ## Environment
-- Chrome 120, macOS
-- Commit: abc123
+- Browser/OS:
+- Version/Commit:
 ```
 
-### Good Feature Request
+### Feature Request
 
-```
-Title: Add export to CSV for campaign reports
-
-Labels: feature, priority: high
+```markdown
+---
+name: Feature Request
+about: Suggest new functionality
+labels: type:feature
+---
 
 ## Problem
-Users need to share campaign data with stakeholders who
-don't have dashboard access.
+What problem does this solve?
 
 ## Proposed Solution
-Add "Export CSV" button to campaign report page that
-downloads current filtered view.
+Describe the feature you'd like.
 
 ## Alternatives Considered
-- PDF export (harder to work with in Excel)
-- API endpoint (requires technical users)
-
-## Additional Context
-Requested by 3 users in last month.
+Other approaches you've thought about.
 ```
+
+### Chore
+
+```markdown
+---
+name: Chore
+about: Maintenance, cleanup, dependencies, or configuration
+labels: type:chore
+---
+
+## Task
+What needs to be done?
+
+## Reason
+Why is this maintenance needed?
+
+## Scope
+What files/areas are affected?
+```
+
+---
+
+## Syncing Labels Across Repos
+
+Use `github-label-sync` or the provided script to sync labels:
+
+```bash
+# labels.json contains the canonical label definitions
+gh label create "type:bug" --color "d73a4a" --description "Something broken"
+# ... repeat for all labels
+```
+
+Labels should be consistent across all WDI repos.
 
 ---
 
 ## Notes
 
-- Labels should be created consistently across all WDI repos
-- Use GitHub's issue transfer feature to move misplaced issues
-- Pin important issues (roadmap, contributing guide) to repo
-- Use milestones for grouping issues by release or sprint
+- Every issue needs a `type:` label
+- Priority labels are optional — unlabeled = backlog
+- Use `state:` labels for workflow automation
+- Use `concern:` labels liberally — they help with filtering
+- `from:` labels help track quality (catching issues in UAT vs prod)
