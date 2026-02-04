@@ -116,38 +116,53 @@ If not already in issue:
 - What constraints matter?
 - What's off-limits?
 
-### Sequential Exploration
+### Parallel Exploration (Cost Optimized)
 
-Work through three lenses, one at a time:
+**Spawn 3 parallel subagents** — each runs on DeepSeek (cheap), not Opus:
 
-**Lens A: Conservative**
-- Minimal changes to existing patterns
-- Ask: "What's the simplest thing that could work?"
+```
+sessions_spawn(task: "Explore Lens A (Conservative) for: [problem]. 
+  Minimal changes to existing patterns. 
+  Ask: What's the simplest thing that could work?
+  Return: Approach, discoveries, tradeoffs, risks.
+  NO implementation code — design only.",
+  label: "lens-a")
 
-**Lens B: Balanced**
-- Mix of new and existing approaches
-- Ask: "What's the best solution if I'm not anchored to current patterns?"
+sessions_spawn(task: "Explore Lens B (Balanced) for: [problem].
+  Mix of new and existing approaches.
+  Ask: What's best if not anchored to current patterns?
+  Return: Approach, discoveries, tradeoffs, risks.
+  NO implementation code — design only.",
+  label: "lens-b")
 
-**Lens C: Radical**
-- Fresh approach from first principles
-- Ask: "If I built this from scratch, what would I do?"
+sessions_spawn(task: "Explore Lens C (Radical) for: [problem].
+  Fresh approach from first principles.
+  Ask: If built from scratch, what would I do?
+  Return: Approach, discoveries, tradeoffs, risks.
+  NO implementation code — design only.",
+  label: "lens-c")
+```
 
-### Rules
+Each subagent:
+- Runs on `agents.defaults.subagents.model` (DeepSeek)
+- Works in isolation
+- Returns structured findings
 
-- **No implementation code during exploration.** Design and analyze only.
-- **Guard against premature convergence.** If A works, still explore B and C fully.
-- **Test your thinking.** Run existing tests to check for breakage.
+### Collect and Present
 
-### Present Discoveries
-
-Show all three approaches:
+Wait for all 3 subagents to complete. Synthesize their findings:
 
 ```markdown
 ## Lens A: [Name]
 **Approach:** [Strategy]
 **Discoveries:** [Unexpected findings]
 **Tradeoffs:** [Costs/limitations]
-**Quality:** [Test results, known issues]
+
+## Lens B: [Name]
+...
+
+## Lens C: [Name]
+...
 ```
 
 **⚠️ HARD GATE: Stop here. Do not proceed until human curates.**
@@ -177,9 +192,31 @@ npm run validate:routes
 ```
 **Blocking.** Fix spec issues before proceeding.
 
-### Do the Work
+### Do the Work (via Claude Code)
 
-Implement the curated approach (or direct implementation if `--skip-explore`).
+**Use Claude Code for implementation** — runs on Max subscription (flat rate), not API:
+
+```bash
+# Create tmux session in target repo
+tmux new-session -d -s workflow-work -c /path/to/repo
+
+# Launch Claude Code with the curated approach
+tmux send-keys -t workflow-work "claude 'Implement [curated approach]. Context: [issue link, constraints, etc.]'" Enter
+
+# Monitor progress
+tmux capture-pane -p -t workflow-work -S -50
+
+# Send Enter to continue when prompted
+tmux send-keys -t workflow-work Enter
+```
+
+**Why Claude Code:**
+- Flat-rate Max subscription vs per-token API
+- Better at multi-file refactoring
+- Has MCP plugins for visual feedback
+- Cost: ~$0 vs $5-15 for heavy generation
+
+**Fallback:** If Claude Code unavailable or task is trivial, implement directly.
 
 ### Pattern Injections (After)
 
@@ -197,22 +234,45 @@ npm test  # or appropriate test command
 
 ---
 
-## Phase 7: Review
+## Phase 7: Review (Parallel Subagents)
 
-Delegate to compound-engineering:
+**Spawn parallel review agents** — each runs on DeepSeek:
 
 ```
-/compound-engineering:workflows:review
+sessions_spawn(task: "Review for ARCHITECTURE: [diff/files].
+  Check: separation of concerns, abstractions, patterns.
+  Return: P1/P2/P3 findings with specific line references.",
+  label: "review-arch")
+
+sessions_spawn(task: "Review for PERFORMANCE: [diff/files].
+  Check: O(n) vs O(1), memoization, unnecessary renders.
+  Return: P1/P2/P3 findings with specific line references.",
+  label: "review-perf")
+
+sessions_spawn(task: "Review for ERROR HANDLING: [diff/files].
+  Check: null safety, error boundaries, edge cases.
+  Return: P1/P2/P3 findings with specific line references.",
+  label: "review-errors")
+
+sessions_spawn(task: "Review for TESTING: [diff/files].
+  Check: test coverage, edge cases, assertions.
+  Return: P1/P2/P3 findings with specific line references.",
+  label: "review-testing")
 ```
 
 ### Pattern-Specific Review Criteria
 
-If spec-driven, add to review prompts:
-- Do all new routes have corresponding flow specs?
-- Are user stories testable as written?
-- Does implementation match spec intent?
+If spec-driven, add additional reviewer:
+```
+sessions_spawn(task: "Review for SPEC ALIGNMENT: [diff/files].
+  Check: Do new routes have flow specs? Stories testable? Implementation matches spec?
+  Return: P1/P2/P3 findings.",
+  label: "review-specs")
+```
 
-### Handle Findings
+### Collect and Synthesize
+
+Wait for all reviewers. Dedupe overlapping findings. Prioritize:
 
 - **P1 (Blocking):** Fix before continuing. No exceptions.
 - **P2/P3:** Create issues for later, don't block.
@@ -332,14 +392,22 @@ Old commands will warn and redirect.
 
 ---
 
-## Cost Awareness
+## Cost Optimization
 
-Exploration costs 3-10x more tokens than direct implementation.
+This workflow is designed to minimize API costs by routing work appropriately:
 
-**Worth it when:** Discovery value > token cost  
-**Not worth it when:** Solution is obvious
+| Phase | Model/Tool | Why |
+|-------|------------|-----|
+| Orchestration | Opus (main) | Needs intelligence for coordination |
+| Explore (3 lenses) | Subagents → DeepSeek | Parallel, cheaper |
+| Curate | Opus (main) | Human interaction |
+| Work (coding) | Claude Code via tmux | Flat-rate Max subscription |
+| Review | Subagents → DeepSeek | Parallel, cheaper |
+| Compound | Opus (main) | Synthesis |
 
-Use `--skip-explore` to save tokens on trivial work.
+**Key principle:** Opus orchestrates, cheap models + Claude Code do the heavy lifting.
+
+Use `--skip-explore` to skip exploration on trivial work.
 
 ---
 
