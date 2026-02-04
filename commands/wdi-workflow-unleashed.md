@@ -1,5 +1,10 @@
 # /wdi:workflow-unleashed
 
+> **⚠️ DEPRECATED:** Use `/wdi:workflow` instead. Exploration is now the default.
+> This command redirects to `/wdi:workflow`.
+
+---
+
 **Exploration methodology — AI discovers approaches through deliberate perspective shifts**
 
 ## Philosophy

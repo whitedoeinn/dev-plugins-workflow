@@ -4,6 +4,13 @@ description: Feature workflow - from idea to shipped, with the journey documente
 
 # /wdi:workflow-feature
 
+> **⚠️ DEPRECATED:** Use `/wdi:workflow` instead.
+> - For exploration (default): `/wdi:workflow`
+> - For direct implementation: `/wdi:workflow --skip-explore`
+> This command redirects to `/wdi:workflow --skip-explore`.
+
+---
+
 One command for the entire feature lifecycle. Captures ideas, plans work, builds features, and documents the journey.
 
 ## Usage
