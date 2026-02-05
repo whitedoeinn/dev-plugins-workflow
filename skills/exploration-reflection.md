@@ -4,7 +4,7 @@
 
 ## Purpose
 
-After each unleashed exploration completes (human makes a curation decision), reflect on what happened:
+After each exploration completes (human makes a curation decision), reflect on what happened:
 - What approaches worked and why?
 - What discoveries were valuable?
 - What explorations were dead ends?
@@ -85,7 +85,7 @@ After 5+ explorations, patterns should emerge:
 - Certain discoveries are reliably valuable
 - Specific tradeoffs are never acceptable
 
-**Caution:** Don't let pattern recognition narrow exploration. Patterns inform, they don't constrain. The point of unleashed is to keep discovering.
+**Caution:** Don't let pattern recognition narrow exploration. Patterns inform, they don't constrain. The point of exploration is to keep discovering.
 
 ## Future-Facing Notes
 
@@ -106,5 +106,5 @@ This isn't automated. It's a discipline — after each exploration, take a few m
 
 ---
 
-**Status:** Behavior guide for unleashed methodology  
+**Status:** Behavior guide for exploration workflow  
 **Note:** The automated learning system (pattern detection, summaries) is a future enhancement, not current functionality.

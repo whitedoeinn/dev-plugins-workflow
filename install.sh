@@ -101,19 +101,17 @@ if [ "$1" = "--show-commands" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflow-feature` - Feature workflow (quick idea OR full build with Plan → Work → Review → Compound)
+- `/wdi:workflow-feature` - Feature workflow with exploration by default (use `--quick` to skip exploration)
 - `/wdi:workflow-feature #N` - Continue existing issue from where it left off
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
-- `/wdi:wdi-workflow-unleashed` - Exploration methodology: AI discovers approaches through perspective shifts
-- `/wdi:wdi-workflow-curate` - Curate discoveries from unleashed exploration
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
 - `workflow-auto-docs` - Detect and fix documentation drift (say "update the docs")
 - `config-sync` - Validate environment (say "check my config")
-- `discovery-capture` - Document unexpected findings during unleashed exploration
+- `discovery-capture` - Document unexpected findings during exploration
 - `exploration-reflection` - Learn from exploration outcomes
 
 ### Standards Commands
@@ -393,19 +391,17 @@ if [ ! -f "CLAUDE.md" ] && [ ! -f ".claude/CLAUDE.md" ]; then
 ## Available Commands
 
 ### Workflow Commands
-- `/wdi:workflow-feature` - Feature workflow (quick idea OR full build with Plan → Work → Review → Compound)
+- `/wdi:workflow-feature` - Feature workflow with exploration by default (use `--quick` to skip exploration)
 - `/wdi:workflow-feature #N` - Continue existing issue from where it left off
 - `/wdi:workflow-enhanced-ralph` - Quality-gated feature execution with research agents and type-specific reviews
 - `/wdi:workflow-milestone` - Create and execute milestone-based feature groupings
 - `/wdi:workflow-setup` - Set up and verify plugin dependencies
-- `/wdi:wdi-workflow-unleashed` - Exploration methodology: AI discovers approaches through perspective shifts
-- `/wdi:wdi-workflow-curate` - Curate discoveries from unleashed exploration
 
 ### Skills (Auto-Invoked)
 - `workflow-commit` - Smart commit with tests, auto-docs, and changelog (say "commit these changes")
 - `workflow-auto-docs` - Detect and fix documentation drift (say "update the docs")
 - `config-sync` - Validate environment (say "check my config")
-- `discovery-capture` - Document unexpected findings during unleashed exploration
+- `discovery-capture` - Document unexpected findings during exploration
 - `exploration-reflection` - Learn from exploration outcomes
 
 ### Standards Commands

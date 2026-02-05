@@ -1,6 +1,6 @@
 # discovery-capture
 
-**Behavior guide for documenting unexpected findings during unleashed exploration**
+**Behavior guide for documenting unexpected findings during exploration**
 
 ## When to Invoke
 
@@ -68,4 +68,4 @@ This skill tells you how to think during exploration. It's not executable code. 
 
 ---
 
-**Status:** Behavior guide for unleashed methodology
+**Status:** Behavior guide for exploration workflow

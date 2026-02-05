@@ -1,7 +1,7 @@
 # Pattern Detection Interface Spec
 
 **Status:** Draft  
-**Purpose:** Define how `/wdi:workflow` detects and applies patterns to features
+**Purpose:** Define how `/wdi:workflow-feature` detects and applies patterns to features
 
 ---
 
@@ -138,8 +138,8 @@ function fuzzyMatch(input: string, patterns: Pattern[]): Pattern[] {
 ### 3. Explicit Flag
 
 ```bash
-/wdi:workflow #45 --pattern spec-driven
-/wdi:workflow #45 --pattern spec-driven,warm-craft
+/wdi:workflow-feature #45 --pattern spec-driven
+/wdi:workflow-feature #45 --pattern spec-driven,warm-craft
 ```
 
 ### 4. Interview (when ambiguous)
@@ -311,7 +311,7 @@ Reviewers will specifically check...
 
 ## Integration with Workflow
 
-**In `/wdi:workflow`:**
+**In `/wdi:workflow-feature`:**
 
 ```
 Phase 1: Pre-flight

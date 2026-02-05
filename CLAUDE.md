@@ -85,7 +85,7 @@ dev-plugins-workflow/
 
 | Command | Description |
 |---------|-------------|
-| `/wdi:workflow-feature` | Feature workflow - quick idea OR full build (Plan → Work → Review → Compound) |
+| `/wdi:workflow-feature` | Feature workflow with exploration by default (use `--quick` to skip) |
 | `/wdi:workflow-feature #N` | Continue existing issue from where it left off |
 | `/wdi:workflow-enhanced-ralph` | Quality-gated feature execution with research agents and type-specific reviews |
 | `/wdi:workflow-milestone` | Create and execute milestone-based feature groupings |
@@ -174,12 +174,13 @@ One command for the entire feature lifecycle:
 /wdi:workflow-feature #45          # Continue existing issue
 ```
 
-### Two Entry Points
+### Three Entry Points
 
 | Mode | Usage | What Happens |
 |------|-------|--------------|
 | **Quick idea** | "I have a thought" | One sentence → Issue created → Done (30 seconds) |
-| **Build something** | "Let's do this" | Full workflow: Plan → Work → Review → Compound |
+| **Build something** | "Let's do this" | Full workflow: Explore → Curate → Work → Review → Compound |
+| **Quick fix** | `--quick` flag | Skip exploration: Learnings → Work → Review → Compound |
 
 ### The Issue IS the Document
 
@@ -212,6 +213,8 @@ Issues are labeled with their current workflow phase for at-a-glance visibility:
 
 | Label | Phase | Color |
 |-------|-------|-------|
+| `phase:exploring` | Explore (3 lenses) | Teal |
+| `phase:curating` | Curate (human selection) | Cyan |
 | `phase:planning` | Plan | Blue |
 | `phase:working` | Work | Green |
 | `phase:reviewing` | Review | Yellow |
